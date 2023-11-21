@@ -19,18 +19,25 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "addon@protondb-community-extension.com"
+      "id": "addon@steam-currency-converter.com"
     }
   },
   "content_scripts": [
     {
-      "matches": ["https://store.steampowered.com/*", "https://steamcommunity.com/id/*/games/*", "https://steamcommunity.com/profiles/*/games/*"],
+      "matches": [
+        "https://store.steampowered.com/*",
+        "https://steamcommunity.com/id/*/games/*",
+        "https://steamcommunity.com/profiles/*/games/*",
+        "https://store.steampowered.com/app/*"
+      ],
       "exclude_matches": [
         "*://store.steampowered.com/dynamicstore/*",
         "*://store.steampowered.com/login/*",
         "*://store.steampowered.com/join/*",
         "*://steamcommunity.com/login/*",
-        "*://checkout.steampowered.com/*"
+        "*://checkout.steampowered.com/*",
+        "*://store.steampowered.com/charts/*"
+
       ],
       "js": [
         "./utils/globals.js",
@@ -41,19 +48,18 @@
       ],
       "css": ["./styles/store.style.css"],
       "run_at": "document_end"
-    },
-    {
-      "matches": ["https://store.steampowered.com/app/*"],
-      "js": ["./scripts/app_page.script.js"],
-      "css": ["./styles/app_page.style.css"],
-      "run_at": "document_end"
     }
   ],
   "web_accessible_resources": [
     {
       "resources": ["assets/*"],
-      "matches": ["https://store.steampowered.com/*", "https://steamcommunity.com/*"]
+      "matches": [
+        "https://store.steampowered.com/*",
+        "https://steamcommunity.com/*"
+      ]
     }
   ],
-  "host_permissions": ["https://store.steampowered.com/*", "https://www.protondb.com/*"]
+  "host_permissions": [
+    "https://store.steampowered.com/*"
+  ]
 }
