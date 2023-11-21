@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "Steam Currency Converter",
+  "description": "Steam Currency Converter!",
+  "version": "1.2.4",
+  "permissions": ["storage"],
+  "icons": {
+
+  },
+  "action": {
+    "default_popup": "index.html"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://store.steampowered.com/*",
+        "https://steamcommunity.com/id/*/games/*",
+        "https://steamcommunity.com/profiles/*/games/*",
+        "https://store.steampowered.com/app/*"
+      ],
+      "exclude_matches": [
+        "*://store.steampowered.com/dynamicstore/*",
+        "*://store.steampowered.com/login/*",
+        "*://store.steampowered.com/join/*",
+        "*://steamcommunity.com/login/*",
+        "*://checkout.steampowered.com/*"
+      ],
+      "js": [
+        "./utils/globals.js",
+        "./utils/observers.js",
+        "./utils/helpers.js",
+        "./utils/items.js",
+        "./scripts/store.script.js"
+      ],
+
+      "css": ["./styles/store.style.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/*"],
+      "matches": [
+        "https://store.steampowered.com/*",
+        "https://steamcommunity.com/*"
+      ]
+    }
+  ],
+  "host_permissions": ["https://store.steampowered.com/*"]
+}
