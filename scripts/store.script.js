@@ -3,6 +3,8 @@ let newItems = getItems(
   ...COMMON_SELECTORS
 );
 
+
+
 chrome.runtime.sendMessage({ contentScriptQuery: "queryCurrency" }, (data) => {
   if (chrome.runtime.lastError) {
     console.log("Error happened:");
