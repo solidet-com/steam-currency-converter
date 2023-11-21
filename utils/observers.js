@@ -10,7 +10,8 @@ function handleContentMutation(mutationsList) {
           } else newItems = getItems(node, ...COMMON_SELECTORS);
           if (newItems.length > 0) {
             newItems.forEach((item) => {
-              updatePriceInLocalCurrency(item);
+              initItem(item);
+              if(converterActive) togglePrice(item);
             });
           }
         }
@@ -28,3 +29,17 @@ function startObservers() {
     observer.observe(document, { childList: true, subtree: true });
   });
 }
+
+function handleStorageMutation(changes, namespace) {
+  // Identify tiers that have changed color
+  const changedTiers = [];
+  for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
+    if (key.match("converterActive")) {
+      console.log("converter active changed")
+      converterActive = newValue;
+      togglePrices();
+    }
+  }
+}
+
+chrome.storage.onChanged.addListener(handleStorageMutation);
