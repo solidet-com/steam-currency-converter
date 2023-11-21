@@ -6,70 +6,39 @@
     </head>
 
     <body>
-        <p class="version-text">v1.2.4</p>
+        <p class="version-text">v0.9</p>
         <img
-            src="assets/protondb_icon.png"
+            src="assets/steam-currency-converter.png"
             alt="ProtonDB Extension Icon"
-            width="60px"
+            width="92px"
             style="display: block; margin: 0.5rem auto"
         />
 
-        <h2 style="text-align: center">ProtonDB Extension</h2>
-        <p style="margin-top: 1rem; text-align: center">Choose Colors for the Ratings:</p>
-        <div class="color-picker-list">
-            <div></div>
-            <div class="color-picker-wrapper">
-                <button class="custom-color-picker" picker-for="platinum">
-                    <input type="color" id="platinum" name="platinum" value="#B4C7DC" />
-                </button>
-                <label for="platinum">Platinum</label>
-            </div>
+        <h2 style="text-align: center">Steam Currency Converter</h2>
+        <p style="margin-top: 1rem; text-align: center">Choose Currencies:</p>
 
-            <div class="color-picker-wrapper">
-                <button class="custom-color-picker" picker-for="gold">
-                    <input type="color" id="gold" name="gold" value="#CFB53B" />
-                </button>
-                <label for="gold">Gold</label>
-            </div>
-            <div></div>
-            <div></div>
+        <div class="option-body">
+            <div class="converter-container">
+                <select disabled id="convert-from">
+                    <option selected disabled value="USD">USD</option>
+                </select>
 
-            <div class="color-picker-wrapper">
-                <button class="custom-color-picker" picker-for="silver">
-                    <input type="color" id="silver" name="silver" value="#A6A6A6" />
-                </button>
-                <label for="silver">Silver</label>
-            </div>
+                <label class="switch">
+                    <input id="price-toggle" type="checkbox" checked/>
+                    <span class="slider round"></span>
+                </label>
 
-            <div class="color-picker-wrapper">
-                <button class="custom-color-picker" picker-for="bronze">
-                    <input type="color" id="bronze" name="bronze" value="#CD7F32" />
-                </button>
-                <label for="bronze">Bronze</label>
+                <select id="convert-to" disabled>
+                    <option selected disabled value="TRY">TRY</option>
+                </select>
             </div>
-            <div></div>
-            <div></div>
-            <div class="color-picker-wrapper">
-                <button class="custom-color-picker" picker-for="borked">
-                    <input type="color" id="borked" name="borked" value="#FF0000" />
-                </button>
-                <label for="borked">Borked</label>
-            </div>
-
-            <div class="color-picker-wrapper">
-                <button class="custom-color-picker" picker-for="unknown">
-                    <input type="color" id="unknown" name="unknown" value="#3D3D3D" />
-                </button>
-                <label for="unknown">Unknown</label>
-            </div>
-            <div></div>
         </div>
 
-        <div style="display: flex; justify-content: center; margin-top: 1rem">
-            <button id="resetColorsButton">Reset</button>
+        <div id="alert" style="display: flex; justify-content: center; margin-top: 1rem; opacity: 0; color: #858592">
+            <p>Other currencies are WIP</p>
         </div>
 
-        <footer class="color-picker-footer">
+        <footer class="footer">
             <span style="font-weight: 300">from</span>
             <a
                 href="https://linktr.ee/solidet"
@@ -82,6 +51,6 @@
             </a>
         </footer>
 
-        <script src="scripts/color.script.js"></script>
+        <script src="scripts/page.script.js"></script>
     </body>
 </html>
