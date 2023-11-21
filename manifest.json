@@ -11,7 +11,8 @@
     "128": "icons/icon128.png"
   },
   "action": {
-    "default_popup": "index.html"
+    "default_popup": "index.html",
+    "default_icon": "icons/icon128.png"
   },
   "background": {
     "service_worker": "background.js",
@@ -30,7 +31,8 @@
         "*://store.steampowered.com/login/*",
         "*://store.steampowered.com/join/*",
         "*://steamcommunity.com/login/*",
-        "*://checkout.steampowered.com/*"
+        "*://checkout.steampowered.com/*",
+        "*://store.steampowered.com/charts/*"
       ],
       "js": [
         "./utils/globals.js",
