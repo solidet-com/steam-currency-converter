@@ -12,6 +12,9 @@ const SEARCH_ITEM_PRICE = ".match_subtitle";
 const TOTAL_CART_PRICE = "#cart_estimated_total";
 const DLC_LIST_PRICE = ".game_area_dlc_price:not(:has(.discount_prices))";
 
+const MONTHLY_SUB_PRICE = "#add_to_cart_2d5d14f95af035cbd8437948de61f94c_selected_text";
+const MONTHLY_SUB_OPTION_PRICE=".game_area_purchase_game_dropdown_menu_item_text"
+
 /* -- TOP_SELLER SELECTORS -- */
 const TOP_SELLERS_PAGE_DISC_PRICE = ".salepreviewwidgets_StoreSaleDiscountedPriceCtn_3GLeQ > *";
 const TOP_SELLERS_PAGE_PRICE = ".salepreviewwidgets_StoreSalePriceCtn_3R7Q6 > *";
@@ -34,7 +37,6 @@ const COMMON_SELECTORS = [
     GAME_WITH_EVENT_PRICE,
     DLC_LIST_PRICE,
     DLC_PRICE,
-
     BUNDLE_PACKAGE_PRICE,
     BUNDLE_PCK_DISCOUNT_PRICE,
     BUNDLE_SAVINGS_PRICE
