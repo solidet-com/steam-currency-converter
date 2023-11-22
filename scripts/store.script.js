@@ -19,32 +19,25 @@ async function initStorage() {
 async function prepareData() {
     const toggleStatus = await chrome.storage.local.get(["converterActive"]);
     converterActive = toggleStatus.converterActive;
-    const storedData = await chrome.storage.local.get(["currency"]);
+    let storedData = await chrome.storage.local.get(["currency"]);
 
-    if (storedData?.currency?.updateDate !== new Date().toLocaleDateString("en-GB")) {
-        const currencyDataPromise = chrome.runtime.sendMessage({
-            contentScriptQuery: "queryCurrency",
-        });
+    for (const interval of INTERVALS) {
+        const timeStorageKey = getUpdateDateKey(interval.timeKey);
+        let updatedDate = await chrome.storage.local.get([timeStorageKey]);
 
-        const currencyData = await currencyDataPromise;
+        const lastRefresh = updatedDate[timeStorageKey];
+        const isInitial = lastRefresh == null;
+        const diff = new Date().getTime() - lastRefresh;
 
-        if (chrome.runtime.lastError) {
-            console.error(`Error: ${chrome.runtime.lastError.message}`);
-            return;
+        if (isInitial || diff > interval.value) {
+            storedData = await interval.callback();
+            if (interval?.afterCallback) {
+                storedData = await interval.afterCallback();
+            }
         }
-
-        exchangeRatePromise = currencyData.rates.TRY;
-
-        // Update local storage with the retrieved currency data
-        chrome.storage.local.set({
-            currency: {
-                rates: currencyData.rates,
-                updateDate: new Date().toLocaleDateString("en-GB"),
-            },
-        });
-    } else {
-        exchangeRatePromise = storedData.currency.rates.TRY;
     }
+
+    exchangeRatePromise = storedData.currency.rates.TRY;
 }
 
 initStorage().then(prepareData).then(initScript);

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Steam Currency Converter",
   "description": "Steam Currency Converter!",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "permissions": ["storage"],
   "icons": {
     "16": "icons/icon16.png",
@@ -35,6 +35,7 @@
         "*://store.steampowered.com/charts/*"
       ],
       "js": [
+        "./utils/api.js",
         "./utils/globals.js",
         "./utils/observers.js",
         "./utils/helpers.js",
