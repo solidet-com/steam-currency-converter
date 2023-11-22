@@ -3,6 +3,10 @@ const observers = [];
 
 const items = new Set();
 const colors = {};
+
+const DAY_IN_MS = 1000 * 60 * 60 * 24;
+const HOUR_IN_MS = 1000 * 60 * 60;
+
 let converterActive;
 
 const GAME_PAGE_PRICE = ".game_purchase_price";
