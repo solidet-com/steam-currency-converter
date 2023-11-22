@@ -9,8 +9,16 @@ function initScript() {
     startObservers();
 }
 
+async function initStorage() {
+    const toggleStatus = await chrome.storage.local.get(["converterActive"]);
+    if (toggleStatus?.converterActive == null) {
+        await chrome.storage.local.set({ converterActive: true });
+    }
+}
+
 async function prepareData() {
     const toggleStatus = await chrome.storage.local.get(["converterActive"]);
+    converterActive = toggleStatus.converterActive;
     const storedData = await chrome.storage.local.get(["currency"]);
 
     if (storedData?.currency?.updateDate !== new Date().toLocaleDateString("en-GB")) {
@@ -36,11 +44,7 @@ async function prepareData() {
         });
     } else {
         exchangeRatePromise = storedData.currency.rates.TRY;
-
-        converterActive = toggleStatus.converterActive;
     }
 }
 
-prepareData().then((result) => {
-    initScript();
-});
+initStorage().then(prepareData).then(initScript);
