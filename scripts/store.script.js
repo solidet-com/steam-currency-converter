@@ -1,43 +1,51 @@
-let newItems = getItems(document, ...COMMON_SELECTORS);
 function initScript() {
-    if (newItems?.length > 0) {
-        newItems.forEach((item) => {
-            initItem(item);
-            togglePrice(item);
-        });
-    }
-    startObservers();
+  initItems();
+  startObservers();
+}
+
+function initItems(onCurrencyChange = false) {
+  let newItems = getItems(document, ...COMMON_SELECTORS);
+  if (newItems?.length > 0) {
+    newItems.forEach((item) => {
+      initItem(item, onCurrencyChange);
+      togglePrice(item);
+    });
+  }
 }
 
 async function initStorage() {
-    const toggleStatus = await chrome.storage.local.get(["converterActive"]);
-    if (toggleStatus?.converterActive == null) {
-        await chrome.storage.local.set({ converterActive: true });
-    }
+  const toggleStatus = await chrome.storage.local.get(["converterActive"]);
+  if (toggleStatus?.converterActive == null) {
+    await chrome.storage.local.set({ converterActive: true });
+  }
 }
 
 async function prepareData() {
-    const toggleStatus = await chrome.storage.local.get(["converterActive"]);
-    converterActive = toggleStatus.converterActive;
-    let storedData = await chrome.storage.local.get(["currency"]);
+  const toggleStatus = await chrome.storage.local.get(["converterActive"]);
+  converterActive = toggleStatus.converterActive;
 
-    for (const interval of INTERVALS) {
-        const timeStorageKey = getUpdateDateKey(interval.timeKey);
-        let updatedDate = await chrome.storage.local.get([timeStorageKey]);
+  let storedData = await chrome.storage.local.get(["currency"]);
+  let { taxValue } = await chrome.storage.local.get(["taxValue"]);
+  let { targetCurrency } = await chrome.storage.local.get(["targetCurrency"]);
 
-        const lastRefresh = updatedDate[timeStorageKey];
-        const isInitial = lastRefresh == null;
-        const diff = new Date().getTime() - lastRefresh;
+  for (const interval of INTERVALS) {
+    const timeStorageKey = getUpdateDateKey(interval.timeKey);
+    let updatedDate = await chrome.storage.local.get([timeStorageKey]);
 
-        if (isInitial || diff > interval.value) {
-            storedData = await interval.callback();
-            if (interval?.afterCallback) {
-                storedData = await interval.afterCallback();
-            }
-        }
+    const lastRefresh = updatedDate[timeStorageKey];
+    const isInitial = lastRefresh == null;
+    const diff = new Date().getTime() - lastRefresh;
+
+    if (isInitial || diff > interval.value) {
+      storedData = await interval.callback();
+      if (interval?.afterCallback) {
+        storedData = await interval.afterCallback();
+      }
     }
-
-    exchangeRatePromise = storedData.currency.rates.TRY;
+  }
+  currencyRate = storedData.currency.rates[targetCurrency];
+  currencyKey = targetCurrency;
+  tax = taxValue;
 }
 
 initStorage().then(prepareData).then(initScript);

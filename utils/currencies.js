@@ -1,4 +1,4 @@
-{
+const currencySymbolMap={
     "USD": "$",
     "AED": "د.إ",
     "AFN": "؋",
