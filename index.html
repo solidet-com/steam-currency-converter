@@ -1,77 +1,65 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Steam Currency Converter</title>
-    <link rel="stylesheet" href="styles/style.css" />
-  </head>
+    <head>
+        <title>Steam Currency Converter</title>
+        <link rel="stylesheet" href="styles/style.css" />
+    </head>
 
-  <body>
-    <p class="version-text">v1.0.0</p>
-    <img
-      src="assets/steam-currency-converter.png"
-      alt="ProtonDB Extension Icon"
-      width="92px"
-      style="display: block; margin: 0.5rem auto"
-    />
+    <body>
+        <p class="version-text">v1.0.0</p>
+        <img
+            src="assets/steam-currency-converter.png"
+            alt="ProtonDB Extension Icon"
+            width="92px"
+            style="display: block; margin: 0.5rem auto"
+        />
 
-    <h2 style="text-align: center">Steam Currency Converter</h2>
-    <p style="margin-top: 1rem; text-align: center">Choose Currencies:</p>
+        <h2 style="text-align: center">Steam Currency Converter</h2>
 
-    <div class="option-body">
-      <div class="converter-container">
-        <select disabled id="convert-from">
-          <option selected disabled value="USD">USD</option>
-        </select>
+        <div class="option-body">
+            <label>Choose Currencies</label>
+            <div class="converter-container">
+                <select disabled id="convert-from">
+                    <option selected disabled value="USD">USD</option>
+                </select>
 
-        <label class="switch">
-          <input id="price-toggle" type="checkbox" checked />
-          <span class="slider round"></span>
-        </label>
+                <label class="switch">
+                    <input id="price-toggle" type="checkbox" checked />
+                    <span class="slider round"></span>
+                </label>
 
-        <select id="convert-to">
-          <option selected value="TRY">TRY</option>
-          <option selected value="ARS">ARS</option>
-        </select>
-      </div>
-    </div>
-    <div style="margin: 20px">
-      <label for="tax-input">Tax Rate (%): </label>
-      <input
-        type="number"
-        id="tax-input"
-        name="tax-input"
-        min="0"
-        max="500"
-        step="1"
-      />
-    </div>
+                <select id="convert-to">
+                    <option selected value="TRY">TRY</option>
+                    <option selected value="ARS">ARS</option>
+                </select>
+            </div>
+        </div>
 
-    <div
-      id="alert"
-      style="
-        display: flex;
-        justify-content: center;
-        margin-top: 1rem;
-        opacity: 0;
-        color: #858592;
-      "
-    >
-      <p>Changing base currency is WIP</p>
-    </div>
+        <div class="tax-container">
+            <label for="tax-input">Extra Rate</label>
+            <div class="input-container">
+                <input type="number" id="tax-input" name="tax-input" min="0" max="500" placeholder="0" />
+                <div class="input-percent">%</div>
+            </div>
+        </div>
 
-    <footer class="footer">
-      <span style="font-weight: 300">from</span>
-      <a
-        href="https://linktr.ee/solidet"
-        class="solidet-linktree"
-        target="_blank"
-        rel="noopener noreferrer"
-        title="solidet on linktree"
-      >
-        <p class="solidet-text">solidet</p>
-      </a>
-    </footer>
+        <div id="alert" style="display: flex; justify-content: center; margin-top: 1rem; opacity: 0; color: #858592">
+            <p>Changing base currency is WIP</p>
+        </div>
 
-    <script src="scripts/page.script.js"></script>
-  </body>
+        <footer class="footer">
+            <span style="font-weight: 300">from</span>
+            <a
+                href="https://linktr.ee/solidet"
+                class="solidet-linktree"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="solidet on linktree"
+            >
+                <p class="solidet-text">solidet</p>
+            </a>
+        </footer>
+
+        <script src="scripts/page.script.js"></script>
+    </body>
 </html>

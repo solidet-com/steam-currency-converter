@@ -1,5 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@200;400&display=swap");
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    display: none;
+}
+
+select:disabled {
+    opacity: 1;
+}
+
 /* Tooltip Styles */
 
 /* Tooltip container */
@@ -58,7 +67,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #121218;
+    background-color: #0b0c0f;
     -webkit-transition: 0.4s;
     transition: 0.4s;
 }
@@ -75,9 +84,25 @@
     transition: 0.4s;
 }
 
-input:checked + .slider {
-    background-color: #747497;
+.converter-container {
+    background-color: #0b0c0f;
+    border-radius: 20px;
 }
+
+.converter-container:has(input:checked) #convert-to {
+    background-color: white;
+    color: black;
+}
+
+.converter-container:has(input:not(:checked)) #convert-from {
+    background-color: white;
+    color: black;
+}
+
+/* Slider Background */
+/* input:checked + .slider {
+    background-color: #191c24;
+} */
 
 input:checked + .slider:before {
     -webkit-transform: translateX(26px);
@@ -114,7 +139,6 @@ body {
     font-size: 1rem;
 }
 
-
 .footer {
     display: flex;
     flex-direction: column;
@@ -143,6 +167,14 @@ body {
     flex-direction: column;
     align-items: center;
     margin-top: 24px;
+    padding: 0 12sdpx;
+    row-gap: 12px;
+}
+
+.option-body > label {
+    /* width: 100%; */
+    /* text-align: left; */
+    font-size: 12px;
 }
 
 select {
@@ -151,16 +183,12 @@ select {
     color: white;
     padding: 8px 12px;
     border-radius: 20px;
+    transition: all 0.2s ease-in-out;
 }
 
-#convert-from {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
+#convert-from,
 #convert-to {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
+    border-radius: 20px;
 }
 
 select:disabled {
@@ -179,4 +207,45 @@ select:disabled {
 
 body:has(select:hover) #alert {
     opacity: 1 !important;
+}
+
+label[for="tax-input"] {
+    font-size: 12px;
+}
+
+.tax-container {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#tax-input {
+    position: relative;
+    border: none;
+    outline: none;
+    background-color: #0b0c0f;
+    color: white;
+    padding: 0 12px;
+    height: 100%;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    margin: 6px 0;
+}
+
+.input-percent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: #13151b;
+    padding: 0 12px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
