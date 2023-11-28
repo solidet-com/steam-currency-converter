@@ -1,4 +1,77 @@
-const currencySymbolMap={
+const latamCurrencies={
+    "ARS": "AR$",
+    "PAB": "B/.",
+    "GTQ": "Q",
+    "HNL": "L",
+    "NIO": "C$",
+    "BZD": "BZ$",
+    "BOB": "Bs.",
+    "GYD": "G$",
+    "PYG": "₲",
+    "SRD": "Sr$"
+  }
+
+
+  const menaCurrencies={
+    "TRY": "₺",
+    "BHD": ".د.ب",
+    "EGP": "EGP£",
+    "IQD": "ع.د",
+    "JOD": "JD",
+    "LBP": "LBP£",
+    "OMR": "﷼",
+    "YER": "﷼",
+    "DZD": "د.ج",
+    "MAD": "د.م.",
+    "TND": "د.ت",
+    "SDG": "S£",
+    "SSP": "SSP£",
+    "LYD": "ل.د",
+    "ILS": "₪",
+
+
+  }
+
+  const sasiaCurrencies = {
+    "BDT": "৳",
+    "BTN": "Nu.",
+    "INR": "₹",
+    "NPR": "₨",
+    "PKR": "₨",
+    "LKR": "රු"
+  }
+
+  const cisCurrencies = {
+    "AMD": "֏",
+    "AZN": "₼",
+    "BYN": "Br",
+    "GEL": "₾",
+    "KZT": "₸",
+    "KGS": "сом",
+    "MDL": "lei",
+    "TJS": "ЅМ",
+    "TMT": "T",
+    "UZS": "soʻm",
+    "UAH": "₴"
+  }
+  
+
+  const currencySymbolMap = {
+    ...latamCurrencies,
+    ...menaCurrencies,
+    ...sasiaCurrencies,
+    ...cisCurrencies,
+  };
+  
+  
+  const regions = [
+    { name: "LATAM", currencies: latamCurrencies },
+    { name: "MENA", currencies: menaCurrencies },
+    { name: "SASIA", currencies: sasiaCurrencies },
+    { name: "CIS", currencies: cisCurrencies },
+  ];
+
+  const allCurrencies = {
     "USD": "$",
     "AED": "د.إ",
     "AFN": "؋",
@@ -162,4 +235,3 @@ const currencySymbolMap={
     "ZMW": "ZK",
     "ZWL": "Z$"
   }
-  

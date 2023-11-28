@@ -12,21 +12,87 @@ taxData.then((result) => {
   document.getElementById("tax-input").value = result.taxValue;
 });
 
-const currency = chrome.storage.local.get(["currency"]);
+const currencyData = chrome.storage.local.get(["currency"]);
 let select = document.getElementById("convert-to");
+const sortedLatamCurrencies = {
+  ARS: "AR$",
+  PAB: "B/.",
+  GTQ: "Q",
+  HNL: "L",
+  NIO: "C$",
+  BZD: "BZ$",
+  BOB: "Bs.",
+  GYD: "G$",
+  PYG: "₲",
+  SRD: "Sr$",
+};
 
-currency.then((result) => {
-  Object.keys(result.currency.rates)
-    .filter((e) => e != "ARS" && e != "TRY")
-    .forEach((key) => {
-      let newOption = new Option(key, key);
-      select.add(newOption, undefined);
-    });
+const sortedMenaCurrencies = {
+  TRY: "₺",
+  BHD: ".د.ب",
+  EGP: "EGP£",
+  IQD: "ع.د",
+  JOD: "JD",
+  LBP: "LBP£",
+  OMR: "﷼",
+  YER: "﷼",
+  DZD: "د.ج",
+  MAD: "د.م.",
+  TND: "د.ت",
+  SDG: "S£",
+  SSP: "SSP£",
+  LYD: "ل.د",
+  ILS: "₪",
+};
+
+const sortedSasiaCurrencies = {
+  BDT: "৳",
+  BTN: "Nu.",
+  INR: "₹",
+  NPR: "₨",
+  PKR: "₨",
+  LKR: "රු",
+};
+
+const sortedCisCurrencies = {
+  AMD: "֏",
+  AZN: "₼",
+  BYN: "Br",
+  GEL: "₾",
+  KZT: "₸",
+  KGS: "сом",
+  MDL: "lei",
+  TJS: "ЅМ",
+  TMT: "T",
+  UZS: "soʻm",
+  UAH: "₴",
+};
+
+const regions = [
+  { name: "LATAM", currencies: sortedLatamCurrencies },
+  { name: "MENA", currencies: sortedMenaCurrencies },
+  { name: "SASIA", currencies: sortedSasiaCurrencies },
+  { name: "CIS", currencies: sortedCisCurrencies },
+];
+
+currencyData.then((result) => {
+  regions.forEach((region) => {
+    let regionLabel = new Option(region.name, "", true);
+    regionLabel.disabled = true;
+    select.add(regionLabel, undefined);
+
+    Object.keys(result.currency.rates)
+      .filter((e) => region.currencies[e])
+      .forEach((key) => {
+        let newOption = new Option(key, key);
+        select.add(newOption, undefined);
+      });
+  });
+
   chrome.storage.local.get(["targetCurrency"], function (result) {
     select.value = result.targetCurrency;
   });
 });
-
 function changeCurrency(e) {
   chrome.storage.local.set({ targetCurrency: e.target.value });
 }

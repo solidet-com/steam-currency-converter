@@ -1,7 +1,7 @@
-function convertToLocalCurrency(basePrice) {
+function convertToLocalCurrency(basePrice, applyTax = true) {
   if (currencyRate) {
     let targetPrice = basePrice * currencyRate;
-    if (tax > 0) targetPrice += targetPrice * (tax / 100);
+    if (tax > 0 && applyTax) targetPrice += targetPrice * (tax / 100);
     return (
       currencySymbolMap[currencyKey] + numberWithCommas(targetPrice.toFixed(2))
     );

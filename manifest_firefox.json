@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Steam Currency Converter",
   "description": "Steam Currency Converter!",
-  "version": "1.0.0",
+  "version": "0.9.6",
   "permissions": ["storage"],
   "icons": {
     "16": "icons/icon16.png",
@@ -39,10 +39,12 @@
         "./utils/api.js",
         "./utils/globals.js",
         "./utils/observers.js",
-        "./utils/currencies.js",
+        "./utils/locales.js",
         "./utils/helpers.js",
         "./utils/price.js",
-        "./scripts/store.script.js"
+        "./scripts/store.script.js",
+        "./scripts/page.script.js"
+
       ],
       "css": ["./styles/store.style.css"],
       "run_at": "document_idle"

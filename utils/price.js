@@ -1,16 +1,36 @@
 function initItem(item, update = false) {
   if (item.getAttribute("data-ext-converted") && !update) return;
 
-  const originalBasePriceText = item.textContent.trim();
-  const originalBasePrice = parseFloat(
-    /(\d+\.?\d*)/.exec(originalBasePriceText)?.[0]
-  );
-  item.setAttribute("data-ext-converted", false);
-  let originalTargetPrice;
-  if (isNaN(originalBasePrice)) originalTargetPrice = originalBasePriceText;
-  else originalTargetPrice = convertToLocalCurrency(originalBasePrice);
-  item.setAttribute("data-ext-price-mem", originalTargetPrice);
+  let originalBasePriceText = item.textContent.trim();
+  let matches = originalBasePriceText.matchAll(/\$(\d+\.?\d+)(\s?USD)?/g);
+
+  for (const match of matches) {
+    let originalBasePrice = parseFloat(match[1]);
+    let basePriceWithCurrency = match[0];
+
+    item.setAttribute("data-ext-converted", false);
+    let originalTargetPrice;
+    let applyTax = true;
+
+    if (TAX_IGNORED_SELECTORS.some((selector) => item.matches(selector))) {
+      applyTax = false;
+    }
+
+    if (isNaN(originalBasePrice)) {
+      originalTargetPrice = basePriceWithCurrency;
+    } else {
+      originalTargetPrice = convertToLocalCurrency(originalBasePrice, applyTax);
+    }
+
+    originalBasePriceText = originalBasePriceText.replace(
+      basePriceWithCurrency,
+      originalTargetPrice.toString()
+    );
+  }
+
+  item.setAttribute("data-ext-price-mem", originalBasePriceText);
 }
+
 
 function getItems(node, ...selectors) {
   return Array.from(node.querySelectorAll(selectors.join(",")));
