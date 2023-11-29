@@ -1,111 +1,47 @@
 function togglePrices(e) {
-  chrome.storage.local.set({ converterActive: e.target.checked });
+    chrome.storage.local.set({ converterActive: e.target.checked });
 }
 
 const toggleStatus = chrome.storage.local.get(["converterActive"]);
 toggleStatus.then((result) => {
-  document.getElementById("price-toggle").checked = result.converterActive;
+    document.getElementById("price-toggle").checked = result.converterActive;
 });
 
 const taxData = chrome.storage.local.get(["taxValue"]);
 taxData.then((result) => {
-  document.getElementById("tax-input").value = result.taxValue;
+    document.getElementById("tax-input").value = result.taxValue ?? "";
 });
 
 const currencyData = chrome.storage.local.get(["currency"]);
 let select = document.getElementById("convert-to");
-const sortedLatamCurrencies = {
-  ARS: "AR$",
-  PAB: "B/.",
-  GTQ: "Q",
-  HNL: "L",
-  NIO: "C$",
-  BZD: "BZ$",
-  BOB: "Bs.",
-  GYD: "G$",
-  PYG: "₲",
-  SRD: "Sr$",
-};
-
-const sortedMenaCurrencies = {
-  TRY: "₺",
-  BHD: ".د.ب",
-  EGP: "EGP£",
-  IQD: "ع.د",
-  JOD: "JD",
-  LBP: "LBP£",
-  OMR: "﷼",
-  YER: "﷼",
-  DZD: "د.ج",
-  MAD: "د.م.",
-  TND: "د.ت",
-  SDG: "S£",
-  SSP: "SSP£",
-  LYD: "ل.د",
-  ILS: "₪",
-};
-
-const sortedSasiaCurrencies = {
-  BDT: "৳",
-  BTN: "Nu.",
-  INR: "₹",
-  NPR: "₨",
-  PKR: "₨",
-  LKR: "රු",
-};
-
-const sortedCisCurrencies = {
-  AMD: "֏",
-  AZN: "₼",
-  BYN: "Br",
-  GEL: "₾",
-  KZT: "₸",
-  KGS: "сом",
-  MDL: "lei",
-  TJS: "ЅМ",
-  TMT: "T",
-  UZS: "soʻm",
-  UAH: "₴",
-};
-
-const regions = [
-  { name: "LATAM", currencies: sortedLatamCurrencies },
-  { name: "MENA", currencies: sortedMenaCurrencies },
-  { name: "SASIA", currencies: sortedSasiaCurrencies },
-  { name: "CIS", currencies: sortedCisCurrencies },
-];
 
 currencyData.then((result) => {
-  regions.forEach((region) => {
+    regions?.forEach((region) => {
     let regionLabel = new Option(region.name, "", true);
     regionLabel.disabled = true;
     select.add(regionLabel, undefined);
 
     Object.keys(result.currency.rates)
-      .filter((e) => region.currencies[e])
-      .forEach((key) => {
-        let newOption = new Option(key, key);
-        select.add(newOption, undefined);
-      });
-  });
+        .filter((e) => region.currencies[e])
+        .forEach((key) => {
+            let newOption = new Option(key, key);
+            select.add(newOption, undefined);
+        });
+    });
 
-  chrome.storage.local.get(["targetCurrency"], function (result) {
-    select.value = result.targetCurrency;
-  });
+    chrome.storage.local.get(["targetCurrency"], function (result) {
+        select.value = result.targetCurrency;
+    });
 });
 function changeCurrency(e) {
-  chrome.storage.local.set({ targetCurrency: e.target.value });
+    chrome.storage.local.set({ targetCurrency: e.target.value });
 }
 function taxHandler(e) {
-  chrome.storage.local.set({ taxValue: e.target.value });
+    chrome.storage.local.set({ taxValue: e.target.value });
 }
 
-document
-  .getElementById("price-toggle")
-  .addEventListener("change", togglePrices);
+document.getElementById("price-toggle").addEventListener("change", togglePrices);
 
-document
-  .getElementById("convert-to")
-  .addEventListener("change", changeCurrency);
+document.getElementById("convert-to").addEventListener("change", changeCurrency);
 
 document.getElementById("tax-input").addEventListener("change", taxHandler);

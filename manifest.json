@@ -38,8 +38,7 @@
         "./utils/observers.js",
         "./utils/helpers.js",
         "./utils/price.js",
-        "./scripts/store.script.js",
-        "./scripts/page.script.js"
+        "./scripts/store.script.js"
       ],
 
       "css": ["./styles/store.style.css"],

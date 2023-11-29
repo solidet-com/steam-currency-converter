@@ -1,10 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@200;400&display=swap");
 
+*::-webkit-scrollbar {
+    width: 3px;
+    height: 4px;
+    background-color: #000;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: orange;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     display: none;
 }
 
+option:disabled,
 select:disabled {
     opacity: 1;
 }
@@ -179,6 +190,7 @@ body {
 
 select {
     border: none;
+    outline: none;
     background-color: #0b0c0f;
     color: white;
     padding: 8px 12px;
@@ -193,6 +205,25 @@ select {
 
 select:disabled {
     cursor: not-allowed;
+}
+
+.converter-container:has(input:checked) option:disabled {
+    background-color: #124fa4;
+    color: white !important;
+}
+
+.converter-container:has(input:checked) ::-webkit-scrollbar-thumb {
+    background-color: #0b0c0f;
+}
+
+.converter-container:has(input:checked) ::-webkit-scrollbar-track {
+    background-color: white;
+}
+
+option:disabled {
+    background-color: #1a2134;
+    font-weight: 600 !important;
+    color: orange;
 }
 
 .converter-container {
