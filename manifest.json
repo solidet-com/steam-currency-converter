@@ -20,10 +20,7 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "*://store.steampowered.com/*",
-        "*://steamcommunity.com/*"
-      ],
+      "matches": ["*://store.steampowered.com/*", "*://steamcommunity.com/*"],
       "exclude_matches": [
         "*://store.steampowered.com/login/*",
         "*://store.steampowered.com/join/*",
@@ -32,6 +29,7 @@
       ],
 
       "js": [
+        
         "./utils/api.js",
         "./utils/locales.js",
         "./utils/globals.js",
@@ -40,17 +38,14 @@
         "./utils/price.js",
         "./scripts/store.script.js"
       ],
-
       "css": ["./styles/store.style.css"],
-      "run_at": "document_idle"
+      "run_at": "document_end"
     }
   ],
   "web_accessible_resources": [
     {
       "resources": ["assets/*"],
-      "matches": [
-        "*://store.steampowered.com/*",
-        "*://steamcommunity.com/*"      ]
+      "matches": ["*://store.steampowered.com/*", "*://steamcommunity.com/*"]
     }
   ],
   "host_permissions": ["https://store.steampowered.com/*"]

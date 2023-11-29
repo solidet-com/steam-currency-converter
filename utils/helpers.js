@@ -108,6 +108,8 @@ function getSearchScriptCountry() {
                 "%cSteam Currency Converter failed to find country in search script",
                 "color: red; font-weight: bold;"
             );
+            
+            
         }
     }
 

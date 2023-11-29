@@ -22,8 +22,16 @@ async function initStorage() {
 
 async function initCurrency() {
     const countryCode = getSearchScriptCountry();
-    const currency = getCurrencyByCountryCode(countryCode);
 
+    const currency = getCurrencyByCountryCode(countryCode);
+    /*
+    if(countryCode) {
+        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            // Open the popup for the extension
+            chrome.browserAction.openPopup({ tabId: tabs[0].id });
+          });
+    }
+*/
     const savedCurrency = await chrome.storage.local.get("targetCurrency");
     if (!savedCurrency.targetCurrency) chrome.storage.local.set({ targetCurrency: currency });
 }
