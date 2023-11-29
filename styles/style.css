@@ -134,13 +134,29 @@ input:checked + .slider:before {
     font-family: Poppins, sans-serif;
 }
 
+.flex {
+    display: flex;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
 body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 1rem;
     background-color: #20232b;
     color: white;
     font-family: Poppins, sans-serif;
+    width: 100%;
     min-width: 280px;
-    max-width: 300px;
+    /* max-width: 300px; */
     max-height: 400px;
     aspect-ratio: 2.5 / 3;
 }

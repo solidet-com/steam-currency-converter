@@ -3,9 +3,30 @@ const queryUrlMatch = {
     queryTRY: "https://finans.truncgil.com/v4/today.json",
 };
 
+const query = {
+    openCurrencyInitPopup: function () {
+        if (typeof chrome.action.openPopup === "function") {
+            console.log("Open the popup");
+            chrome.action.openPopup({}, function () {
+                console.log("Popup opened");
+            });
+        } else {
+            console.log("chrome.action.openPopup() not supported");
+
+            chrome.tabs.create({ url: "choose-currency.html" }, function (window) {});
+        }
+
+        return true;
+    },
+};
+
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     const queryUrl = queryUrlMatch?.[request?.contentScriptQuery];
-    if (!queryUrl) return;
+    const callback = query[request?.contentScriptQuery];
+
+    if (!queryUrl && !callback) return;
+
+    if (callback) return callback(sendResponse);
 
     fetch(queryUrl)
         .then((response) => {

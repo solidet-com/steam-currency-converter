@@ -108,8 +108,6 @@ function getSearchScriptCountry() {
                 "%cSteam Currency Converter failed to find country in search script",
                 "color: red; font-weight: bold;"
             );
-            
-            
         }
     }
 
@@ -118,6 +116,7 @@ function getSearchScriptCountry() {
 
 function getCurrencyByCountryCode(countryCode) {
     let currency;
+    let isDefaultValue;
     switch (countryCode) {
         case "AZ":
             currency = "AZN";
@@ -245,9 +244,10 @@ function getCurrencyByCountryCode(countryCode) {
             break;
         default:
             currency = "TRY";
+            isDefaultValue = true;
             break;
     }
-    return currency;
+    return [currency, isDefaultValue];
 }
 
 function logger(message) {

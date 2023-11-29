@@ -21,19 +21,18 @@ async function initStorage() {
 }
 
 async function initCurrency() {
-    const countryCode = getSearchScriptCountry();
-
-    const currency = getCurrencyByCountryCode(countryCode);
-    /*
-    if(countryCode) {
-        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-            // Open the popup for the extension
-            chrome.browserAction.openPopup({ tabId: tabs[0].id });
-          });
-    }
-*/
     const savedCurrency = await chrome.storage.local.get("targetCurrency");
-    if (!savedCurrency.targetCurrency) chrome.storage.local.set({ targetCurrency: currency });
+
+    const countryCode = getSearchScriptCountry();
+    const [currency, isDefault] = getCurrencyByCountryCode(countryCode);
+
+    if (!savedCurrency?.targetCurrency && (!countryCode || isDefault)) {
+        chrome.runtime.sendMessage({
+            contentScriptQuery: "openCurrencyInitPopup",
+        });
+    }
+
+    if (!savedCurrency.targetCurrency) await chrome.storage.local.set({ targetCurrency: currency });
 }
 
 async function prepareData() {
@@ -64,4 +63,4 @@ async function prepareData() {
     tax = taxValue;
 }
 
-initCurrency().then(initStorage).then(prepareData).then(initScript);
+initStorage().then(initCurrency).then(prepareData).then(initScript);
