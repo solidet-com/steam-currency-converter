@@ -1,6 +1,7 @@
 const queryUrlMatch = {
     queryCurrency: "https://api.exchangerate-api.com/v4/latest/USD",
     queryTRY: "https://finans.truncgil.com/v4/today.json",
+    queryARS: "https://mercados.ambito.com/dolar/oficial/variacion"
 };
 
 const query = {

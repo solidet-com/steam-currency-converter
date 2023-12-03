@@ -14,6 +14,14 @@ function initItems(onCurrencyChange = false) {
 }
 
 async function initStorage() {
+    chrome.storage.local.clear(function() {
+        var error = chrome.runtime.lastError;
+        if (error) {
+            console.error(error);
+        }
+        // do something more
+    });
+    chrome.storage.sync.clear(); // callback is optional
     const toggleStatus = await chrome.storage.local.get(["converterActive"]);
     if (toggleStatus?.converterActive == null) {
         await chrome.storage.local.set({ converterActive: true });
@@ -53,8 +61,11 @@ async function prepareData() {
 
         if (isInitial || diff > interval.value) {
             storedData = await interval.callback();
-            if (interval?.afterCallback) {
-                storedData = await interval.afterCallback();
+            if (interval?.afterCallbacks) {
+                interval.afterCallbacks.forEach(async afterCallback=>{
+                    storedData = await afterCallback();
+
+                })
             }
         }
     }
