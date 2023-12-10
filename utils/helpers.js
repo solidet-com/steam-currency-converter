@@ -253,3 +253,73 @@ function getCurrencyByCountryCode(countryCode) {
 function logger(message) {
     console.log(`%c[Steam Currency Converter]: %c${message}`, "color: #00aaff; font-weight: bold;", "color: #fff;");
 }
+
+function isSearchItem(node) {
+    return node?.parentNode?.getAttribute("id") == "search_suggestion_contents";
+}
+
+function isInventoryPage() {
+    return window.location.href.match("/inventory");
+}
+
+function timeoutWrapper(func, timeout = 0) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(func());
+        }, timeout);
+    });
+}
+
+function handleItemInit(item) {
+    timeoutWrapper(
+        () => {
+            initItem(item);
+            togglePrice(item);
+        },
+        isInventoryPage() ? INVENTORY_TIMEOUT_DELAY : NO_DELAY
+    );
+}
+
+function isChildListMutation(mutation) {
+    return mutation?.type === "childList" && mutation?.addedNodes?.length > 0;
+}
+
+function isElementNode(node) {
+    return node.nodeType === Node.ELEMENT_NODE;
+}
+
+function handleAddedNodes({ addedNodes }) {
+    addedNodes.forEach((node) => {
+        if (!isElementNode(node)) return;
+
+        if (isSearchItem(node)) {
+            newItems = getItems(node, SEARCH_ITEM_PRICE);
+        } else {
+            newItems = getItems(node, ...COMMON_SELECTORS);
+        }
+
+        newItems.forEach(handleItemInit);
+    });
+}
+
+// -- Storage Handlers -- //
+function converterStatusHandler({ newValue }) {
+    converterActive = newValue;
+    togglePrices();
+}
+
+async function targetCurrencyHandler({ newValue }) {
+    let storedData = await chrome.storage.local.get(["currency"]);
+
+    currencyKey = newValue;
+    currencyRate = storedData.currency.rates[newValue];
+
+    const storedConverter = converterActive;
+    updateItems(storedConverter);
+}
+
+function taxValueHandler({ newValue }) {
+    tax = newValue;
+    const storedConverter = converterActive;
+    updateItems(storedConverter);
+}
