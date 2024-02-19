@@ -33,6 +33,8 @@ async function initCurrency() {
     }
 
     if (!savedCurrency.targetCurrency) await chrome.storage.local.set({ targetCurrency: currency });
+    console.log("STORE CURRENCY", getStoreCurrency())
+
 }
 
 async function prepareData() {
@@ -42,6 +44,7 @@ async function prepareData() {
     let storedData = await chrome.storage.local.get(["currency"]);
     let { taxValue } = await chrome.storage.local.get(["taxValue"]);
     let { targetCurrency } = await chrome.storage.local.get(["targetCurrency"]);
+
 
     for (const interval of INTERVALS) {
         const timeStorageKey = getUpdateDateKey(interval.timeKey);

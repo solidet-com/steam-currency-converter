@@ -34,6 +34,12 @@ const INTERVALS = [
   }
 ];
 
+
+const GENERAL_PRICE_CONTAINER= ".StoreSalePriceWidgetContainer"
+
+const NEW_DISCOUNT_PRICE="._1EKGZBnKFWOr3RqVdnLMRN"
+const NEW_FINAL_PRICE=".Wh0L8EnwsPV_8VAu8TOYr"
+
 const GAME_PAGE_PRICE = ".game_purchase_price";
 const PRICE_WO_REGIONAL_EXT =
   ".game_purchase_price > *:not(.es_regional_container)";
@@ -101,6 +107,9 @@ const WALLET_BALANCE = "#header_wallet_balance";
 const MARKET_BALANCE = "#marketWalletBalanceAmount";
 
 const COMMON_SELECTORS = [
+  //GENERAL_PRICE_CONTAINER,
+  NEW_DISCOUNT_PRICE,
+  NEW_FINAL_PRICE,
   DISCOUNT_PRICE,
   GAME_PAGE_PRICE,
   PRICE_WO_REGIONAL_EXT,
