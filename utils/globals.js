@@ -1,6 +1,9 @@
 // Mutation Observers
 const observers = [];
 
+const INVENTORY_TIMEOUT_DELAY = 500;
+const NO_DELAY = 0;
+
 const TIME_KEY = {
   ALL: "ALL",
   TRY: "TRY",
