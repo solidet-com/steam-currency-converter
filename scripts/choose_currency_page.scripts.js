@@ -7,7 +7,7 @@ currencyData.then((result) => {
     regions?.forEach((region) => {
         let regionLabel = new Option(region.name, "", true);
         regionLabel.disabled = true;
-        
+
         select.add(regionLabel, undefined);
         baseSelect.add(regionLabel.cloneNode(true), undefined);
 
@@ -20,13 +20,16 @@ currencyData.then((result) => {
             });
     });
 
-    chrome.storage.local.get(["targetCurrency","baseStoreCurrency"]).then((result) => {
-        console.log("result is", result);
-        select.value = result.targetCurrency;
-        baseSelect.value = result.baseStoreCurrency;
-    }).catch((error) => {
-        console.error("Error retrieving data from chrome storage:", error);
-    });
+    chrome.storage.local
+        .get(["targetCurrency", "baseStoreCurrency"])
+        .then((result) => {
+            console.log("result is", result);
+            select.value = result.targetCurrency;
+            baseSelect.value = result.baseStoreCurrency;
+        })
+        .catch((error) => {
+            console.error("Error retrieving data from chrome storage:", error);
+        });
 });
 
 function changeBaseCurrency(e) {

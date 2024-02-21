@@ -1,8 +1,9 @@
-let queryUrlMatch = {
-    queryCurrency: `https://open.er-api.com/v6/latest/USD`,
+const queryUrlMatch = {
     queryTRY: "https://finans.truncgil.com/v4/today.json",
-    queryARS: "https://mercados.ambito.com/dolar/oficial/variacion"
+    queryARS: "https://mercados.ambito.com/dolar/oficial/variacion",
 };
+
+const getCommonEndpoint = (baseCurrencykey = "USD") => `https://open.er-api.com/v6/latest/${baseCurrencykey}`;
 
 const query = {
     openCurrencyInitPopup: function () {
@@ -22,14 +23,20 @@ const query = {
 };
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    const queryUrl = queryUrlMatch?.[request?.contentScriptQuery];
-    const callback = query[request?.contentScriptQuery];
+    let endpoint;
+    if (request?.query === "queryCurrency") {
+        console.log("request", request);
+        endpoint = getCommonEndpoint(request?.payload?.baseCurrencykey);
+    } else {
+        endpoint = queryUrlMatch?.[request?.query];
+    }
 
-    if (!queryUrl && !callback) return;
-
+    const callback = query[request?.query];
     if (callback) return callback(sendResponse);
 
-    fetch(queryUrl)
+    if (!endpoint) return;
+
+    fetch(endpoint)
         .then((response) => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
