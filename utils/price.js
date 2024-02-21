@@ -1,13 +1,35 @@
 function initItem(item, update = false) {
+  if(baseCurrency==currencyKey) {
+    currencyRate = 1;
+  }
+
   if (item.getAttribute("data-ext-converted") && !update) return;
   const textNode = getTextNodes(item)[0];
 
   let originalBasePriceText = textNode.textContent.trim();
-  let matches = originalBasePriceText.matchAll(/\$(-?\d+\.?\d+)(\s?USD)?/g);
 
+  const currencySymbol = allCurrencies[baseCurrency];
+
+  const regexPattern = new RegExp(
+    `(?:\\${currencySymbol}\\s*(-?\\d+[,.]?\\d*)\\s*(?:${baseCurrency})?|(\\d+[,.]?\\d*)\\s*(?:${baseCurrency})?\\s*\\${currencySymbol})`,
+    "g"
+);
+
+
+
+  console.log(regexPattern)
+  
+
+  let matches = originalBasePriceText.matchAll(regexPattern);
   for (const match of matches) {
-    let originalBasePrice = parseFloat(match[1]);
+    let originalBasePrice = parseFloat(match[1]||match[2]);
     let basePriceWithCurrency = match[0];
+
+    
+    console.log(match)
+    console.log("basePriceWithCurrency",basePriceWithCurrency)
+    console.log("originalBasePrice",originalBasePrice)
+    
 
     item.setAttribute("data-ext-converted", false);
     let originalTargetPrice;

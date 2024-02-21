@@ -3,7 +3,7 @@ function convertToLocalCurrency(basePrice, applyTax = true) {
     let targetPrice = basePrice * currencyRate;
     if (tax > 0 && applyTax) targetPrice += targetPrice * (tax / 100);
     return (
-      currencySymbolMap[currencyKey] + numberWithCommas(targetPrice.toFixed(2))
+      allCurrencies[currencyKey] + numberWithCommas(targetPrice.toFixed(2))
     );
   } else {
     console.error("Exchange rates not available.");
@@ -36,7 +36,7 @@ async function handleQueryCommonTail(rates, updateKey) {
       rates: rates,
     },
   };
-
+console.log("lastCurrencyPayload",lastCurrencyPayload)
   const lastTimePayload = {
     [getUpdateDateKey(updateKey)]: new Date().getTime(),
   };
@@ -122,13 +122,14 @@ function getSearchScriptCountry() {
 }
 
 function getStoreCurrency() {
+  console.log("store currrency alıyorum")
   // Select the price currency meta tag
   let currencyElement = document.querySelector("#header_wallet_balance") || "";
   console.log("is it null at first?", !currencyElement);
   if (!currencyElement) {
     if (window.location.href.includes("store.steampowered.com/")) {
       console.log("store'a girdim");
-      currencyElement = document.querySelector(".discount_original_price");
+      currencyElement = document.querySelector(".discount_original_price")
       console.log("currencyElement is", currencyElement);
     } else if (window.location.href.includes("steamcommunity.com/market/")) {
       console.log("markete girdim");
@@ -151,28 +152,7 @@ function getStoreCurrency() {
   //temizle
   
   if (currency === "USD") {
-    const script = document.evaluate(
-      '//script[contains(text(), "EnableSearchSuggestions")]',
-      document,
-      null,
-      XPathResult.FIRST_ORDERED_NODE_TYPE,
-      null
-    ).singleNodeValue;
-    let country = null;
-
-    if (script) {
-      const result = script.textContent.match(
-        /EnableSearchSuggestions\(.+?'(?<cc>[A-Z]{2})',/
-      );
-
-      if (result) {
-        country = result.groups.cc;
-
-        console.log(`Matched country as "${country}" from search script`);
-      } else {
-        console.log("Failed to find country in search script");
-      }
-    }
+    const country = getSearchScriptCountry();
 
     // Map countries that use USD but different pricing region to their own unique currency name
     // This is done here to not send user's country to the server and to increase cache hits
@@ -230,130 +210,186 @@ function getCurrencyByCountryCode(countryCode) {
   let currency;
   let isDefaultValue;
   switch (countryCode) {
+    // Euro (EUR) countries
+    case "AT": // Austria
+    case "BE": // Belgium
+    case "CY": // Cyprus
+    case "EE": // Estonia
+    case "FI": // Finland
+    case "FR": // France
+    case "DE": // Germany
+    case "GR": // Greece
+    case "IE": // Ireland
+    case "IT": // Italy
+    case "LV": // Latvia
+    case "LT": // Lithuania
+    case "LU": // Luxembourg
+    case "MT": // Malta
+    case "NL": // Netherlands
+    case "PT": // Portugal
+    case "SK": // Slovakia
+    case "SI": // Slovenia
+    case "ES": // Spain
+    case "MC": // Monaco
+    case "SM": // San Marino
+    case "VA": // Vatican City
+    case "ME": // Montenegro
+    case "AD": // Andorra
+      currency = "EUR";
+      break;
+    // Danish Krone (DKK) countries
+    case "DK": // Denmark
+    case "FO": // Faroe Islands
+    case "GL": // Greenland
+      currency = "DKK";
+      break;
+    // Swedish Krona (SEK) countries
+    case "SE": // Sweden
+      currency = "SEK";
+      break;
+    // USD countries
+    case "US": // United States
+    case "EC": // Ecuador
+    case "SV": // El Salvador
+    case "FM": // Federated States of Micronesia
+    case "MH": // Marshall Islands
+    case "PW": // Palau
+    case "TL": // Timor-Leste
+    case "ZW": // Zimbabwe
+      currency = "USD";
+      break;
+    // Balkan countries
+    case "RS": // Serbia
+      currency = "RSD";
+      break;
+    case "BA": // Bosnia and Herzegovina
+      currency = "BAM";
+      break;
+    case "BG": // Bulgaria
+      currency = "BGN";
+      break;
+    // Other currencies
     case "AZ":
       currency = "AZN";
-      break;
-    // Azerbaijan
+      break; // Azerbaijan
     case "AM":
       currency = "AMD";
-      break;
-    case "BY": // Belarus
+      break; // Armenia
+    case "BY":
       currency = "BYN";
-      break;
-    case "GE": // Georgia
+      break; // Belarus
+    case "GE":
       currency = "GEL";
-      break;
-    case "KG": // Kyrgyzstan
+      break; // Georgia
+    case "KG":
       currency = "KGS";
-      break;
-    case "MD": // Moldova
+      break; // Kyrgyzstan
+    case "MD":
       currency = "MDL";
-      break;
-    case "TJ": // Tajikistan
+      break; // Moldova
+    case "TJ":
       currency = "TJS";
-      break;
-    case "TM": // Turkmenistan
+      break; // Tajikistan
+    case "TM":
       currency = "TMT";
-      break;
-    case "UZ": // Uzbekistan
+      break; // Turkmenistan
+    case "UZ":
       currency = "UZS";
-      break;
+      break; // Uzbekistan
     case "UA":
       currency = "UAH";
-      break;
+      break; // Ukraine
 
     case "BD":
       currency = "BDT";
-      break;
+      break; // Bangladesh
     case "BT":
       currency = "BTN";
-      break;
+      break; // Bhutan
 
     case "NP":
       currency = "NPR";
-      break;
-    // Nepal
+      break; // Nepal
     case "PK":
       currency = "PKR";
-      break;
-    // Pakistan
-    case "LK": // Sri Lanka
+      break; // Pakistan
+    case "LK":
       currency = "LKR";
-      break;
+      break; // Sri Lanka
 
-    case "AR": // Argentina
+    case "AR":
       currency = "ARS";
-      break;
-    case "BO": // Bolivia
+      break; // Argentina
+    case "BO":
       currency = "BOB";
-      break;
-    case "BZ": // Belize
+      break; // Bolivia
+    case "BZ":
       currency = "BZD";
-      break;
-    case "GT": // Guatemala
+      break; // Belize
+    case "GT":
       currency = "GTQ";
-      break;
-    case "GY": // Guyana
+      break; // Guatemala
+    case "GY":
       currency = "GYD";
-      break;
-    case "HN": // Honduras
+      break; // Guyana
+    case "HN":
       currency = "HNL";
-      break;
-    case "NI": // Nicaragua
+      break; // Honduras
+    case "NI":
       currency = "NIO";
-      break;
-    case "PA": // Panama
+      break; // Nicaragua
+    case "PA":
       currency = "PAB";
-      break;
-    case "PY": // Paraguay
+      break; // Panama
+    case "PY":
       currency = "PYG";
-      break;
-    case "SR": // Suriname
+      break; // Paraguay
+    case "SR":
       currency = "SRD";
-      break;
+      break; // Suriname
 
-    case "BH": // Bahrain
+    case "BH":
       currency = "BHD";
-      break;
-    case "DZ": // Algeria
+      break; // Bahrain
+    case "DZ":
       currency = "DZD";
-      break;
-    case "EG": // Egypt
+      break; // Algeria
+    case "EG":
       currency = "EGP";
-      break;
-    case "IQ": // Iraq
+      break; // Egypt
+    case "IQ":
       currency = "IQD";
-      break;
-    case "JO": // Jordan
+      break; // Iraq
+    case "JO":
       currency = "JOD";
-      break;
-    case "LB": // Lebanon
+      break; // Jordan
+    case "LB":
       currency = "LBP";
-      break;
-    case "LY": // Libya
+      break; // Lebanon
+    case "LY":
       currency = "LYD";
-      break;
-    case "MA": // Morocco
+      break; // Libya
+    case "MA":
       currency = "MAD";
-      break;
-    case "OM": // Oman
+      break; // Morocco
+    case "OM":
       currency = "OMR";
-      break;
-    case "PS": // Palestine
+      break; // Oman
+    case "PS":
       currency = "ILS";
-      break;
-    case "SD": // Sudan
+      break; // Palestine
+    case "SD":
       currency = "SDG";
-      break;
-    case "TN": // Tunisia
+      break; // Sudan
+    case "TN":
       currency = "TND";
-      break;
-    case "TR": // Turkey
+      break; // Tunisia
+    case "TR":
       currency = "TRY";
-      break;
-    case "YE": // Yemen
+      break; // Turkey
+    case "YE":
       currency = "YER";
-      break;
+      break; // Yemen
     default:
       currency = "TRY";
       isDefaultValue = true;
@@ -369,7 +405,7 @@ function getCurrencyBySymbol(symbol) {
 }
 function getCurrencySymbolFromString(str) {
   const re =
-    /(?:R\$|S\$|\$|RM|kr|Rp|€|¥|£|฿|pуб|P|₫|₩|TL|₴|Mex\$|CDN\$|A\$|HK\$|NT\$|₹|SR|R |DH|CHF|CLP\$|S\/\.|COL\$|NZ\$|ARS\$|₡|₪|₸|KD|zł|QR|\$U)/;
+    /(?:R\$|S\$|\$|RM|kr|Rp|€|¥|£|฿|pуб|P|₫|₩|TL|₺|TRY|PLN|₴|Mex\$|CDN\$|A\$|HK\$|NT\$|₹|SR|R |DH|CHF|CLP\$|S\/\.|COL\$|NZ\$|ARS\$|₡|₪|₸|KD|zł|QR|\$U)/;
   const match = str.match(re);
   console.log("from getCurrencySymbolFromString", match ? match[0] : "");
   return match ? match[0] : "";

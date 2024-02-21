@@ -10,6 +10,12 @@ const TIME_KEY = {
   ARS: "ARS",
 };
 
+let queryUrlMatch = {
+  queryCurrency: `https://open.er-api.com/v6/latest/USD`,
+  queryTRY: "https://finans.truncgil.com/v4/today.json",
+  queryARS: "https://mercados.ambito.com/dolar/oficial/variacion"
+};
+
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 const HOUR_IN_MS = 1000 * 60 * 60;
 
@@ -17,6 +23,9 @@ let converterActive;
 let currencyRate;
 let currencyKey;
 let tax;
+let baseCurrency;
+
+
 
 const INTERVALS = [
   {
@@ -67,6 +76,7 @@ const MONTHLY_SUB_OPTION_PRICE =
   ".game_area_purchase_game_dropdown_menu_item_text";
 const EA_PLAY_SERVICE_PRICE =
   ".salesectionsubscription_PriceDisplay_3Ri16.PriceDisplay";
+  const EA_PLAY_2=".PriceDisplay"
 const SUB_INFO_PRICE = ".updateSubscriptionOptionPrice";
 const EA_DEFAULT_SUB_PRICE = ".game_area_purchase_game_dropdown_selection span";
 
@@ -111,6 +121,7 @@ const MARKET_BALANCE = "#marketWalletBalanceAmount";
 
 const COMMON_SELECTORS = [
   //GENERAL_PRICE_CONTAINER,
+  EA_PLAY_2,
   NEW_DISCOUNT_PRICE,
   NEW_FINAL_PRICE,
   DISCOUNT_PRICE,

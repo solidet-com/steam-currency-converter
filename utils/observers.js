@@ -47,13 +47,27 @@ async function handleStorageMutation(changes, namespace) {
       converterActive = newValue;
       togglePrices();
     } else if (key.match("targetCurrency")) {
+      console.log("targetCurrency değeri değişti")
       let storedData = await chrome.storage.local.get(["currency"]);
-
       currencyKey = newValue;
-      currencyRate = storedData.currency.rates[newValue];
+      currencyRate = storedData.currency.rates[newValue]||1;
       const storedConverter = converterActive;
       updateItems(storedConverter);
-    } else if (key.match("taxValue")) {
+    } 
+    //TODO: Get new currency Rates and refresh prices on items accordingly
+    else if (key.match("baseStoreCurrency")) {
+      console.log("base store currency obserevr tetiklendi")
+      //request new data with 
+      queryUrlMatch.queryCurrency="https://open.er-api.com/v6/latest/"+newValue;
+      baseCurrency = newValue;
+      handleQueryAll()
+      //currencyRate = storedData.currency.rates[newValue];
+      const storedConverter = converterActive;
+      updateItems(storedConverter);
+    }
+    
+    
+    else if (key.match("taxValue")) {
       tax = newValue;
       const storedConverter = converterActive;
       updateItems(storedConverter);
