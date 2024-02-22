@@ -9,6 +9,21 @@ const latamCurrencies = {
     GYD: "G$",
     PYG: "₲",
     SRD: "Sr$",
+    AWG: "ƒ",
+    BRL: "R$",
+    BSD: "BSD$",
+    CLP: "CLP$",
+    COP: "COL$",
+    CRC: "₡",
+    CUP: "CUP$",
+    DOP: "RD$",
+    FKP: "FKP£",
+    HNL: "L",
+    HTG: "G",
+    KHR: "៛",
+    KYD: "KYD$",
+    MVR: "ރ.",
+
 };
 
 const menaCurrencies = {
@@ -27,7 +42,34 @@ const menaCurrencies = {
     SSP: "SSP£",
     LYD: "ل.د",
     ILS: "₪",
+    AED: "د.إ",
+    AZN: "₼",
+    IRR: "﷼",
+    KWD: "KD",
+
 };
+
+const africaCurrencies = {
+    AOA: "Kz",
+    CVE: "CVE$",
+    DJF: "Fdj",
+    ERN: "Nfk",
+    ETB: "Br",
+    GHS: "₵",
+    GMD: "D",
+    GNF: "FG",
+    JMD: "J$",
+    KES: "Ksh",
+    KMF: "CF",
+    LRD: "LRD$",
+    ZAR: "R",
+    LSL: "L",
+    MGA: "Ar",
+    MZN: "MT",
+    NAD: "N$",
+    NGN: "₦",
+
+}
 
 const sasiaCurrencies = {
     BDT: "৳",
@@ -36,6 +78,9 @@ const sasiaCurrencies = {
     NPR: "₨",
     PKR: "₨",
     LKR: "රු",
+    BND: "B$",
+    KRW: "₩",
+
 };
 
 const cisCurrencies = {
@@ -50,16 +95,81 @@ const cisCurrencies = {
     TMT: "T",
     UZS: "soʻm",
     UAH: "₴",
+    RUB: "₽",
+
 };
+
+const euCurrencies = {
+    PLN: "zł",
+    DKK:"kr",
+    EUR: "€",
+    BGN: "лв",
+    RON: "lei",
+    ALL: "L",
+    ANG: "ƒ",
+    BAM: "KM",
+    CHF: "CHF",
+    CZK: "Kč",
+    FOK: "kr",
+    GBP: "£",
+    GGP: "GGP£",
+    GIP: "GIP£",
+    HRK: "kn",
+    HUF: "Ft",
+    IMP: "IMP£",
+    ISK: "kr",
+    JEP: "JEP£",
+    MKD: "ден",
+    NOK: "kr",
+
+}
+
+const naCurrencies = {
+    USD: "$",
+    CAD: "CA$",
+    BMD: "BMD$",
+    MXN: "Mex$",
+}
+
+const asiaCurrencies = {
+    AFN: "؋",
+    CNY: "¥",
+    HKD: "HK$",
+    IDR: "Rp",
+    JPY: "¥",
+    LAK: "₭",
+    MMK: "Ks",
+    MNT: "₮",
+    MYR: "RM",
+
+}
+
+const oceniaCurrencies = {
+    AUD: "A$", 
+    NZD: "NZ$",
+    FJD: "FJ$",
+    PGK: "K",
+    SBD: "SI$",
+    TOP: "T$",
+    VUV: "Vt",
+    WST: "WS$",
+    XPF: "₣",
+    KID: "KID$",
+
+}
 
 const regions = [
     { name: "LATAM", currencies: latamCurrencies },
     { name: "MENA", currencies: menaCurrencies },
     { name: "SASIA", currencies: sasiaCurrencies },
     { name: "CIS", currencies: cisCurrencies },
-    { name: "EU", currencies: { EUR: "€" } },
-    { name: "NA", currencies: { USD: "$" } },
-];
+    { name: "EU", currencies: euCurrencies },
+    { name: "NA", currencies: naCurrencies },
+    { name: "ASIA", currencies: asiaCurrencies },
+    { name: "OCENIA", currencies: oceniaCurrencies},
+    { name: "AFRICA", currencies: africaCurrencies },
+
+]
 
 const allCurrencies = {
     USD: "$",
@@ -854,3 +964,5 @@ const BASE_CURRENCIES = [
         },
     },
 ];
+
+

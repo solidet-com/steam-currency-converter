@@ -104,6 +104,9 @@ function getSearchScriptCountry() {
     return country;
 }
 
+
+  
+
 function getStoreCurrency() {
     console.log("store currrency alıyorum");
     // Select the price currency meta tag
