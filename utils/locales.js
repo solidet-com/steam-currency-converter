@@ -461,7 +461,7 @@ const BASE_CURRENCIES = [
             places: 0,
             hidePlacesWhenZero: false,
             symbolFormat: "¥ ",
-            thousand: " ",
+            thousand: ",",
             group: 4,
             decimal: ".",
             right: false,

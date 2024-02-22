@@ -27,10 +27,6 @@ function initItem(item, update = false) {
         let originalBasePrice = parseFloat(match[1] || match[2]);
         let basePriceWithCurrency = match[0];
 
-        console.log(match);
-        console.log("basePriceWithCurrency", basePriceWithCurrency);
-        console.log("originalBasePrice", originalBasePrice);
-
         item.setAttribute("data-ext-converted", false);
         let originalTargetPrice;
         let applyTax = true;
