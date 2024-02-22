@@ -9,9 +9,10 @@ function initItem(item, update = false) {
     let originalBasePriceText = textNode.textContent.trim();
 
     const currencyInformation = BASE_CURRENCIES.find((currency) => currency.abbr === baseCurrencykey);
+
+    originalBasePriceText = originalBasePriceText.replace(currencyInformation.format.thousand, "");
     if (currencyInformation?.format?.decimal !== ".") {
         originalBasePriceText = originalBasePriceText.replace(currencyInformation.format.decimal, ".");
-        originalBasePriceText = originalBasePriceText.replace(currencyInformation.format.thousand, "");
     }
 
     const currencySymbol = allCurrencies[baseCurrencykey];
