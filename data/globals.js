@@ -18,6 +18,7 @@ let targetCurrencyRate;
 let targetCurrencyKey;
 let tax;
 let baseCurrencykey;
+let country;
 
 const INTERVALS = [
     {

@@ -5,17 +5,17 @@
     "version": "0.1.0",
     "permissions": ["storage"],
     "icons": {
-        "16": "icons/icon16.png",
-        "32": "icons/icon32.png",
-        "48": "icons/icon48.png",
-        "128": "icons/icon128.png"
+        "16": "assets/icons/icon16.png",
+        "32": "assets/icons/icon32.png",
+        "48": "assets/icons/icon48.png",
+        "128": "assets/icons/icon128.png"
     },
     "action": {
-        "default_popup": "index.html",
-        "default_icon": "icons/icon128.png"
+        "default_popup": "./pages/index.html",
+        "default_icon": "assets/icons/icon128.png"
     },
     "background": {
-        "service_worker": "background.js",
+        "service_worker": "./api/background.js",
         "type": "module"
     },
     "content_scripts": [
@@ -29,12 +29,16 @@
             ],
 
             "js": [
-                "./utils/api.js",
-                "./utils/locales.js",
-                "./utils/globals.js",
+                "./data/currencies.js",
+                "./data/locales.js",
+                "./api/storage.js",
+                "./api/api.js",
+                "./data/globals.js",
                 "./utils/observers.js",
                 "./utils/helpers.js",
                 "./utils/price.js",
+                "./utils/dom.js",
+                "./utils/parsers.js",
                 "./scripts/store.script.js"
             ],
             "css": ["./styles/store.style.css"],
