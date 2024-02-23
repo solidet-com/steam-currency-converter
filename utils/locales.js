@@ -23,7 +23,6 @@ const latamCurrencies = {
     KHR: "៛",
     KYD: "KYD$",
     MVR: "ރ.",
-
 };
 
 const menaCurrencies = {
@@ -46,7 +45,6 @@ const menaCurrencies = {
     AZN: "₼",
     IRR: "﷼",
     KWD: "KD",
-
 };
 
 const africaCurrencies = {
@@ -68,8 +66,7 @@ const africaCurrencies = {
     MZN: "MT",
     NAD: "N$",
     NGN: "₦",
-
-}
+};
 
 const sasiaCurrencies = {
     BDT: "৳",
@@ -80,7 +77,6 @@ const sasiaCurrencies = {
     LKR: "රු",
     BND: "B$",
     KRW: "₩",
-
 };
 
 const cisCurrencies = {
@@ -95,13 +91,12 @@ const cisCurrencies = {
     TMT: "T",
     UZS: "soʻm",
     UAH: "₴",
-    RUB: "₽",
-
+    RUB: "pуб.",
 };
 
 const euCurrencies = {
     PLN: "zł",
-    DKK:"kr",
+    DKK: "kr",
     EUR: "€",
     BGN: "лв",
     RON: "lei",
@@ -121,15 +116,14 @@ const euCurrencies = {
     JEP: "JEP£",
     MKD: "ден",
     NOK: "kr",
-
-}
+};
 
 const naCurrencies = {
     USD: "$",
     CAD: "CA$",
     BMD: "BMD$",
     MXN: "Mex$",
-}
+};
 
 const asiaCurrencies = {
     AFN: "؋",
@@ -141,11 +135,10 @@ const asiaCurrencies = {
     MMK: "Ks",
     MNT: "₮",
     MYR: "RM",
-
-}
+};
 
 const oceniaCurrencies = {
-    AUD: "A$", 
+    AUD: "A$",
     NZD: "NZ$",
     FJD: "FJ$",
     PGK: "K",
@@ -155,8 +148,7 @@ const oceniaCurrencies = {
     WST: "WS$",
     XPF: "₣",
     KID: "KID$",
-
-}
+};
 
 const regions = [
     { name: "LATAM", currencies: latamCurrencies },
@@ -166,10 +158,9 @@ const regions = [
     { name: "EU", currencies: euCurrencies },
     { name: "NA", currencies: naCurrencies },
     { name: "ASIA", currencies: asiaCurrencies },
-    { name: "OCENIA", currencies: oceniaCurrencies},
+    { name: "OCENIA", currencies: oceniaCurrencies },
     { name: "AFRICA", currencies: africaCurrencies },
-
-]
+];
 
 const allCurrencies = {
     USD: "$",
@@ -290,7 +281,7 @@ const allCurrencies = {
     QAR: "ر.ق",
     RON: "lei",
     RSD: "Дин.",
-    RUB: "₽",
+    RUB: "pуб.",
     RWF: "RF",
     SAR: "ر.س",
     SBD: "SI$",
@@ -405,12 +396,12 @@ const BASE_CURRENCIES = [
     {
         id: 5,
         abbr: "RUB",
-        symbol: "pуб",
+        symbol: "pуб.",
         hint: "Russian Rouble",
         multiplier: 100,
         unit: 1,
         format: {
-            places: 2,
+            places: 0,
             hidePlacesWhenZero: true,
             symbolFormat: " pуб.",
             thousand: "",
@@ -598,17 +589,17 @@ const BASE_CURRENCIES = [
     {
         id: 17,
         abbr: "TRY",
-        symbol: "TL",
+        symbol: "₺",
         hint: "Turkish Lira",
         multiplier: 100,
         unit: 1,
         format: {
             places: 2,
             hidePlacesWhenZero: false,
-            symbolFormat: " TL",
+            symbolFormat: "₺",
             thousand: "",
             decimal: ",",
-            right: true,
+            right: false,
         },
     },
     {
@@ -619,10 +610,10 @@ const BASE_CURRENCIES = [
         multiplier: 100,
         unit: 100,
         format: {
-            places: 2,
+            places: 0,
             hidePlacesWhenZero: false,
             symbolFormat: "₴",
-            thousand: "",
+            thousand: " ",
             decimal: ",",
             right: true,
         },
@@ -965,4 +956,22 @@ const BASE_CURRENCIES = [
     },
 ];
 
-
+const CURRENCY_INFORMATIONS = [
+    ...BASE_CURRENCIES,
+    {
+        id: 42,
+        abbr: "DKK",
+        symbol: "kr",
+        hint: "Danish Krone",
+        multiplier: 100,
+        unit: 1,
+        format: {
+            places: 2,
+            hidePlacesWhenZero: false,
+            symbolFormat: " kr",
+            thousand: ".",
+            decimal: ",",
+            right: true,
+        },
+    },
+];

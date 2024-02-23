@@ -12,8 +12,8 @@ function initItems(onCurrencyChange = false) {
 }
 
 async function initStorage() {
-    const toggleStatus = await getStoreValue("converterActive");
-    if (toggleStatus?.converterActive == null) {
+    const converterActive = await getStoreValue("converterActive");
+    if (converterActive == null) {
         await chrome.storage.local.set({ converterActive: true });
     }
 }

@@ -17,10 +17,15 @@ function initItem(item, update = false) {
 
     const currencySymbol = allCurrencies[baseCurrencykey];
 
-    const regexPattern = new RegExp(
-        `(?:\\${currencySymbol}\\s*(-?\\d+[,.]?\\d*)\\s*(?:${baseCurrencykey})?|(\\d+[,.]?\\d*)\\s*(?:${baseCurrencykey})?\\s*\\${currencySymbol})`,
-        "g"
-    );
+    const escapedCurrencySymbol = escapeRegExp(currencySymbol);
+    const escapedBaseCurrencyKey = escapeRegExp(baseCurrencykey);
+
+    const symbolAsPrefixRegex = `(?:${escapedCurrencySymbol}\\s*(-?\\d+[,.]?\\d*)\\s*(?:${escapedBaseCurrencyKey})?`;
+    const symbolAsSuffixRegex = `(\\d+[,.]?\\d*)\\s*(?:${escapedBaseCurrencyKey})?\\s*${escapedCurrencySymbol})`;
+
+    const regexPattern = new RegExp(`${symbolAsPrefixRegex}|${symbolAsSuffixRegex}`, "g");
+
+    console.log(regexPattern)
 
     let matches = originalBasePriceText.matchAll(regexPattern);
     for (const match of matches) {
