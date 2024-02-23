@@ -48,7 +48,7 @@ async function handleStorageMutation(changes, namespace) {
             console.log("targetCurrency değeri değişti");
             let storedData = await chrome.storage.local.get(["currency"]);
             targetCurrencyKey = newValue;
-            targetCurrencyRate = storedData.currency.rates[newValue] || 1;
+            targetCurrencyRate = storedData?.currency.rates[newValue] || 1;
             const storedConverter = converterActive;
             updateItems(storedConverter);
         }

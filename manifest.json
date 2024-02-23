@@ -15,7 +15,7 @@
         "default_icon": "assets/icons/icon128.png"
     },
     "background": {
-        "service_worker": "./api/background.js",
+        "service_worker": "./background/background.js",
         "type": "module"
     },
     "content_scripts": [
@@ -31,15 +31,15 @@
             "js": [
                 "./data/currencies.js",
                 "./data/locales.js",
-                "./api/storage.js",
-                "./api/api.js",
+                "./background/api.js",
                 "./data/globals.js",
                 "./utils/observers.js",
                 "./utils/helpers.js",
                 "./utils/price.js",
                 "./utils/dom.js",
                 "./utils/parsers.js",
-                "./scripts/store.script.js"
+                "./scripts/store.script.js",
+                "./scripts/init.script.js"
             ],
             "css": ["./pages/styles/store.style.css"],
             "run_at": "document_end"

@@ -49,3 +49,19 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         });
     return true;
 });
+
+chrome.runtime.onInstalled.addListener(async function (details) {
+    if (details.reason == "install") {
+        await chrome.storage.local.set({ converterActive: true });
+
+        // TODO: Thank the user for installing the extension
+    } else if (details.reason == "update") {
+        // Check for update
+        var versionPartsOld = details.previousVersion.split(".");
+        var versionPartsNew = chrome.runtime.getManifest().version.split(".");
+        if (versionPartsOld[0] != versionPartsNew[0]) {
+            // Major version change!
+            // TODO: Show changelog for update?
+        }
+    }
+});
