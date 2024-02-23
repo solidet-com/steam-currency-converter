@@ -44,7 +44,7 @@
         "./utils/parsers.js",
         "./scripts/store.script.js"
       ],
-      "css": ["./styles/store.style.css"],
+      "css": ["./pages/styles/store.style.css"],
       "run_at": "document_end"
     }
   ],

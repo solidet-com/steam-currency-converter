@@ -15,7 +15,7 @@ const query = {
         } else {
             console.log("chrome.action.openPopup() not supported");
 
-            chrome.tabs.create({ url: "choose-currency.html" }, function (window) {});
+            chrome.tabs.create({ url: "./pages/choose-currency.html" }, function (window) {});
         }
 
         return true;
