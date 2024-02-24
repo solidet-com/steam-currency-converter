@@ -29,3 +29,4 @@ function getManifest() {
     const manifest = chrome.runtime.getManifest();
     return manifest;
 }
+

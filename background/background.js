@@ -4,6 +4,7 @@ const queryUrlMatch = {
 };
 
 const getCommonEndpoint = (baseCurrencykey = "USD") => `https://open.er-api.com/v6/latest/${baseCurrencykey}`;
+const getBaseCurrencyEndpoint = (appId="105600", country="") => `https://store.steampowered.com/api/appdetails/?appids=${appId}&cc=${country}&filters=price_overview`
 
 const query = {
     openCurrencyInitPopup: function () {
@@ -27,7 +28,14 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request?.query === "queryCurrency") {
         console.log("request", request);
         endpoint = getCommonEndpoint(request?.payload?.baseCurrencykey);
-    } else {
+    } else if (request?.query === "queryBaseCurrency"){
+      console.log("received request payload is", request)
+      endpoint = getBaseCurrencyEndpoint(request?.payload?.appId, request?.payload?.country)
+      console.log("sending request to")
+      console.log(endpoint)
+    }
+    
+    else {
         endpoint = queryUrlMatch?.[request?.query];
     }
 

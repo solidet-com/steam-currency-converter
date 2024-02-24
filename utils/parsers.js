@@ -18,7 +18,7 @@ function getCurrencyBySymbol(symbol) {
   return BASE_CURRENCIES.find((currency) => currency.symbol === symbol).abbr;
 }
 
-function getSearchScriptCountry() {
+function getUserCountry() {
   const script = document.evaluate(
     '//script[contains(text(), "EnableSearchSuggestions")]',
     document,
@@ -26,7 +26,6 @@ function getSearchScriptCountry() {
     XPathResult.FIRST_ORDERED_NODE_TYPE,
     null
   ).singleNodeValue;
-
   if (script) {
     const result = script.textContent.match(
       /EnableSearchSuggestions\(.+?'(?<cc>[A-Z]{2})',/
@@ -36,45 +35,50 @@ function getSearchScriptCountry() {
       country = result.groups.cc;
 
       logger(`Matched country as "${country}" from search script`);
-
-      // console.log(
-      //     `%cSteam Currency Converter matched country as "%c${country}%c" from search script`,
-      //     "color: green; font-weight: bold;",
-      //     "color: gray-smoke; font-weight: bold;",
-      //     "color: green; font-weight: bold;"
-      // );
-    } else {
-      console.log(
-        "%cSteam Currency Converter failed to find country in search script",
-        "color: red; font-weight: bold;"
-      );
     }
+  }
+  if (!country) {
+    logger("Failed to detect store country. Trying community scripts");
+    country = getCommunityCountry();
   }
 
   return country;
 }
 
-function getStoreCurrency() {
+function getCommunityCountry() {
+  const config = document.querySelector("#webui_config, #application_config");
+  if (config) {
+    country = JSON.parse(config.dataset.config).COUNTRY;
+  } else if (window.location.hostname === "steamcommunity.com") {
+    // This variable is present on market-related pages
+    country = getVariableFromDom("g_strCountryCode", "string");
+  } else {
+    country = getVariableFromDom(
+      /GDynamicStore\.Init\(.+?,\s*'([A-Z]{2})'/,
+      "string"
+    );
+  }
+
+  if (!country) {
+    console.warn("Script with user store country not found");
+  }
+  logger(`Matched country as "${country}" from community script`);
+  return country;
+}
+
+async function getStoreCurrency() {
+  let currency;
   console.log("store currrency alıyorum");
   // Select the price currency meta tag
   let currencyElement = document.querySelector("#header_wallet_balance") || "";
   console.log("is it null at first?", !currencyElement);
   if (!currencyElement) {
-    if (window.location.href.includes("store.steampowered.com/")) {
-      console.log("store'a girdim");
-      currencyElement = document.querySelector(".discount_original_price");
-      console.log("currencyElement is", currencyElement);
-    } else if (window.location.href.includes("steamcommunity.com/market/")) {
-      console.log("markete girdim");
-      currencyElement = document.querySelector(".normal_price");
-    } else {
-      console.log("Not in Steam store.");
-    }
+    currency = await handleQueryBaseCurrency();
+  } else {
+    currency =
+      currencyElement?.textContent &&
+      parseCurrencyFromText(currencyElement?.textContent);
   }
-  let currency =
-    currencyElement?.textContent &&
-    parseCurrencyFromText(currencyElement?.textContent);
-
   console.log("before forcing currency is", currency);
   if (!currency) {
     currency = "USD";
@@ -85,9 +89,56 @@ function getStoreCurrency() {
   return currency;
 }
 
+function getVariableFromText(text, name, type) {
+  let regex;
+  if (typeof name === "string") {
+    if (type === "object") {
+      regex = new RegExp(`${name}\\s*=\\s*(\\{.+?\\});`);
+    } else if (type === "array") {
+      regex = new RegExp(`${name}\\s*=\\s*(\\[.+?\\]);`);
+    } else if (type === "int") {
+      regex = new RegExp(`${name}\\s*=\\s*(.+?);`);
+    } else if (type === "string") {
+      regex = new RegExp(`${name}\\s*=\\s*['"](.+?)['"];`);
+    }
+  } else if (name instanceof RegExp) {
+    regex = name;
+  }
+
+  const m = text.match(regex);
+  if (m) {
+    if (type === "int") {
+      return parseInt(m[1]);
+    } else if (type === "string") {
+      return m[1];
+    }
+
+    try {
+      return JSON.parse(m[1]);
+    } catch {
+      return null;
+    }
+  }
+
+  return null;
+}
+
+function getVariableFromDom(name, type, dom = document) {
+  for (const node of dom.querySelectorAll("script")) {
+    const value = getVariableFromText(node.textContent, name, type);
+
+    if (value !== null) {
+      return value;
+    }
+  }
+
+  return null;
+}
+
 function getCurrencyByCountryCode(countryCode) {
   let currency;
   let isDefaultValue;
+
   switch (countryCode) {
     // Euro (EUR) countries
     case "AT": // Austria

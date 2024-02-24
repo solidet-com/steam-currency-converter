@@ -14,14 +14,13 @@ function initItems(onCurrencyChange = false) {
 async function initCurrency() {
     const targetCurrency = await getStoreValue("targetCurrency");
     baseCurrencykey = await getStoreValue("baseStoreCurrency");
-
+    country = getUserCountry();
     if (baseCurrencykey == null) {
-        baseCurrencykey = getStoreCurrency();
+        baseCurrencykey = await getStoreCurrency();
 
         await chrome.storage.local.set({ baseStoreCurrency: baseCurrencykey });
     }
 
-    country = getSearchScriptCountry();
     const [currency, isDefault] = getCurrencyByCountryCode(country);
 
     if ((!targetCurrency || !baseCurrencykey) && (!country || isDefault)) {
