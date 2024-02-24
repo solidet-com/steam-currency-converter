@@ -4,7 +4,8 @@ const queryUrlMatch = {
 };
 
 const getCommonEndpoint = (baseCurrencykey = "USD") => `https://open.er-api.com/v6/latest/${baseCurrencykey}`;
-const getBaseCurrencyEndpoint = (appId="105600", country="") => `https://store.steampowered.com/api/appdetails/?appids=${appId}&cc=${country}&filters=price_overview`
+const getBaseCurrencyEndpoint = (appId = "105600", country = "") =>
+    `https://store.steampowered.com/api/appdetails/?appids=${appId}&cc=${country}&filters=price_overview`;
 
 const query = {
     openCurrencyInitPopup: function () {
@@ -28,14 +29,12 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if (request?.query === "queryCurrency") {
         console.log("request", request);
         endpoint = getCommonEndpoint(request?.payload?.baseCurrencykey);
-    } else if (request?.query === "queryBaseCurrency"){
-      console.log("received request payload is", request)
-      endpoint = getBaseCurrencyEndpoint(request?.payload?.appId, request?.payload?.country)
-      console.log("sending request to")
-      console.log(endpoint)
-    }
-    
-    else {
+    } else if (request?.query === "queryBaseCurrency") {
+        console.log("received request payload is", request);
+        endpoint = getBaseCurrencyEndpoint(request?.payload?.appId, request?.payload?.country);
+        console.log("sending request to");
+        console.log(endpoint);
+    } else {
         endpoint = queryUrlMatch?.[request?.query];
     }
 
@@ -60,16 +59,14 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 chrome.runtime.onInstalled.addListener(async function (details) {
     if (details.reason == "install") {
-        await chrome.storage.local.set({ converterActive: true });
+        await chrome.storage.local.set({ converterActive: true, showChangelog: true });
 
         // TODO: Thank the user for installing the extension
     } else if (details.reason == "update") {
-        // Check for update
         var versionPartsOld = details.previousVersion.split(".");
         var versionPartsNew = chrome.runtime.getManifest().version.split(".");
         if (versionPartsOld[0] != versionPartsNew[0]) {
-            // Major version change!
-            // TODO: Show changelog for update?
+            await chrome.storage.local.set({ showChangelog: true });
         }
     }
 });

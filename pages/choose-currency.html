@@ -3,6 +3,7 @@
     <head>
         <title>Steam Currency Converter</title>
         <link rel="stylesheet" href="./styles/style.css" />
+        <script src="../data/currencies.js"></script>
     </head>
     <style>
         body {
@@ -74,7 +75,7 @@
                 </svg>
                 <p style="font-size: 16px; margin-left: 12px">Looks like auto-detection couldn't find your currency</p>
             </div>
-            <label style="margin-top: 24px;font-size: 16px">Please choose target currency</label>
+            <label style="margin-top: 24px; font-size: 16px">Please choose target currency</label>
             <div class="converter-container">
                 <select id="convert-to"></select>
             </div>
@@ -82,7 +83,10 @@
             <button id="save-currency" class="save-button" style="margin-top: 1rem">Save</button>
         </div>
 
-        <div id="alert" style="display: flex; font-size:16px; justify-content: center; margin-top: 1rem; color: #858592">
+        <div
+            id="alert"
+            style="display: flex; font-size: 16px; justify-content: center; margin-top: 1rem; color: #858592"
+        >
             <p>You can access all features from extension menu!</p>
         </div>
 
@@ -98,8 +102,6 @@
                 <p class="solidet-text">solidet</p>
             </a>
         </footer>
-
-        <script src="../utils/locales.js"></script>
         <script defer src="./scripts/choose_currency_page.scripts.js"></script>
     </body>
 </html>

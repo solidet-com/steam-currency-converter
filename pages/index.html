@@ -3,6 +3,7 @@
     <head>
         <title>Steam Currency Converter</title>
         <link rel="stylesheet" href="./styles/style.css" />
+        <script src="../data/currencies.js"></script>
     </head>
 
     <body>
@@ -19,8 +20,7 @@
         <div class="option-body">
             <label>Choose Currencies</label>
             <div class="converter-container">
-                <select id="convert-from">
-                </select>
+                <select id="convert-from"></select>
 
                 <label class="switch">
                     <input id="price-toggle" type="checkbox" checked />
@@ -39,8 +39,12 @@
             </div>
         </div>
 
-        <div id="alert" style="display: flex; justify-content: center; margin-top: 1rem; opacity: 0; color: #858592">
-            <p>Changing base currency is WIP</p>
+        <button class="github-button">
+            <img src="../assets/github-mark.svg" alt="Github Mark White" width="24px" style="margin-right: 0.5rem" />
+        </button>
+
+        <div id="alert" style="display: flex; justify-content: center; margin-top: 1rem; opacity: 0; color: #ffcc00">
+            <p>Base Currency is Steam Store Currency</p>
         </div>
 
         <footer class="footer">
@@ -55,8 +59,6 @@
                 <p class="solidet-text">solidet</p>
             </a>
         </footer>
-
-        <script src="../data/currencies.js"></script>
         <script defer src="./scripts/page.script.js"></script>
     </body>
 </html>

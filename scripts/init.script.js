@@ -1,6 +1,14 @@
-function initScript() {
+async function initScript() {
     initItems();
     startObservers();
+
+    const showChangelog = await getStoreValue("showChangelog");
+    if (showChangelog) {
+        showChangelogModal(
+            "Welcome to Steam Currency Converter",
+            "We've made some changes to the extension. Check out the changelog to see what's new."
+        );
+    }
 }
 
 function initItems(onCurrencyChange = false) {
@@ -24,70 +32,7 @@ async function initCurrency() {
     const [currency, isDefault] = getCurrencyByCountryCode(country);
 
     if ((!targetCurrency || !baseCurrencykey) && (!country || isDefault)) {
-        const popupHTML = `
-        <div id="steam-cc-modal-container">
-            <div style="
-                background-color: #0000008c;
-                position: fixed;
-                z-index: 999;
-                width: 100vw;
-                height: 100vh;
-            "></div>
-            <div id="steam-cc-version-modal" class="newmodal" style="width: 100%; position: fixed; z-index: 1000; max-width: 1527px; left: 378px; top: 295px;">
-                <div class="modal_top_bar"></div>
-                <div class="newmodal_header_border">
-                    <div class="newmodal_header">
-                        <div class="newmodal_close" data-panel="{" focusable":true,"clickOnActivate":true}"></div>
-                        <div class="title_text">Augmented Steam has been updated to 3.0.0</div>
-                    </div>
-                </div>
-                <div class="newmodal_content_border">
-                    <div class="newmodal_content" style="max-height: 771px;">
-                        <div>
-                            <div class="es_changelog">
-                                <img src="chrome-extension://dnhpnfgdlenaccegplpojghhmaamnnfp/img/logo/as128.png">
-                                <div>
-                                    <p>Maintenance release to make sure Augmented Steam plays well with the updated ITAD and backing server.</p>
-
-                                    <p><a href="https://github.com/IsThereAnyDeal/AugmentedSteam/compare/v2.6.0...v3.0.0" target="_blank">View all changes on GitHub</a></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="newmodal_buttons">
-                            <div class="btn_grey_steamui btn_medium"><span>OK</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-            `;
-
-        function handleModalProps(modal) {
-            const modalWidth = Math.min(window.innerWidth * 0.8, 1200);
-            const horizontalMargin = (window.innerWidth - modalWidth) / 2;
-
-            modal.style.maxWidth = `${modalWidth}px`;
-            modal.style.left = `${horizontalMargin}px`;
-        }
-
-        document.body.insertAdjacentHTML("afterbegin", popupHTML);
-        const modalContainer = document.getElementById("steam-cc-modal-container");
-        const modal = document.getElementById("steam-cc-version-modal");
-        const closeButton = modal.querySelector(".newmodal_close");
-        const okButton = modal.querySelector(".btn_grey_steamui");
-
-        handleModalProps(modal);
-        window.addEventListener("resize", (e) => {
-            handleModalProps(modal);
-        });
-
-        closeButton.addEventListener("click", (e) => {
-            modalContainer.remove();
-        });
-
-        okButton.addEventListener("click", (e) => {
-            modalContainer.remove();
-        });
+        dispatchBackgroundEvent("openCurrencyInitPopup");
     }
 
     if (!targetCurrency) await chrome.storage.local.set({ targetCurrency: currency });

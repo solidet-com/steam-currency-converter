@@ -62,3 +62,7 @@ document.getElementById("convert-from").addEventListener("change", changeBaseCur
 document.getElementById("convert-to").addEventListener("change", changeCurrency);
 
 document.getElementById("tax-input").addEventListener("change", taxHandler);
+
+document.querySelector(".github-button").addEventListener("click", () => {
+    window.open("https://github.com/solidet-com/steam-currency-converter", "_blank");
+});

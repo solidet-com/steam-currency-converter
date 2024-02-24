@@ -39,7 +39,8 @@
                 "./utils/dom.js",
                 "./utils/parsers.js",
                 "./scripts/store.script.js",
-                "./scripts/init.script.js"
+                "./scripts/init.script.js",
+                "./scripts/changelog.script.js"
             ],
             "css": ["./pages/styles/store.style.css"],
             "run_at": "document_end"
