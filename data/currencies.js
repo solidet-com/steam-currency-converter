@@ -18,11 +18,13 @@ const latamCurrencies = {
     CUP: "CUP$",
     DOP: "RD$",
     FKP: "FKP£",
-    HNL: "L",
     HTG: "G",
     KHR: "៛",
     KYD: "KYD$",
     MVR: "ރ.",
+    UYU: "$U",
+    PEN: "S/",
+
 };
 
 const menaCurrencies = {
@@ -45,6 +47,9 @@ const menaCurrencies = {
     AZN: "₼",
     IRR: "﷼",
     KWD: "KD",
+    QAR: "ر.ق",
+    SAR: "ر.س",
+
 };
 
 const africaCurrencies = {
@@ -116,6 +121,9 @@ const euCurrencies = {
     JEP: "JEP£",
     MKD: "ден",
     NOK: "kr",
+    SEK: "kr",
+    RSD: "Дин.",
+
 };
 
 const naCurrencies = {
@@ -135,7 +143,14 @@ const asiaCurrencies = {
     MMK: "Ks",
     MNT: "₮",
     MYR: "RM",
-    RMB: "刀币"
+    RMB: "刀币",
+    TWD: "NT$",
+    VND: "₫",
+    THB: "฿",
+    SGD: "S$",
+    PHP: "₱",
+    MYR: "RM",
+
 
 };
 

@@ -89,6 +89,16 @@ async function getStoreCurrency() {
   return currency;
 }
 
+function isUserLoggedIn() {
+  return document.querySelector("#account_dropdown") ? true : false;
+
+}
+
+function setLoginStatus(loginStatus) {
+  console.log("setting", loginStatus)
+  chrome.storage.local.set({ loginStatus: loginStatus });
+}
+
 function getVariableFromText(text, name, type) {
   let regex;
   if (typeof name === "string") {
@@ -237,7 +247,7 @@ function getCurrencyByCountryCode(countryCode) {
       break;
     case "NOR":
       currency = "NOK";
-      break;  //norway
+      break; //norway
     case "AZ":
       currency = "AZN";
       break; // Azerbaijan
@@ -277,7 +287,7 @@ function getCurrencyByCountryCode(countryCode) {
     case "BY":
       currency = "BYN";
       break; // Belarus
-      
+
     case "UA":
       currency = "UAH";
       break; // Ukraine
@@ -295,7 +305,7 @@ function getCurrencyByCountryCode(countryCode) {
       break; // Indonesia
     case "IN":
       currency = "INR";
-      break; // India  
+      break; // India
     case "MY":
       currency = "MYR";
       break; // Malaysia

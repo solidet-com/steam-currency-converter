@@ -23,19 +23,15 @@ async function initCurrency() {
     const targetCurrency = await getStoreValue("targetCurrency");
     baseCurrencykey = await getStoreValue("baseStoreCurrency");
     country = getUserCountry();
-    if (baseCurrencykey == null) {
-        baseCurrencykey = await getStoreCurrency();
 
-        await chrome.storage.local.set({ baseStoreCurrency: baseCurrencykey });
-    }
-
+    await handleBaseCurrencyKey()
     const [currency, isDefault] = getCurrencyByCountryCode(country);
 
     if ((!targetCurrency || !baseCurrencykey) && (!country || isDefault)) {
         dispatchBackgroundEvent("openCurrencyInitPopup");
     }
 
-    if (!targetCurrency) await chrome.storage.local.set({ targetCurrency: currency });
+    await chrome.storage.local.set({ targetCurrency: currency });
 }
 
 async function prepareData() {
