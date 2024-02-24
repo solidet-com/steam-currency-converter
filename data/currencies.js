@@ -135,6 +135,8 @@ const asiaCurrencies = {
     MMK: "Ks",
     MNT: "₮",
     MYR: "RM",
+    RMB: "刀币"
+
 };
 
 const oceniaCurrencies = {
@@ -325,5 +327,5 @@ const allCurrencies = {
     ZAR: "R",
     ZMW: "ZK",
     ZWL: "Z$",
-    USD: "$",
+    USD: "$"
 };

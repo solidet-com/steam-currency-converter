@@ -625,10 +625,6 @@ const BASE_CURRENCIES = [
             right: false,
         },
     },
-];
-
-const CURRENCY_INFORMATIONS = [
-    ...BASE_CURRENCIES,
     {
         id: 42,
         abbr: "DKK",
@@ -645,4 +641,105 @@ const CURRENCY_INFORMATIONS = [
             right: true,
         },
     },
+    {
+        id: 43,
+        abbr: "SEK",
+        symbol: "kr",
+        hint: "Swedish Krone",
+        multiplier: 100,
+        unit: 1,
+        format: {
+            places: 2,
+            hidePlacesWhenZero: false,
+            symbolFormat: " kr",
+            thousand: ",",
+            decimal: ".",
+            right: true,
+        },
+    },
+    {
+        id: 44,
+        abbr: "HUF",
+        symbol: "Ft",
+        hint: "Hungarian Forint",
+        multiplier: 100,
+        unit: 1,
+        format: {
+            places: 2,
+            hidePlacesWhenZero: false,
+            symbolFormat: " Ft",
+            thousand: ",",
+            decimal: ".",
+            right: true,
+        },
+    },
+    {
+        id: 45,
+        abbr: "HRK",
+        symbol: "kn",
+        hint: "Croatian Kuna",
+        multiplier: 100,
+        unit: 1,
+        format: {
+            places: 2,
+            hidePlacesWhenZero: false,
+            symbolFormat: " kn",
+            thousand: ",",
+            decimal: ".",
+            right: true,
+        },
+    },
+    {
+        id: 46,
+        abbr: "CZK",
+        symbol: "Kč",
+        hint: "Czech Kuna",
+        multiplier: 100,
+        unit: 1,
+        format: {
+            places: 2,
+            hidePlacesWhenZero: false,
+            symbolFormat: " Kč",
+            thousand: ",",
+            decimal: ".",
+            right: true,
+        },
+    },
+    {
+        id: 47,
+        abbr: "BYN",
+        symbol: "Br",
+        hint: "Belarusian ruble",
+        multiplier: 100,
+        unit: 1,
+        format: {
+            places: 2,
+            hidePlacesWhenZero: false,
+            symbolFormat: "Br",
+            thousand: ",",
+            decimal: ".",
+            right: true,
+        },
+    },
+    {
+        id: 48,
+        abbr: "BGN",
+        symbol: "лв",
+        hint: "Bulgarian Lev",
+        multiplier: 100,
+        unit: 1,
+        format: {
+            places: 2,
+            hidePlacesWhenZero: false,
+            symbolFormat: " лв",
+            thousand: ",",
+            decimal: ".",
+            right: true,
+        },
+    },
+];
+
+const CURRENCY_INFORMATIONS = [
+    ...BASE_CURRENCIES,
+
 ];

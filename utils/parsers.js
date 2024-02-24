@@ -167,6 +167,15 @@ function getCurrencyByCountryCode(countryCode) {
     case "AD": // Andorra
       currency = "EUR";
       break;
+    case "HU":
+      currency = "HUF";
+      break; // Hungary
+    case "HR":
+      currency = "HRK";
+      break; // Croatia
+    case "CZ":
+      currency = "CZK";
+      break; // Czech Republic
     // Danish Krone (DKK) countries
     case "DK": // Denmark
     case "FO": // Faroe Islands
@@ -196,6 +205,9 @@ function getCurrencyByCountryCode(countryCode) {
     case "RS": // Serbia
       currency = "RSD";
       break;
+    case "CH":
+      currency = "CHF";
+      break; // Switzerland
     case "JP": // Japan
       currency = "JPY";
       break;
@@ -220,7 +232,12 @@ function getCurrencyByCountryCode(countryCode) {
     case "AU":
       currency = "AUD";
       break;
-
+    case "NZ":
+      currency = "NZD";
+      break;
+    case "NOR":
+      currency = "NOK";
+      break;  //norway
     case "AZ":
       currency = "AZN";
       break; // Azerbaijan
@@ -236,6 +253,15 @@ function getCurrencyByCountryCode(countryCode) {
     case "KG":
       currency = "KGS";
       break; // Kyrgyzstan
+    case "KZ":
+      currency = "KZT";
+      break; // Kazakhstan
+    case "KW":
+      currency = "KWD";
+      break; // Kuwait
+    case "QA":
+      currency = "QAR";
+      break; // Qatar
     case "MD":
       currency = "MDL";
       break; // Moldova
@@ -248,17 +274,34 @@ function getCurrencyByCountryCode(countryCode) {
     case "UZ":
       currency = "UZS";
       break; // Uzbekistan
+    case "BY":
+      currency = "BYN";
+      break; // Belarus
+      
     case "UA":
       currency = "UAH";
       break; // Ukraine
-
+    case "UK":
+      currency = "GBP";
+      break; // UNITED KINGDOM
     case "BD":
       currency = "BDT";
       break; // Bangladesh
     case "BT":
       currency = "BTN";
       break; // Bhutan
-
+    case "ID":
+      currency = "IDR";
+      break; // Indonesia
+    case "IN":
+      currency = "INR";
+      break; // India  
+    case "MY":
+      currency = "MYR";
+      break; // Malaysia
+    case "PH":
+      currency = "PHP";
+      break; // Philippiness
     case "NP":
       currency = "NPR";
       break; // Nepal
@@ -268,6 +311,27 @@ function getCurrencyByCountryCode(countryCode) {
     case "LK":
       currency = "LKR";
       break; // Sri Lanka
+    case "CL":
+      currency = "CLP";
+      break; // Chile
+    case "SG":
+      currency = "SGD";
+      break; // Singapore
+    case "TH":
+      currency = "THB";
+      break; // Thailand
+    case "TW":
+      currency = "TWD";
+      break; // Taiwan
+    case "VN":
+      currency = "VND";
+      break; // Vietnam
+    case "KR":
+      currency = "KRW";
+      break; // South Korea
+    case "HK":
+      currency = "HKD";
+      break; // Hong Kong
 
     case "AR":
       currency = "ARS";
@@ -299,10 +363,27 @@ function getCurrencyByCountryCode(countryCode) {
     case "SR":
       currency = "SRD";
       break; // Suriname
-
+    case "PE":
+      currency = "PEN";
+      break; // Peru
+    case "UY":
+      currency = "UYU";
+      break; // Uruguay
+    case "CO":
+      currency = "COP";
+      break; // Colombia
+    case "CR":
+      currency = "CRC";
+      break; // Costa Rica
+    case "ZA":
+      currency = "ZAR";
+      break; // South Africa
     case "BH":
       currency = "BHD";
       break; // Bahrain
+    case "BR":
+      currency = "BRL";
+      break; // Brazil
     case "DZ":
       currency = "DZD";
       break; // Algeria
@@ -336,9 +417,6 @@ function getCurrencyByCountryCode(countryCode) {
     case "RU": // Russia
       currency = "RUB";
       break;
-    case "UA": // Ukraine
-      currency = "UAH";
-      break;
     case "SD":
       currency = "SDG";
       break; // Sudan
@@ -351,6 +429,12 @@ function getCurrencyByCountryCode(countryCode) {
     case "YE":
       currency = "YER";
       break; // Yemen
+    case "SA":
+      currency = "SAR";
+      break; // Saudi Arabia
+    case "AE":
+      currency = "AED";
+      break; // United Arab Emirates
     default:
       currency = "TRY";
       isDefaultValue = true;
