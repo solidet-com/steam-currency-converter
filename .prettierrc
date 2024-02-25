@@ -1,5 +1,6 @@
 {
   "bracketSameLine": true,
   "printWidth": 80,
-  "endOfLine": "crlf"
+  "endOfLine": "crlf",
+  "trailingComma": "es5"
 }
