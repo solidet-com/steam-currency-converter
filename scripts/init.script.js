@@ -31,7 +31,7 @@ async function initCurrency() {
         dispatchBackgroundEvent("openCurrencyInitPopup");
     }
 
-    await chrome.storage.local.set({ targetCurrency: currency });
+   if(!targetCurrency) await chrome.storage.local.set({ targetCurrency: currency });
 }
 
 async function prepareData() {

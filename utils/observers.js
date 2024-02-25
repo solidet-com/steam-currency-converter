@@ -58,10 +58,10 @@ async function handleStorageMutation(changes, namespace) {
             //request new data with
 
             baseCurrencykey = newValue;
-            handleQueryAll({
+            const rates= await handleQueryAll({
                 baseCurrencykey,
             });
-            //targetCurrencyRate = storedData.currency.rates[newValue];
+            targetCurrencyRate=rates[targetCurrencyKey]||1
             const storedConverter = converterActive;
             updateItems(storedConverter);
         } else if (key.match("taxValue")) {
@@ -71,3 +71,9 @@ async function handleStorageMutation(changes, namespace) {
         }
     }
 }
+
+document.addEventListener('keydown', function(event) {
+    if (event.shiftKey && event.altKey && event.key === 'Q') {
+     chrome.storage.local.set({ converterActive: !converterActive });
+    }
+  });

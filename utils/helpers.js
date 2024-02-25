@@ -44,7 +44,9 @@ async function handleBaseCurrencyKey() {
       logger("Login Status has been changed, checking Steam Store Currency!");
     setLoginStatus(loginStatus);
     baseCurrencykey = await getStoreCurrency();
-
+    const rates = await handleQueryAll({ baseCurrencykey });
+    targetCurrencyRate = rates[targetCurrencyKey] || 1;
+    console.log("new target rate", targetCurrencyRate)
     await chrome.storage.local.set({ baseStoreCurrency: baseCurrencykey });
   }
 }
