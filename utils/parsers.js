@@ -42,6 +42,7 @@ function getUserCountry() {
     country = getCommunityCountry();
   }
 
+
   return country;
 }
 
@@ -91,11 +92,10 @@ async function getStoreCurrency() {
 
 function isUserLoggedIn() {
   return document.querySelector("#account_dropdown") ? true : false;
-
 }
 
 function setLoginStatus(loginStatus) {
-  console.log("setting", loginStatus)
+  console.log("setting", loginStatus);
   chrome.storage.local.set({ loginStatus: loginStatus });
 }
 
@@ -146,7 +146,7 @@ function getVariableFromDom(name, type, dom = document) {
 }
 
 function getCurrencyByCountryCode(countryCode) {
-  let currency;
+  let currencyKey;
   let isDefaultValue;
 
   switch (countryCode) {
@@ -175,30 +175,30 @@ function getCurrencyByCountryCode(countryCode) {
     case "VA": // Vatican City
     case "ME": // Montenegro
     case "AD": // Andorra
-      currency = "EUR";
+      currencyKey = "EUR";
       break;
     case "HU":
-      currency = "HUF";
+      currencyKey = "HUF";
       break; // Hungary
     case "HR":
-      currency = "HRK";
+      currencyKey = "HRK";
       break; // Croatia
     case "CZ":
-      currency = "CZK";
+      currencyKey = "CZK";
       break; // Czech Republic
     // Danish Krone (DKK) countries
     case "DK": // Denmark
     case "FO": // Faroe Islands
     case "GL": // Greenland
-      currency = "DKK";
+      currencyKey = "DKK";
       break;
     //iceland
     case "IS":
-      currency = "ISK";
+      currencyKey = "ISK";
       break;
     // Swedish Krona (SEK) countries
     case "SE": // Sweden
-      currency = "SEK";
+      currencyKey = "SEK";
       break;
     // USD countries
     case "US": // United States
@@ -209,246 +209,246 @@ function getCurrencyByCountryCode(countryCode) {
     case "PW": // Palau
     case "TL": // Timor-Leste
     case "ZW": // Zimbabwe
-      currency = "USD";
+      currencyKey = "USD";
       break;
     // Balkan countries
     case "RS": // Serbia
-      currency = "RSD";
+      currencyKey = "RSD";
       break;
     case "CH":
-      currency = "CHF";
+      currencyKey = "CHF";
       break; // Switzerland
     case "JP": // Japan
-      currency = "JPY";
+      currencyKey = "JPY";
       break;
     case "BA": // Bosnia and Herzegovina
-      currency = "BAM";
+      currencyKey = "BAM";
       break;
     case "BG": // Bulgaria
-      currency = "BGN";
+      currencyKey = "BGN";
       break;
     //romania
     case "RO":
-      currency = "RON";
+      currencyKey = "RON";
       break;
     //mexico
     case "MX":
-      currency = "MXN";
+      currencyKey = "MXN";
       break;
     //canada
     case "CA":
-      currency = "CAD";
+      currencyKey = "CAD";
       break;
     case "AU":
-      currency = "AUD";
+      currencyKey = "AUD";
       break;
     case "NZ":
-      currency = "NZD";
+      currencyKey = "NZD";
       break;
     case "NOR":
-      currency = "NOK";
+      currencyKey = "NOK";
       break; //norway
     case "AZ":
-      currency = "AZN";
+      currencyKey = "AZN";
       break; // Azerbaijan
     case "AM":
-      currency = "AMD";
+      currencyKey = "AMD";
       break; // Armenia
     case "BY":
-      currency = "BYN";
+      currencyKey = "BYN";
       break; // Belarus
     case "GE":
-      currency = "GEL";
+      currencyKey = "GEL";
       break; // Georgia
     case "KG":
-      currency = "KGS";
+      currencyKey = "KGS";
       break; // Kyrgyzstan
     case "KZ":
-      currency = "KZT";
+      currencyKey = "KZT";
       break; // Kazakhstan
     case "KW":
-      currency = "KWD";
+      currencyKey = "KWD";
       break; // Kuwait
     case "QA":
-      currency = "QAR";
+      currencyKey = "QAR";
       break; // Qatar
     case "MD":
-      currency = "MDL";
+      currencyKey = "MDL";
       break; // Moldova
     case "TJ":
-      currency = "TJS";
+      currencyKey = "TJS";
       break; // Tajikistan
     case "TM":
-      currency = "TMT";
+      currencyKey = "TMT";
       break; // Turkmenistan
     case "UZ":
-      currency = "UZS";
+      currencyKey = "UZS";
       break; // Uzbekistan
     case "BY":
-      currency = "BYN";
+      currencyKey = "BYN";
       break; // Belarus
 
     case "UA":
-      currency = "UAH";
+      currencyKey = "UAH";
       break; // Ukraine
     case "UK":
-      currency = "GBP";
+      currencyKey = "GBP";
       break; // UNITED KINGDOM
     case "BD":
-      currency = "BDT";
+      currencyKey = "BDT";
       break; // Bangladesh
     case "BT":
-      currency = "BTN";
+      currencyKey = "BTN";
       break; // Bhutan
     case "ID":
-      currency = "IDR";
+      currencyKey = "IDR";
       break; // Indonesia
     case "IN":
-      currency = "INR";
+      currencyKey = "INR";
       break; // India
     case "MY":
-      currency = "MYR";
+      currencyKey = "MYR";
       break; // Malaysia
     case "PH":
-      currency = "PHP";
+      currencyKey = "PHP";
       break; // Philippiness
     case "NP":
-      currency = "NPR";
+      currencyKey = "NPR";
       break; // Nepal
     case "PK":
-      currency = "PKR";
+      currencyKey = "PKR";
       break; // Pakistan
     case "LK":
-      currency = "LKR";
+      currencyKey = "LKR";
       break; // Sri Lanka
     case "CL":
-      currency = "CLP";
+      currencyKey = "CLP";
       break; // Chile
     case "SG":
-      currency = "SGD";
+      currencyKey = "SGD";
       break; // Singapore
     case "TH":
-      currency = "THB";
+      currencyKey = "THB";
       break; // Thailand
     case "TW":
-      currency = "TWD";
+      currencyKey = "TWD";
       break; // Taiwan
     case "VN":
-      currency = "VND";
+      currencyKey = "VND";
       break; // Vietnam
     case "KR":
-      currency = "KRW";
+      currencyKey = "KRW";
       break; // South Korea
     case "HK":
-      currency = "HKD";
+      currencyKey = "HKD";
       break; // Hong Kong
 
     case "AR":
-      currency = "ARS";
+      currencyKey = "ARS";
       break; // Argentina
     case "BO":
-      currency = "BOB";
+      currencyKey = "BOB";
       break; // Bolivia
     case "BZ":
-      currency = "BZD";
+      currencyKey = "BZD";
       break; // Belize
     case "GT":
-      currency = "GTQ";
+      currencyKey = "GTQ";
       break; // Guatemala
     case "GY":
-      currency = "GYD";
+      currencyKey = "GYD";
       break; // Guyana
     case "HN":
-      currency = "HNL";
+      currencyKey = "HNL";
       break; // Honduras
     case "NI":
-      currency = "NIO";
+      currencyKey = "NIO";
       break; // Nicaragua
     case "PA":
-      currency = "PAB";
+      currencyKey = "PAB";
       break; // Panama
     case "PY":
-      currency = "PYG";
+      currencyKey = "PYG";
       break; // Paraguay
     case "SR":
-      currency = "SRD";
+      currencyKey = "SRD";
       break; // Suriname
     case "PE":
-      currency = "PEN";
+      currencyKey = "PEN";
       break; // Peru
     case "UY":
-      currency = "UYU";
+      currencyKey = "UYU";
       break; // Uruguay
     case "CO":
-      currency = "COP";
+      currencyKey = "COP";
       break; // Colombia
     case "CR":
-      currency = "CRC";
+      currencyKey = "CRC";
       break; // Costa Rica
     case "ZA":
-      currency = "ZAR";
+      currencyKey = "ZAR";
       break; // South Africa
     case "BH":
-      currency = "BHD";
+      currencyKey = "BHD";
       break; // Bahrain
     case "BR":
-      currency = "BRL";
+      currencyKey = "BRL";
       break; // Brazil
     case "DZ":
-      currency = "DZD";
+      currencyKey = "DZD";
       break; // Algeria
     case "EG":
-      currency = "EGP";
+      currencyKey = "EGP";
       break; // Egypt
     case "IQ":
-      currency = "IQD";
+      currencyKey = "IQD";
       break; // Iraq
     case "JO":
-      currency = "JOD";
+      currencyKey = "JOD";
       break; // Jordan
     case "LB":
-      currency = "LBP";
+      currencyKey = "LBP";
       break; // Lebanon
     case "LY":
-      currency = "LYD";
+      currencyKey = "LYD";
       break; // Libya
     case "MA":
-      currency = "MAD";
+      currencyKey = "MAD";
       break; // Morocco
     case "OM":
-      currency = "OMR";
+      currencyKey = "OMR";
       break; // Oman
     case "PS":
-      currency = "ILS";
+      currencyKey = "ILS";
       break; // Palestine
     case "PL":
-      currency = "PLN";
+      currencyKey = "PLN";
       break; // Poland
     case "RU": // Russia
-      currency = "RUB";
+      currencyKey = "RUB";
       break;
     case "SD":
-      currency = "SDG";
+      currencyKey = "SDG";
       break; // Sudan
     case "TN":
-      currency = "TND";
+      currencyKey = "TND";
       break; // Tunisia
     case "TR":
-      currency = "TRY";
+      currencyKey = "TRY";
       break; // Turkey
     case "YE":
-      currency = "YER";
+      currencyKey = "YER";
       break; // Yemen
     case "SA":
-      currency = "SAR";
+      currencyKey = "SAR";
       break; // Saudi Arabia
     case "AE":
-      currency = "AED";
+      currencyKey = "AED";
       break; // United Arab Emirates
     default:
-      currency = "TRY";
+      currencyKey = "TRY";
       isDefaultValue = true;
       break;
   }
-  return [currency, isDefaultValue];
+  return [currencyKey, isDefaultValue];
 }

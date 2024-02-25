@@ -38,15 +38,29 @@ function getManifest() {
 
 async function handleBaseCurrencyKey() {
   const savedLoginStatus = await getStoreValue("loginStatus");
+  const savedCountry = await getStoreValue("country");
+  console.log("contry", country);
+  console.log("saved country", savedCountry);
+
   const loginStatus = isUserLoggedIn();
-  if (savedLoginStatus != loginStatus || baseCurrencykey == null) {
-    if (savedLoginStatus != loginStatus)
+  if (
+    savedLoginStatus != loginStatus ||
+    savedCountry != country ||
+    baseCurrencykey == null
+  ) {
+    if (savedLoginStatus && savedLoginStatus != loginStatus)
       logger("Login Status has been changed, checking Steam Store Currency!");
+    else if (savedCountry && savedCountry != country)
+      logger("Country has been changed, checking Steam Store Currency!");
+
     setLoginStatus(loginStatus);
     baseCurrencykey = await getStoreCurrency();
-    const rates = await handleQueryAll({ baseCurrencykey });
-    targetCurrencyRate = rates[targetCurrencyKey] || 1;
-    console.log("new target rate", targetCurrencyRate)
+    const currencyData = await handleQueryAll({ baseCurrencykey });
+    console.log("CURRRENCY DATA")
+    console.log(currencyData)
+    console.log(targetCurrencyKey)
+    targetCurrencyRate = currencyData.rates[targetCurrencyKey] || 1;
+    console.log("new target rate", targetCurrencyRate);
     await chrome.storage.local.set({ baseStoreCurrency: baseCurrencykey });
   }
 }

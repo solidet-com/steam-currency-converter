@@ -45,6 +45,18 @@ const CURRENCY_INFORMATIONS = [
 
 By providing the source of the formatting, you help us maintain transparency and ensure accurate implementation. 
 
+## Troubleshooting Base Currency Conversion
+
+If a listed base currency doesn't seem to be working or if the conversion to the target price fails, it might be due to our regular expression (regex) not correctly matching the price. 
+
+If you encounter this issue, you can do either of the following:
+
+1. **Open an Issue:** If you're not familiar with technical changes or regex, you can open an issue on our GitHub repository. Describe the problem you're facing, including the base currency that's not working and any relevant details. This helps us investigate and resolve the issue efficiently.
+
+2. **Update the Regex:** If you have the technical skills and knowledge of regular expressions, you can update the regex in `utils/parsers.js`. By improving the regex pattern, you can help ensure accurate matching of prices for the affected base currency. 
+
+We appreciate your assistance in troubleshooting and improving the currency conversion tool!
+
 ## Contact
 
 For questions, support, or any clarifications, feel free to reach out to us on [GitHub Discussions](https://github.com/Solidet-com/steam-currency-converter/discussions) or via email at trsnaqe@gmail.com.

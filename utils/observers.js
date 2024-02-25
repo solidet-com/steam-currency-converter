@@ -58,10 +58,10 @@ async function handleStorageMutation(changes, namespace) {
             //request new data with
 
             baseCurrencykey = newValue;
-            const rates= await handleQueryAll({
+            const currencyData= await handleQueryAll({
                 baseCurrencykey,
             });
-            targetCurrencyRate=rates[targetCurrencyKey]||1
+            targetCurrencyRate=currencyData.rates[targetCurrencyKey]||1
             const storedConverter = converterActive;
             updateItems(storedConverter);
         } else if (key.match("taxValue")) {
