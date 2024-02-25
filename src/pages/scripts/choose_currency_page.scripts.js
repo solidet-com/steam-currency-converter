@@ -19,7 +19,6 @@ currencyData.then((result) => {
   chrome.storage.local
     .get(["targetCurrency", "baseStoreCurrency"])
     .then((result) => {
-      console.log("result is", result);
       select.value = result.targetCurrency;
     })
     .catch((error) => {

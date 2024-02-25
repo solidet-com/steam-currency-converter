@@ -9,7 +9,7 @@ function getCurrencyFormat(currencyKey) {
   };
 
   const currency = CURRENCY_INFORMATIONS.find(
-    (currency) => currency.abbr === currencyKey,
+    (currency) => currency.abbr === currencyKey
   );
 
   return currency?.format || defaultFormat;
@@ -23,7 +23,7 @@ function logger(message) {
   console.log(
     `%c[Steam Currency Converter]: %c${message}`,
     "color: #00aaff; font-weight: bold;",
-    "color: #fff;",
+    "color: #f36f63;"
   );
 }
 
@@ -39,14 +39,12 @@ function getManifest() {
 async function handleBaseCurrencyKey() {
   const savedLoginStatus = await getStoreValue("loginStatus");
   const savedCountry = await getStoreValue("country");
-  console.log("contry", country);
-  console.log("saved country", savedCountry);
 
   const loginStatus = isUserLoggedIn();
   if (
     savedLoginStatus != loginStatus ||
     savedCountry != country ||
-    baseCurrencykey == null
+    baseCurrencyKey == null
   ) {
     if (savedLoginStatus && savedLoginStatus != loginStatus)
       logger("Login Status has been changed, checking Steam Store Currency!");
@@ -54,13 +52,9 @@ async function handleBaseCurrencyKey() {
       logger("Country has been changed, checking Steam Store Currency!");
 
     setLoginStatus(loginStatus);
-    baseCurrencykey = await getStoreCurrency();
-    const currencyData = await handleQueryAll({ baseCurrencykey });
-    console.log("CURRRENCY DATA");
-    console.log(currencyData);
-    console.log(targetCurrencyKey);
+    baseCurrencyKey = await getStoreCurrency();
+    const currencyData = await updateRatesALL({ baseCurrencyKey });
     targetCurrencyRate = currencyData.rates[targetCurrencyKey] || 1;
-    console.log("new target rate", targetCurrencyRate);
-    await chrome.storage.local.set({ baseStoreCurrency: baseCurrencykey });
+    await chrome.storage.local.set({ baseStoreCurrency: baseCurrencyKey });
   }
 }

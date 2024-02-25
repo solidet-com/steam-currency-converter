@@ -17,7 +17,7 @@ We welcome your code contributions! To streamline the process, follow these step
 
 ## Currency Formatting Specific Pull Requests
 
-For currency formatting specific pull requests, please provide the source of the formatting for the given currency. Add the formatting details for the currency in `data/locales.js` under `CURRENCY_INFORMATIONS`. For example:
+For currency formatting specific pull requests, please provide the source of the formatting for the given currency. Add the formatting details for the currency in `src/data/locales.js` under `CURRENCY_INFORMATIONS`. For example:
 
 ```javascript
 const CURRENCY_INFORMATIONS = [
@@ -52,7 +52,7 @@ If you encounter this issue, you can do either of the following:
 
 1. **Open an Issue:** If you're not familiar with technical changes or regex, you can open an issue on our GitHub repository. Describe the problem you're facing, including the base currency that's not working and any relevant details. This helps us investigate and resolve the issue efficiently.
 
-2. **Update the Regex:** If you have the technical skills and knowledge of regular expressions, you can update the regex in `utils/parsers.js`. By improving the regex pattern, you can help ensure accurate matching of prices for the affected base currency.
+2. **Update the Regex:** If you have the technical skills and knowledge of regular expressions, you can update the regex in `src/utils/parsers.js`. By improving the regex pattern, you can help ensure accurate matching of prices for the affected base currency.
 
 We appreciate your assistance in troubleshooting and improving the currency conversion tool!
 

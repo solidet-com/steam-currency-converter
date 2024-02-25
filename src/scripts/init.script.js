@@ -5,8 +5,20 @@ async function initScript() {
   const showChangelog = await getStoreValue("showChangelog");
   if (showChangelog) {
     showChangelogModal(
-      "Welcome to Steam Currency Converter",
-      "We've made some changes to the extension. Check out the changelog to see what's new.",
+      "Steam Currency Converter v1.0.0!",
+      `<p>Thank you for using Steam Currency Converter. This extension will help you to see the price of the games in your local currency.</p>
+      <br/>
+      <p>Key features:</p>
+      <ul>
+        <li>Exchange all the currencies that Steam uses to over 160 currencies.</li>
+        <li>Hot-Toggle Exchange Rates (Extension Menu or Shift + Alt + Q) (<em>Thanks to Doğucan Gelbal</em>)</li>
+        <li>Set extra rate percentage</li>
+        <li>Auto locale detection</li>
+        <li>Up-to-date Currency Rates</li>
+      </ul>
+      <br/>
+      <em>Enjoy the extension and feel free to give feedback or report bugs.</em>
+      `
     );
   }
 }
@@ -21,14 +33,14 @@ function initItems(onCurrencyChange = false) {
 
 async function initCurrency() {
   const targetCurrency = await getStoreValue("targetCurrency");
-  baseCurrencykey = await getStoreValue("baseStoreCurrency");
+  baseCurrencyKey = await getStoreValue("baseStoreCurrency");
   country = getUserCountry();
 
   await handleBaseCurrencyKey();
 
   const [currencyKey, isDefault] = getCurrencyByCountryCode(country);
 
-  if ((!targetCurrency || !baseCurrencykey) && (!country || isDefault)) {
+  if ((!targetCurrency || !baseCurrencyKey) && (!country || isDefault)) {
     dispatchBackgroundEvent("openCurrencyInitPopup");
   }
   chrome.storage.local.set({ country });
@@ -44,7 +56,7 @@ async function prepareData() {
   let currencyData = await getStoreValue("currency");
   tax = await getStoreValue("taxValue");
   targetCurrencyKey = await getStoreValue("targetCurrency");
-  baseCurrencykey = await getStoreValue("baseStoreCurrency");
+  baseCurrencyKey = await getStoreValue("baseStoreCurrency");
 
   for (const interval of INTERVALS) {
     const timeStorageKey = getUpdateDateKey(interval.timeKey);
@@ -55,7 +67,7 @@ async function prepareData() {
     const diff = new Date().getTime() - lastRefresh;
 
     const callbackPayload = {
-      baseCurrencykey,
+      baseCurrencyKey,
     };
 
     if (isInitial || diff > interval.value) {

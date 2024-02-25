@@ -36,7 +36,6 @@ currencyData.then((result) => {
   chrome.storage.local
     .get(["targetCurrency", "baseStoreCurrency"])
     .then((result) => {
-      console.log("result is", result);
       select.value = result.targetCurrency;
       baseSelect.value = result.baseStoreCurrency;
     })
@@ -72,6 +71,6 @@ document.getElementById("tax-input").addEventListener("change", taxHandler);
 document.querySelector(".github-button").addEventListener("click", () => {
   window.open(
     "https://github.com/solidet-com/steam-currency-converter",
-    "_blank",
+    "_blank"
   );
 });

@@ -2,20 +2,12 @@ function getCurrencySymbolFromString(str) {
   const re =
     /(?:R\$|S\$|\$|RM|kr|Rp|€|¥|£|฿|pуб|P|₫|₩|TL|₺|TRY|PLN|₴|Mex\$|CDN\$|A\$|HK\$|NT\$|₹|SR|R |DH|CHF|CLP\$|S\/\.|COL\$|NZ\$|ARS\$|₡|₪|₸|KD|zł|QR|\$U)/;
   const match = str.match(re);
-  console.log("from getCurrencySymbolFromString", match ? match[0] : "");
   return match ? match[0] : "";
 }
 
 function parseCurrencyFromText(text) {
-  console.log("from parseCurrencyFromText", text);
   const symbol = getCurrencySymbolFromString(text);
-  console.log(`Matched currency symbol as "${symbol}" from text`);
   return getCurrencyBySymbol(symbol);
-}
-
-function getCurrencyBySymbol(symbol) {
-  if (!symbol) return;
-  return BASE_CURRENCIES.find((currency) => currency.symbol === symbol).abbr;
 }
 
 function getUserCountry() {
@@ -24,11 +16,11 @@ function getUserCountry() {
     document,
     null,
     XPathResult.FIRST_ORDERED_NODE_TYPE,
-    null,
+    null
   ).singleNodeValue;
   if (script) {
     const result = script.textContent.match(
-      /EnableSearchSuggestions\(.+?'(?<cc>[A-Z]{2})',/,
+      /EnableSearchSuggestions\(.+?'(?<cc>[A-Z]{2})',/
     );
 
     if (result) {
@@ -55,7 +47,7 @@ function getCommunityCountry() {
   } else {
     country = getVariableFromDom(
       /GDynamicStore\.Init\(.+?,\s*'([A-Z]{2})'/,
-      "string",
+      "string"
     );
   }
 
@@ -68,22 +60,19 @@ function getCommunityCountry() {
 
 async function getStoreCurrency() {
   let currency;
-  console.log("store currrency alıyorum");
   // Select the price currency meta tag
   let currencyElement = document.querySelector("#header_wallet_balance") || "";
-  console.log("is it null at first?", !currencyElement);
   if (!currencyElement) {
-    currency = await handleQueryBaseCurrency();
+    currency = await getBaseCurrencyBySteamGame();
   } else {
     currency =
       currencyElement?.textContent &&
       parseCurrencyFromText(currencyElement?.textContent);
   }
-  console.log("before forcing currency is", currency);
   if (!currency) {
     currency = "USD";
 
-    console.log("Missing priceCurrency, forced to USD");
+    logger("Missing priceCurrency, forced to USD");
   }
   //
   return currency;
@@ -94,7 +83,6 @@ function isUserLoggedIn() {
 }
 
 function setLoginStatus(loginStatus) {
-  console.log("setting", loginStatus);
   chrome.storage.local.set({ loginStatus: loginStatus });
 }
 

@@ -2,20 +2,20 @@
   "manifest_version": 3,
   "name": "Steam Currency Converter",
   "description": "Steam Currency Converter!",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "permissions": ["storage"],
   "icons": {
-    "16": "assets/icons/icon16.png",
-    "32": "assets/icons/icon32.png",
-    "48": "assets/icons/icon48.png",
-    "128": "assets/icons/icon128.png"
+    "16": "src/assets/icons/icon16.png",
+    "32": "src/assets/icons/icon32.png",
+    "48": "src/assets/icons/icon48.png",
+    "128": "src/assets/icons/icon128.png"
   },
   "action": {
-    "default_popup": "./pages/index.html",
-    "default_icon": "assets/icons/icon128.png"
+    "default_popup": "./src/pages/index.html",
+    "default_icon": "src/assets/icons/icon128.png"
   },
   "background": {
-    "service_worker": "./background/background.js",
+    "service_worker": "./src/background.js",
     "type": "module"
   },
   "content_scripts": [
@@ -31,26 +31,28 @@
       ],
 
       "js": [
-        "./data/currencies.js",
-        "./data/locales.js",
-        "./background/api.js",
-        "./data/globals.js",
-        "./utils/observers.js",
-        "./utils/helpers.js",
-        "./utils/price.js",
-        "./utils/dom.js",
-        "./utils/parsers.js",
-        "./scripts/store.script.js",
-        "./scripts/init.script.js",
-        "./scripts/changelog.script.js"
+        "./src/utils/api.js",
+        "./src/data/currencies.js",
+        "./src/data/locales.js",
+        "./src/data/constants.js",
+        "./src/data/globals.js",
+        "./src/data/selectors.js",
+        "./src/utils/observers.js",
+        "./src/utils/helpers.js",
+        "./src/utils/price.js",
+        "./src/utils/dom.js",
+        "./src/utils/parsers.js",
+        "./src/scripts/store.script.js",
+        "./src/scripts/init.script.js",
+        "./src/scripts/changelog.script.js"
       ],
-      "css": ["./pages/styles/store.style.css"],
+      "css": ["./src/pages/styles/store.style.css"],
       "run_at": "document_end"
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["assets/*"],
+      "resources": ["src/assets/*"],
       "matches": ["*://store.steampowered.com/*", "*://steamcommunity.com/*"]
     }
   ],

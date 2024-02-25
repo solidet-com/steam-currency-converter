@@ -1,6 +1,6 @@
-async function dispatchBackgroundEvent(query, payload) {
+async function dispatchBackgroundEvent({ event, payload }) {
   const eventPromise = chrome.runtime.sendMessage({
-    query,
+    event,
     payload,
   });
 
@@ -14,41 +14,51 @@ async function dispatchBackgroundEvent(query, payload) {
   return data;
 }
 
-async function handleQueryAll(payload) {
-  const currencyData = await dispatchBackgroundEvent("queryCurrency", payload);
+async function updateRatesALL(payload) {
+  const currencyData = await dispatchBackgroundEvent({
+    event: "get-currency:all",
+    payload,
+  });
   return await updateStorageRates(currencyData.rates, TIME_KEY.ALL);
 }
 
-async function handleQueryTRY() {
-  const currencyData = await dispatchBackgroundEvent("queryTRY");
+async function updateRatesTRY() {
+  const currencyData = await dispatchBackgroundEvent({
+    event: "get-currency:try",
+  });
 
   let currency = await getStoreValue("currency");
 
-  if (currencyData[baseCurrencykey]) {
+  if (currencyData[baseCurrencyKey]) {
     currency.rates["TRY"] = parseFloat(
-      currencyData[baseCurrencykey]["Selling"],
+      currencyData[baseCurrencyKey]["Selling"]
     );
   }
 
   return await updateStorageRates(currency.rates, TIME_KEY.TRY);
 }
 
-async function handleQueryARS() {
-  const currencyData = await dispatchBackgroundEvent("queryARS");
+async function updateRatesARS() {
+  const currencyData = await dispatchBackgroundEvent({
+    event: "get-currency:ars",
+  });
 
   let currency = await getStoreValue("currency");
-  if (baseCurrencykey === "USD") {
+  if (baseCurrencyKey === "USD") {
     currency.rates["ARS"] = parseFloat(currencyData["venta"]);
   }
 
   return await updateStorageRates(currency.rates, TIME_KEY.ARS);
 }
 
-async function handleQueryBaseCurrency() {
-  const data = await dispatchBackgroundEvent("queryBaseCurrency", { country });
+async function getBaseCurrencyBySteamGame() {
+  const data = await dispatchBackgroundEvent({
+    event: "fetch:steam-game",
+    payload: { country },
+  });
 
   const currencyObj = Object.values(data).find(
-    (obj) => obj.data && obj.data.price_overview,
+    (obj) => obj.data && obj.data.price_overview
   );
   const currency = currencyObj
     ? currencyObj.data.price_overview.currency

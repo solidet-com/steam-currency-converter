@@ -1,5 +1,5 @@
 function initItem(item, update = false) {
-  if (baseCurrencykey == targetCurrencyKey) {
+  if (baseCurrencyKey == targetCurrencyKey) {
     targetCurrencyRate = 1;
   }
 
@@ -9,31 +9,31 @@ function initItem(item, update = false) {
   let originalBasePriceText = textNode.textContent.trim();
 
   const currencyInformation = BASE_CURRENCIES.find(
-    (currency) => currency.abbr === baseCurrencykey,
+    (currency) => currency.abbr === baseCurrencyKey
   );
 
   originalBasePriceText = originalBasePriceText.replace(
     currencyInformation.format.thousand,
-    "",
+    ""
   );
   if (currencyInformation?.format?.decimal !== ".") {
     originalBasePriceText = originalBasePriceText.replace(
       currencyInformation.format.decimal,
-      ".",
+      "."
     );
   }
 
-  const currencySymbol = allCurrencies[baseCurrencykey];
+  const currencySymbol = allCurrencies[baseCurrencyKey];
 
   const escapedCurrencySymbol = escapeRegExp(currencySymbol);
-  const escapedBaseCurrencyKey = escapeRegExp(baseCurrencykey);
+  const escapedBaseCurrencyKey = escapeRegExp(baseCurrencyKey);
 
   const symbolAsPrefixRegex = `(?:${escapedCurrencySymbol}\\s*(-?\\d+[,.]?\\d*)\\s*(?:${escapedBaseCurrencyKey})?`;
   const symbolAsSuffixRegex = `(\\d+[,.]?\\d*)\\s*(?:${escapedBaseCurrencyKey})?\\s*${escapedCurrencySymbol})`;
 
   const regexPattern = new RegExp(
     `${symbolAsPrefixRegex}|${symbolAsSuffixRegex}`,
-    "g",
+    "g"
   );
 
   let matches = originalBasePriceText.matchAll(regexPattern);
@@ -57,38 +57,50 @@ function initItem(item, update = false) {
 
     originalBasePriceText = originalBasePriceText.replace(
       basePriceWithCurrency,
-      originalTargetPrice.toString(),
+      originalTargetPrice.toString()
     );
   }
 
   item.setAttribute("data-ext-price-mem", originalBasePriceText);
 }
 
-function convertToLocalCurrency(basePrice, applyTax = true) {
-  if (targetCurrencyRate) {
-    const currencyFormat = getCurrencyFormat(targetCurrencyKey);
-    let targetPrice = basePrice * targetCurrencyRate;
-    if (tax > 0 && applyTax) targetPrice += targetPrice * (tax / 100);
+function getItems(node, ...selectors) {
+  return Array.from(node.querySelectorAll(selectors.join(",")));
+}
 
-    const symbol =
-      currencyFormat?.symbolFormat || allCurrencies[targetCurrencyKey];
-
-    let modifiedNumber = numberWithCommas(
-      targetPrice.toFixed(currencyFormat.places),
-    );
-    if (currencyFormat?.right) {
-      return modifiedNumber + symbol;
-    }
-
-    return symbol + modifiedNumber;
-  } else {
-    console.error("Exchange rates not available.");
-    return null;
+async function updateItems(storedConverter) {
+  if (storedConverter) {
+    await chrome.storage.local.set({ converterActive: false });
+  }
+  initItems(true);
+  if (storedConverter) {
+    await chrome.storage.local.set({ converterActive: true });
   }
 }
 
-function togglePrices() {
-  document.querySelectorAll("[data-ext-converted]").forEach(togglePrice);
+function getTextNodes(
+  node,
+  options = {
+    level: 1,
+    currLevel: 1,
+    returnEmpty: false,
+  }
+) {
+  let all = [];
+  const { level, currLevel } = options;
+  for (let child = node.firstChild; child; child = child.nextSibling) {
+    if (child.nodeType == Node.TEXT_NODE) {
+      all.push(child);
+    } else if (currLevel < level) {
+      all = all.concat(
+        getTextNodes(child, { ...options, currLevel: currLevel + 1 })
+      );
+    }
+  }
+
+  if (!all.length && !options.returnEmpty) return [node];
+
+  return all;
 }
 
 function togglePrice(item) {
@@ -101,4 +113,8 @@ function togglePrice(item) {
   item.setAttribute("data-ext-price-mem", priceTextNode.textContent.trim());
 
   priceTextNode.textContent = `${originalPriceText}`;
+}
+
+function togglePrices() {
+  document.querySelectorAll("[data-ext-converted]").forEach(togglePrice);
 }

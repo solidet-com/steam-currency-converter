@@ -9,7 +9,6 @@ async function updateStorageRates(rates, updateKey) {
       rates: rates,
     },
   };
-  console.log("lastCurrencyPayload", lastCurrencyPayload);
   const lastTimePayload = {
     [getUpdateDateKey(updateKey)]: new Date().getTime(),
   };

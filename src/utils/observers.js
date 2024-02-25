@@ -47,7 +47,6 @@ async function handleStorageMutation(changes, namespace) {
       converterActive = newValue;
       togglePrices();
     } else if (key.match("targetCurrency")) {
-      console.log("targetCurrency değeri değişti");
       let storedData = await chrome.storage.local.get(["currency"]);
       targetCurrencyKey = newValue;
       targetCurrencyRate = storedData?.currency.rates[newValue] || 1;
@@ -56,12 +55,9 @@ async function handleStorageMutation(changes, namespace) {
     }
     //TODO: Get new currency Rates and refresh prices on items accordingly
     else if (key.match("baseStoreCurrency")) {
-      console.log("base store currency obserevr tetiklendi");
-      //request new data with
-
-      baseCurrencykey = newValue;
-      const currencyData = await handleQueryAll({
-        baseCurrencykey,
+      baseCurrencyKey = newValue;
+      const currencyData = await updateRatesALL({
+        baseCurrencyKey,
       });
       targetCurrencyRate = currencyData.rates[targetCurrencyKey] || 1;
       const storedConverter = converterActive;

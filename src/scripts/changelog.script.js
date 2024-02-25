@@ -33,10 +33,10 @@ function showChangelogModal(title, body) {
                     <div class="newmodal_content" style="max-height: 771px;">
                         <div>
                             <div class="es_changelog">
-                                <img src="chrome-extension://ocabaebkfcojookdnihccpcngaaigfan/assets/icons/icon128.png">
+                                <img src="${EXTENSION_LOGO_BASE64}">
                                 <div>
                                     ${body}
-                                    <p><a href="https://github.com/solidet-com/steam-currency-converter" target="_blank">View all changes on GitHub</a></p>
+                                    <p><a href="https://github.com/solidet-com/steam-currency-converter" target="_blank">Refer to GitHub</a></p>
                                 </div>
                             </div>
                         </div>
