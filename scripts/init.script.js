@@ -6,7 +6,7 @@ async function initScript() {
   if (showChangelog) {
     showChangelogModal(
       "Welcome to Steam Currency Converter",
-      "We've made some changes to the extension. Check out the changelog to see what's new."
+      "We've made some changes to the extension. Check out the changelog to see what's new.",
     );
   }
 }

@@ -26,7 +26,7 @@ async function handleQueryTRY() {
 
   if (currencyData[baseCurrencykey]) {
     currency.rates["TRY"] = parseFloat(
-      currencyData[baseCurrencykey]["Selling"]
+      currencyData[baseCurrencykey]["Selling"],
     );
   }
 
@@ -45,15 +45,14 @@ async function handleQueryARS() {
 }
 
 async function handleQueryBaseCurrency() {
-  console.log("handle querydeyim")
-  console.log(country)
   const data = await dispatchBackgroundEvent("queryBaseCurrency", { country });
-  console.log("data")
-  console.log(data)
-  const currencyObj = Object.values(data).find(obj => obj.data && obj.data.price_overview);
-  const currency = currencyObj ? currencyObj.data.price_overview.currency : null;
-  
-    console.log("returning base currency aaaaaaaaaa")
-    console.log(currency)
+
+  const currencyObj = Object.values(data).find(
+    (obj) => obj.data && obj.data.price_overview,
+  );
+  const currency = currencyObj
+    ? currencyObj.data.price_overview.currency
+    : null;
+
   return currency;
 }

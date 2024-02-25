@@ -18,7 +18,7 @@ function getTextNodes(
     level: 1,
     currLevel: 1,
     returnEmpty: false,
-  }
+  },
 ) {
   let all = [];
   const { level, currLevel } = options;
@@ -27,7 +27,7 @@ function getTextNodes(
       all.push(child);
     } else if (currLevel < level) {
       all = all.concat(
-        getTextNodes(child, { ...options, currLevel: currLevel + 1 })
+        getTextNodes(child, { ...options, currLevel: currLevel + 1 }),
       );
     }
   }

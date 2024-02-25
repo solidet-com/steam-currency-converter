@@ -1,64 +1,80 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-    <head>
-        <title>Steam Currency Converter</title>
-        <link rel="stylesheet" href="./styles/style.css" />
-        <script src="../data/currencies.js"></script>
-    </head>
+  <head>
+    <title>Steam Currency Converter</title>
+    <link rel="stylesheet" href="./styles/style.css" />
+    <script src="../data/currencies.js"></script>
+  </head>
 
-    <body>
-        <p class="version-text">v0.1.0</p>
-        <img
-            src="../assets/steam-currency-converter.png"
-            alt="Steam Currency Converter Extension Icon"
-            width="92px"
-            style="display: block; margin: 0.5rem auto"
-        />
+  <body>
+    <p class="version-text">v0.1.0</p>
+    <img
+      src="../assets/steam-currency-converter.png"
+      alt="Steam Currency Converter Extension Icon"
+      width="92px"
+      style="display: block; margin: 0.5rem auto" />
 
-        <h2 style="text-align: center">Steam Currency Converter</h2>
+    <h2 style="text-align: center">Steam Currency Converter</h2>
 
-        <div class="option-body">
-            <label>Choose Currencies</label>
-            <div class="converter-container">
-                <select id="convert-from"></select>
+    <div class="option-body">
+      <label>Choose Currencies</label>
+      <div class="converter-container">
+        <select id="convert-from"></select>
 
-                <label class="switch">
-                    <input id="price-toggle" type="checkbox" checked />
-                    <span class="slider round"></span>
-                </label>
+        <label class="switch">
+          <input id="price-toggle" type="checkbox" checked />
+          <span class="slider round"></span>
+        </label>
 
-                <select id="convert-to"></select>
-            </div>
-        </div>
+        <select id="convert-to"></select>
+      </div>
+    </div>
 
-        <div class="tax-container">
-            <label for="tax-input">Extra Rate</label>
-            <div class="input-container">
-                <input type="number" id="tax-input" name="tax-input" min="0" max="500" placeholder="0" />
-                <div class="input-percent">%</div>
-            </div>
-        </div>
+    <div class="tax-container">
+      <label for="tax-input">Extra Rate</label>
+      <div class="input-container">
+        <input
+          type="number"
+          id="tax-input"
+          name="tax-input"
+          min="0"
+          max="500"
+          placeholder="0" />
+        <div class="input-percent">%</div>
+      </div>
+    </div>
 
-        <button class="github-button">
-            <img src="../assets/github-mark.svg" alt="Github Mark White" width="24px" style="margin-right: 0.5rem" />
-        </button>
+    <button class="github-button">
+      <img
+        src="../assets/github-mark.svg"
+        alt="Github Mark White"
+        width="24px"
+        style="margin-right: 0.5rem" />
+    </button>
 
-        <div id="alert" style="display: flex; justify-content: center; margin-top: 1rem; opacity: 0; color: #ffcc00">
-            <p>Base Currency is Steam Store Currency</p>
-        </div>
+    <div
+      id="alert"
+      style="
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+        opacity: 0;
+        color: #ffcc00;
+      ">
+      <p>Base Currency is Steam Store Currency</p>
+    </div>
 
-        <footer class="footer">
-            <span style="font-weight: 300">from</span>
-            <a
-                href="https://linktr.ee/solidet"
-                class="solidet-linktree"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="solidet on linktree"
-            >
-                <p class="solidet-text">solidet</p>
-            </a>
-        </footer>
-        <script defer src="./scripts/page.script.js"></script>
-    </body>
+    <footer class="footer">
+      <span style="font-weight: 300">from</span>
+      <a
+        href="https://linktr.ee/solidet"
+        class="solidet-linktree"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="solidet on linktree">
+        <p class="solidet-text">solidet</p>
+      </a>
+    </footer>
+    <script defer src="./scripts/page.script.js"></script>
+  </body>
 </html>

@@ -1,18 +1,18 @@
 function handleModalClose(modal) {
-    modal.remove();
+  modal.remove();
 }
 
 function handleModalSize(modal) {
-    const modalWidth = Math.min(window.innerWidth * 0.8, 1200);
-    const horizontalMargin = (window.innerWidth - modalWidth) / 2;
+  const modalWidth = Math.min(window.innerWidth * 0.8, 1200);
+  const horizontalMargin = (window.innerWidth - modalWidth) / 2;
 
-    modal.style.maxWidth = `${modalWidth}px`;
-    modal.style.left = `${horizontalMargin}px`;
+  modal.style.maxWidth = `${modalWidth}px`;
+  modal.style.left = `${horizontalMargin}px`;
 }
 
 function showChangelogModal(title, body) {
-    chrome.storage.local.set({ showChangelog: false });
-    const popupHTML = `
+  chrome.storage.local.set({ showChangelog: false });
+  const popupHTML = `
         <div id="steam-cc-modal-container">
             <div style="
                 background-color: #0000008c;
@@ -49,22 +49,22 @@ function showChangelogModal(title, body) {
         </div>
             `;
 
-    document.body.insertAdjacentHTML("afterbegin", popupHTML);
-    const modalContainer = document.getElementById("steam-cc-modal-container");
-    const modal = document.getElementById("steam-cc-version-modal");
-    const closeButton = modal.querySelector(".newmodal_close");
-    const okButton = modal.querySelector(".btn_grey_steamui");
+  document.body.insertAdjacentHTML("afterbegin", popupHTML);
+  const modalContainer = document.getElementById("steam-cc-modal-container");
+  const modal = document.getElementById("steam-cc-version-modal");
+  const closeButton = modal.querySelector(".newmodal_close");
+  const okButton = modal.querySelector(".btn_grey_steamui");
 
+  handleModalSize(modal);
+  window.addEventListener("resize", (e) => {
     handleModalSize(modal);
-    window.addEventListener("resize", (e) => {
-        handleModalSize(modal);
-    });
+  });
 
-    closeButton.addEventListener("click", (e) => {
-        handleModalClose(modalContainer);
-    });
+  closeButton.addEventListener("click", (e) => {
+    handleModalClose(modalContainer);
+  });
 
-    okButton.addEventListener("click", (e) => {
-        handleModalClose(modalContainer);
-    });
+  okButton.addEventListener("click", (e) => {
+    handleModalClose(modalContainer);
+  });
 }

@@ -9,17 +9,17 @@ function initItem(item, update = false) {
   let originalBasePriceText = textNode.textContent.trim();
 
   const currencyInformation = BASE_CURRENCIES.find(
-    (currency) => currency.abbr === baseCurrencykey
+    (currency) => currency.abbr === baseCurrencykey,
   );
 
   originalBasePriceText = originalBasePriceText.replace(
     currencyInformation.format.thousand,
-    ""
+    "",
   );
   if (currencyInformation?.format?.decimal !== ".") {
     originalBasePriceText = originalBasePriceText.replace(
       currencyInformation.format.decimal,
-      "."
+      ".",
     );
   }
 
@@ -33,7 +33,7 @@ function initItem(item, update = false) {
 
   const regexPattern = new RegExp(
     `${symbolAsPrefixRegex}|${symbolAsSuffixRegex}`,
-    "g"
+    "g",
   );
 
   let matches = originalBasePriceText.matchAll(regexPattern);
@@ -57,7 +57,7 @@ function initItem(item, update = false) {
 
     originalBasePriceText = originalBasePriceText.replace(
       basePriceWithCurrency,
-      originalTargetPrice.toString()
+      originalTargetPrice.toString(),
     );
   }
 
@@ -65,23 +65,26 @@ function initItem(item, update = false) {
 }
 
 function convertToLocalCurrency(basePrice, applyTax = true) {
-    if (targetCurrencyRate) {
-        const currencyFormat = getCurrencyFormat(targetCurrencyKey);
-        let targetPrice = basePrice * targetCurrencyRate;
-        if (tax > 0 && applyTax) targetPrice += targetPrice * (tax / 100);
+  if (targetCurrencyRate) {
+    const currencyFormat = getCurrencyFormat(targetCurrencyKey);
+    let targetPrice = basePrice * targetCurrencyRate;
+    if (tax > 0 && applyTax) targetPrice += targetPrice * (tax / 100);
 
-        const symbol = currencyFormat?.symbolFormat || allCurrencies[targetCurrencyKey];
+    const symbol =
+      currencyFormat?.symbolFormat || allCurrencies[targetCurrencyKey];
 
-        let modifiedNumber = numberWithCommas(targetPrice.toFixed(currencyFormat.places));
-        if (currencyFormat?.right) {
-            return modifiedNumber + symbol;
-        }
-
-        return symbol + modifiedNumber;
-    } else {
-        console.error("Exchange rates not available.");
-        return null;
+    let modifiedNumber = numberWithCommas(
+      targetPrice.toFixed(currencyFormat.places),
+    );
+    if (currencyFormat?.right) {
+      return modifiedNumber + symbol;
     }
+
+    return symbol + modifiedNumber;
+  } else {
+    console.error("Exchange rates not available.");
+    return null;
+  }
 }
 
 function togglePrices() {

@@ -24,11 +24,11 @@ function getUserCountry() {
     document,
     null,
     XPathResult.FIRST_ORDERED_NODE_TYPE,
-    null
+    null,
   ).singleNodeValue;
   if (script) {
     const result = script.textContent.match(
-      /EnableSearchSuggestions\(.+?'(?<cc>[A-Z]{2})',/
+      /EnableSearchSuggestions\(.+?'(?<cc>[A-Z]{2})',/,
     );
 
     if (result) {
@@ -41,7 +41,6 @@ function getUserCountry() {
     logger("Failed to detect store country. Trying community scripts");
     country = getCommunityCountry();
   }
-
 
   return country;
 }
@@ -56,7 +55,7 @@ function getCommunityCountry() {
   } else {
     country = getVariableFromDom(
       /GDynamicStore\.Init\(.+?,\s*'([A-Z]{2})'/,
-      "string"
+      "string",
     );
   }
 

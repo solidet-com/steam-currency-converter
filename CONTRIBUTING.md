@@ -11,7 +11,6 @@ If you encounter a bug or have a feature request, your input is valuable! Please
 We welcome your code contributions! To streamline the process, follow these steps:
 
 1. Fork the repository and create a new branch for your changes.
-   
 2. Write clear commit messages, explaining the purpose of your changes. Clear communication makes it easier for reviewers to understand and assess your contributions.
 
 3. Submit a pull request to the `main` branch. We'll review your changes promptly.
@@ -22,38 +21,38 @@ For currency formatting specific pull requests, please provide the source of the
 
 ```javascript
 const CURRENCY_INFORMATIONS = [
-    ...BASE_CURRENCIES,
-    {
-        id: 42,
-        abbr: "DKK",
-        symbol: "kr",
-        hint: "Danish Krone",
-        multiplier: 100,
-        unit: 1,
-        format: {
-            places: 2,
-            hidePlacesWhenZero: false,
-            symbolFormat: " kr",
-            thousand: ".",
-            decimal: ",",
-            right: true,
-        },
+  ...BASE_CURRENCIES,
+  {
+    id: 42,
+    abbr: "DKK",
+    symbol: "kr",
+    hint: "Danish Krone",
+    multiplier: 100,
+    unit: 1,
+    format: {
+      places: 2,
+      hidePlacesWhenZero: false,
+      symbolFormat: " kr",
+      thousand: ".",
+      decimal: ",",
+      right: true,
     },
-    // Add your new currency formatting here
+  },
+  // Add your new currency formatting here
 ];
 ```
 
-By providing the source of the formatting, you help us maintain transparency and ensure accurate implementation. 
+By providing the source of the formatting, you help us maintain transparency and ensure accurate implementation.
 
 ## Troubleshooting Base Currency Conversion
 
-If a listed base currency doesn't seem to be working or if the conversion to the target price fails, it might be due to our regular expression (regex) not correctly matching the price. 
+If a listed base currency doesn't seem to be working or if the conversion to the target price fails, it might be due to our regular expression (regex) not correctly matching the price.
 
 If you encounter this issue, you can do either of the following:
 
 1. **Open an Issue:** If you're not familiar with technical changes or regex, you can open an issue on our GitHub repository. Describe the problem you're facing, including the base currency that's not working and any relevant details. This helps us investigate and resolve the issue efficiently.
 
-2. **Update the Regex:** If you have the technical skills and knowledge of regular expressions, you can update the regex in `utils/parsers.js`. By improving the regex pattern, you can help ensure accurate matching of prices for the affected base currency. 
+2. **Update the Regex:** If you have the technical skills and knowledge of regular expressions, you can update the regex in `utils/parsers.js`. By improving the regex pattern, you can help ensure accurate matching of prices for the affected base currency.
 
 We appreciate your assistance in troubleshooting and improving the currency conversion tool!
 

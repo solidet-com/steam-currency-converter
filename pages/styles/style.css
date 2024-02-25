@@ -296,7 +296,7 @@ label[for="tax-input"] {
   border-bottom-right-radius: 20px;
 }
 
-.github-button { 
+.github-button {
   position: absolute;
   top: 0.7rem;
   left: 0.8rem;
@@ -312,4 +312,3 @@ label[for="tax-input"] {
 .github-button:hover {
   fill: #fff;
 }
-
