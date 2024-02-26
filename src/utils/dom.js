@@ -13,12 +13,12 @@ function initItem(item, update = false) {
   );
 
   originalBasePriceText = originalBasePriceText.replace(
-    currencyInformation.format.thousand,
+    currencyInformation?.format?.thousand,
     ""
   );
   if (currencyInformation?.format?.decimal !== ".") {
     originalBasePriceText = originalBasePriceText.replace(
-      currencyInformation.format.decimal,
+      currencyInformation?.format?.decimal,
       "."
     );
   }

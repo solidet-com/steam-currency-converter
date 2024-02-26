@@ -55,6 +55,7 @@ async function handleStorageMutation(changes, namespace) {
     }
     //TODO: Get new currency Rates and refresh prices on items accordingly
     else if (key.match("baseStoreCurrency")) {
+      if (!newValue) return;
       baseCurrencyKey = newValue;
       const currencyData = await updateRatesALL({
         baseCurrencyKey,

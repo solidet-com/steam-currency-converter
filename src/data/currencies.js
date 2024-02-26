@@ -42,7 +42,7 @@ const menaCurrencies = {
   SSP: "SSP£",
   LYD: "ل.د",
   ILS: "₪",
-  AED: "د.إ",
+  AED: "AED",
   AZN: "₼",
   IRR: "﷼",
   KWD: "KD",
@@ -176,7 +176,7 @@ const regions = [
 
 const allCurrencies = {
   USD: "$",
-  AED: "د.إ",
+  AED: "AED",
   AFN: "؋",
   ALL: "L",
   AMD: "֏",
