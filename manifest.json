@@ -1,51 +1,60 @@
 {
-    "manifest_version": 3,
-    "name": "Steam Currency Converter",
-    "description": "Steam Currency Converter!",
-    "version": "0.9.81",
-    "permissions": ["storage"],
-    "icons": {
-        "16": "icons/icon16.png",
-        "32": "icons/icon32.png",
-        "48": "icons/icon48.png",
-        "128": "icons/icon128.png"
-    },
-    "action": {
-        "default_popup": "index.html",
-        "default_icon": "icons/icon128.png"
-    },
-    "background": {
-        "service_worker": "background.js",
-        "type": "module"
-    },
-    "content_scripts": [
-        {
-            "matches": ["*://store.steampowered.com/*", "*://steamcommunity.com/*"],
-            "exclude_matches": [
-                "*://store.steampowered.com/login/*",
-                "*://store.steampowered.com/join/*",
-                "*://steamcommunity.com/login/*",
-                "*://checkout.steampowered.com/*"
-            ],
+  "manifest_version": 3,
+  "name": "Steam Currency Converter",
+  "description": "Steam Currency Converter!",
+  "version": "1.0.0",
+  "permissions": ["storage"],
+  "icons": {
+    "16": "src/assets/icons/icon16.png",
+    "32": "src/assets/icons/icon32.png",
+    "48": "src/assets/icons/icon48.png",
+    "128": "src/assets/icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "./src/pages/index.html",
+    "default_icon": "src/assets/icons/icon128.png"
+  },
+  "background": {
+    "service_worker": "./src/background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://store.steampowered.com/*", "*://steamcommunity.com/*"],
+      "exclude_matches": [
+        "*://store.steampowered.com/login/*",
+        "*://store.steampowered.com/join/*",
+        "*://store.steampowered.com/logout/*",
+        "*://steamcommunity.com/logout/*",
+        "*://steamcommunity.com/login/*",
+        "*://checkout.steampowered.com/*"
+      ],
 
-            "js": [
-                "./utils/api.js",
-                "./utils/locales.js",
-                "./utils/globals.js",
-                "./utils/observers.js",
-                "./utils/helpers.js",
-                "./utils/price.js",
-                "./scripts/store.script.js"
-            ],
-            "css": ["./styles/store.style.css"],
-            "run_at": "document_end"
-        }
-    ],
-    "web_accessible_resources": [
-        {
-            "resources": ["assets/*"],
-            "matches": ["*://store.steampowered.com/*", "*://steamcommunity.com/*"]
-        }
-    ],
-    "host_permissions": ["https://store.steampowered.com/*"]
+      "js": [
+        "./src/utils/api.js",
+        "./src/data/currencies.js",
+        "./src/data/locales.js",
+        "./src/data/constants.js",
+        "./src/data/globals.js",
+        "./src/data/selectors.js",
+        "./src/utils/observers.js",
+        "./src/utils/helpers.js",
+        "./src/utils/price.js",
+        "./src/utils/dom.js",
+        "./src/utils/parsers.js",
+        "./src/scripts/store.script.js",
+        "./src/scripts/init.script.js",
+        "./src/scripts/changelog.script.js"
+      ],
+      "css": ["./src/pages/styles/store.style.css"],
+      "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["src/assets/*"],
+      "matches": ["*://store.steampowered.com/*", "*://steamcommunity.com/*"]
+    }
+  ],
+  "host_permissions": ["https://store.steampowered.com/*"]
 }

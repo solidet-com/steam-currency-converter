@@ -1,47 +1,7 @@
-// Mutation Observers
-const observers = [];
+const GENERAL_PRICE_CONTAINER = ".StoreSalePriceWidgetContainer";
 
-const INVENTORY_TIMEOUT_DELAY = 500;
-const NO_DELAY = 0;
-
-const TIME_KEY = {
-  ALL: "ALL",
-  TRY: "TRY",
-  ARS: "ARS",
-};
-
-const DAY_IN_MS = 1000 * 60 * 60 * 24;
-const HOUR_IN_MS = 1000 * 60 * 60;
-
-let converterActive;
-let currencyRate;
-let currencyKey;
-let tax;
-
-const INTERVALS = [
-  {
-    timeKey: TIME_KEY.ALL,
-    value: DAY_IN_MS,
-    callback: handleQueryAll,
-    afterCallbacks: [handleQueryTRY, handleQueryARS],
-  },
-  {
-    timeKey: TIME_KEY.TRY,
-    value: HOUR_IN_MS / 2,
-    callback: handleQueryTRY,
-  },
-  {
-    timeKey: TIME_KEY.ARS,
-    value: HOUR_IN_MS,
-    callback: handleQueryARS
-  }
-];
-
-
-const GENERAL_PRICE_CONTAINER= ".StoreSalePriceWidgetContainer"
-
-const NEW_DISCOUNT_PRICE="._1EKGZBnKFWOr3RqVdnLMRN"
-const NEW_FINAL_PRICE=".Wh0L8EnwsPV_8VAu8TOYr"
+const NEW_DISCOUNT_PRICE = "._1EKGZBnKFWOr3RqVdnLMRN";
+const NEW_FINAL_PRICE = ".Wh0L8EnwsPV_8VAu8TOYr";
 
 const GAME_PAGE_PRICE = ".game_purchase_price";
 const PRICE_WO_REGIONAL_EXT =
@@ -67,6 +27,7 @@ const MONTHLY_SUB_OPTION_PRICE =
   ".game_area_purchase_game_dropdown_menu_item_text";
 const EA_PLAY_SERVICE_PRICE =
   ".salesectionsubscription_PriceDisplay_3Ri16.PriceDisplay";
+const EA_PLAY_2 = ".PriceDisplay";
 const SUB_INFO_PRICE = ".updateSubscriptionOptionPrice";
 const EA_DEFAULT_SUB_PRICE = ".game_area_purchase_game_dropdown_selection span";
 
@@ -109,8 +70,12 @@ const ITEM_TEST =
 const WALLET_BALANCE = "#header_wallet_balance";
 const MARKET_BALANCE = "#marketWalletBalanceAmount";
 
+/* -- HARDWARE PRODUCTS SELECTORS -- */
+const HARDWARE_PRICE = ".bbcode_price_final";
+
 const COMMON_SELECTORS = [
   //GENERAL_PRICE_CONTAINER,
+  EA_PLAY_2,
   NEW_DISCOUNT_PRICE,
   NEW_FINAL_PRICE,
   DISCOUNT_PRICE,
@@ -149,6 +114,7 @@ const COMMON_SELECTORS = [
   MEDIAN_SALE_PRICE,
   ITEM_TEST,
   EA_DEFAULT_SUB_PRICE,
+  HARDWARE_PRICE,
 ];
 
 const TAX_IGNORED_SELECTORS = [

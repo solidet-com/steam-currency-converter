@@ -147,6 +147,7 @@ input:checked + .slider:before {
 }
 
 body {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -156,7 +157,6 @@ body {
   font-family: Poppins, sans-serif;
   min-width: 280px;
   margin-bottom: 10px;
-  max-width: 300px;
   max-height: 500px;
 }
 
@@ -249,11 +249,7 @@ option:disabled {
   align-items: center;
 }
 
-#alert {
-  transition: all 0.2s ease-in-out;
-}
-
-body:has(select:hover) #alert {
+body:has(#convert-from:hover) #alert {
   opacity: 1 !important;
 }
 
@@ -298,4 +294,21 @@ label[for="tax-input"] {
   padding: 0 12px;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
+}
+
+.github-button {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.8rem;
+  margin-top: 4px;
+  background-color: inherit;
+  fill: #858592;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.github-button:hover {
+  fill: #fff;
 }

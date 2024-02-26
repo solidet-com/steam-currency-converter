@@ -1,0 +1,47 @@
+.deck-status-icon {
+  position: absolute;
+  top: -3px;
+  right: -3px; /* Position the icon at the top-right corner */
+  z-index: 14;
+  width: 37px !important;
+}
+
+.deck-status-icon[data-ds-deck-tier="unsupported"],
+.deck-status-icon[data-ds-deck-tier="unknown"] {
+  filter: contrast(10);
+}
+.deck-status-icon[data-ds-deck-tier="verified"] {
+  filter: contrast(1.25);
+}
+.deck-status-icon[data-ds-deck-tier="playable"] {
+  filter: contrast(1.8);
+}
+
+.vertical-line {
+  background-color: transparent; /* Set the background color to transparent */
+  width: 4px;
+  height: 100%;
+  position: absolute;
+  z-index: 11;
+  left: 0;
+}
+
+.deck-status-icon.on-list {
+  position: absolute;
+  width: 24px !important;
+  height: 24px;
+  top: 10.5px;
+  left: -16px;
+}
+
+.deck-status-icon.on-tab-list {
+  position: initial;
+  width: 22px !important;
+  height: 22px;
+  display: inline;
+  vertical-align: bottom;
+}
+
+.gameslistitems_PerfectRibbon_1uKlf {
+  left: 0px !important;
+}
