@@ -7,7 +7,7 @@ const GAME_PAGE_PRICE = ".game_purchase_price";
 const PRICE_WO_REGIONAL_EXT =
   ".game_purchase_price > *:not(.es_regional_container)";
 const DISCOUNT_PRICE =
-  ".discount_prices > *:not(.discount_final_price.your_price)";
+  ".discount_prices > *:not(.discount_final_price.your_price):not(.es_regional_container)";
 const YOUR_PRICE =
   ".discount_final_price:has(.your_price_label) > div:not(:nth-of-type(1))";
 const CART_ITEM_PRICE = ".cart_item_price .price";
