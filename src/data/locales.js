@@ -267,7 +267,7 @@ const BASE_CURRENCIES = [
       places: 2,
       hidePlacesWhenZero: false,
       symbolFormat: "₺",
-      thousand: "",
+      thousand: ".",
       decimal: ",",
       right: false,
     },

@@ -15,10 +15,11 @@ function getCurrencyFormat(currencyKey) {
   return currency?.format || defaultFormat;
 }
 
-function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+function numberWithCommas(x, { thousandSeparator, decimalSeparator }) {
+  let parts = x.toString().split(".");
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, thousandSeparator);
+  return parts.join(decimalSeparator);
 }
-
 function logger(message) {
   console.log(
     `%c[Steam Currency Converter]: %c${message}`,
@@ -26,6 +27,8 @@ function logger(message) {
     "color: #f36f63;"
   );
 }
+
+
 
 function escapeRegExp(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
@@ -58,3 +61,4 @@ async function handleBaseCurrencyKey() {
     await chrome.storage.local.set({ baseStoreCurrency: baseCurrencyKey });
   }
 }
+

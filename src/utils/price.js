@@ -6,9 +6,12 @@ function convertToLocalCurrency(basePrice, applyTax = true) {
 
     const symbol =
       currencyFormat?.symbolFormat || allCurrencies[targetCurrencyKey];
-
+      
     let modifiedNumber = numberWithCommas(
-      targetPrice.toFixed(currencyFormat.places)
+      targetPrice.toFixed(currencyFormat.places),{
+        thousandSeparator: currencyFormat.thousand,
+        decimalSeparator: currencyFormat.decimal
+      }
     );
     if (currencyFormat?.right) {
       return modifiedNumber + symbol;

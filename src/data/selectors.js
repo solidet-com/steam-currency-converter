@@ -19,7 +19,9 @@ const MORE_LIKE_THIS_PRICE = "a.small_cap > h5 ";
 const SIMILIAR_GAME_PRICE = ".similar_grid_price.price > .regular_price.price";
 const HIGHLIGHT_GAME_PRICE = ".highlight_description .regular_price.price";
 const IN_GAME_ITEM_PRICE = ".item_def_price";
-
+const NEW_CART_PRICE = "._2WBvzE2CywKDLD0QTnbmUE";
+const NEW_CART_DISCOUNT = "._3h9iQSuChRQXyzpsu2ip8m.StoreOriginalPrice";
+const NEW_CART_CHECKOUT_TOTAL = "._2WLaY5TxjBGVyuWe_6KS3N";
 /* -- SUBSCRIPTION SELECTORS -- */
 const MONTHLY_SUB_PRICE =
   "#add_to_cart_2d5d14f95af035cbd8437948de61f94c_selected_text";
@@ -68,6 +70,7 @@ const ITEM_TEST =
 /* -- BALANCE SELECTORS -- */
 
 const WALLET_BALANCE = "#header_wallet_balance";
+const PENDING_MARKET_BALANCE = "#header_wallet_balance>span";
 const MARKET_BALANCE = "#marketWalletBalanceAmount";
 
 /* -- HARDWARE PRODUCTS SELECTORS -- */
@@ -115,6 +118,10 @@ const COMMON_SELECTORS = [
   ITEM_TEST,
   EA_DEFAULT_SUB_PRICE,
   HARDWARE_PRICE,
+  NEW_CART_PRICE,
+  NEW_CART_DISCOUNT,
+  NEW_CART_CHECKOUT_TOTAL,
+  PENDING_MARKET_BALANCE
 ];
 
 const TAX_IGNORED_SELECTORS = [
@@ -129,3 +136,4 @@ const TAX_IGNORED_SELECTORS = [
   MEDIAN_SALE_PRICE,
   INVENTORY_ITEM_PRICE,
 ];
+

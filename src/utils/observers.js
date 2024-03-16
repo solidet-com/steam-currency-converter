@@ -11,8 +11,8 @@ function handleContentMutation(mutationsList) {
           if (newItems.length > 0) {
             newItems.forEach((item) => {
               let timeout = 0;
-              if (window.location.href.match("/inventory")) {
-                timeout = 500;
+              if (window.location.href.match(/\/(inventory|cart)/)) {
+                timeout = 600;
               }
               setTimeout(() => {
                 initItem(item);
