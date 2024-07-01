@@ -84,3 +84,4 @@ async function prepareData() {
 }
 
 initCurrency().then(prepareData).then(initScript);
+

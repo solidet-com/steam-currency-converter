@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Steam Currency Converter",
   "description": "Seamlessly Convert Steam Prices to Local Currency!",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "permissions": ["storage"],
   "icons": {
     "16": "src/assets/icons/icon16.png",
@@ -50,7 +50,8 @@
         "./src/scripts/changelog.script.js"
       ],
       "css": ["./src/pages/styles/store.style.css"],
-      "run_at": "document_end"
+      "run_at": "document_end",
+      "all_frames": true
     }
   ],
   "web_accessible_resources": [
