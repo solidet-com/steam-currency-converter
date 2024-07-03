@@ -90,3 +90,12 @@ chrome.runtime.onInstalled.addListener(async function (details) {
     }
   }
 });
+chrome.commands.onCommand.addListener(async (command) => {
+  if (command === "toggle-prices") {
+    let { converterActive } = await chrome.storage.local.get([
+      "converterActive",
+    ]);
+    chrome.storage.local.set({ converterActive: !converterActive });
+  }
+});
+

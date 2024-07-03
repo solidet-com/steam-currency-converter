@@ -440,3 +440,11 @@ function getCurrencyByCountryCode(countryCode) {
   return [currencyKey, isDefaultValue];
 }
 
+async function isDataSet() {
+  const [baseStoreCurrency, currency] = await Promise.all([
+    getStoreValue("baseStoreCurrency"),
+    getStoreValue("currency"),
+  ]);
+  return !!(baseStoreCurrency && Object.keys(currency.rates).length);
+}
+

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Steam Currency Converter",
   "description": "Seamlessly Convert Steam Prices to Local Currency!",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "permissions": ["storage"],
   "icons": {
     "16": "src/assets/icons/icon16.png",
@@ -57,5 +57,12 @@
       "matches": ["*://store.steampowered.com/*", "*://steamcommunity.com/*"]
     }
   ],
+  "commands": {
+    "toggle-prices": {
+      "suggested_key": "Alt+Shift+Q",
+      "description": "Toggle between currencies"
+    }
+  },
   "host_permissions": ["https://store.steampowered.com/*"]
 }
+

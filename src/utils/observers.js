@@ -70,9 +70,3 @@ async function handleStorageMutation(changes, namespace) {
     }
   }
 }
-
-document.addEventListener("keydown", function (event) {
-  if (event.shiftKey && event.altKey && event.key === "Q") {
-    chrome.storage.local.set({ converterActive: !converterActive });
-  }
-});

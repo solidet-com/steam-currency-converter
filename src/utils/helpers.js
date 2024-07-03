@@ -28,8 +28,6 @@ function logger(message) {
   );
 }
 
-
-
 function escapeRegExp(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 }
@@ -60,5 +58,23 @@ async function handleBaseCurrencyKey() {
     targetCurrencyRate = currencyData.rates[targetCurrencyKey] || 1;
     await chrome.storage.local.set({ baseStoreCurrency: baseCurrencyKey });
   }
+}
+const wait = (delay = 0) =>
+  new Promise((resolve) => setTimeout(resolve, delay));
+
+function isIframe() {
+  return window != window.top;
+}
+
+async function handleIframe(timeout = 0) {
+  return new Promise(async (resolve, reject) => {
+    let elapsedTime = 0;
+    while (!(await isDataSet()) && elapsedTime < timeout) {
+      await wait(500);
+      elapsedTime += 500;
+    }
+    if (elapsedTime >= timeout) reject("IFrame script ran before data was initialized. Aborting IFrame conversion.");
+    resolve();
+  });
 }
 

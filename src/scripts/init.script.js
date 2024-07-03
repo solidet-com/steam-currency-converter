@@ -3,7 +3,7 @@ async function initScript() {
   startObservers();
 
   const showChangelog = await getStoreValue("showChangelog");
-  if (showChangelog) {
+  if (showChangelog && !isIframe()) {
     showChangelogModal(
       "Steam Currency Converter v1.0.0!",
       `<p>Thank you for using Steam Currency Converter. This extension will help you to see the price of the games in your local currency.</p>
@@ -34,6 +34,8 @@ function initItems(onCurrencyChange = false) {
 async function initCurrency() {
   const targetCurrency = await getStoreValue("targetCurrency");
   baseCurrencyKey = await getStoreValue("baseStoreCurrency");
+  if (isIframe()) return await handleIframe();
+
   country = getUserCountry();
 
   await handleBaseCurrencyKey();
@@ -82,6 +84,5 @@ async function prepareData() {
 
   targetCurrencyRate = currencyData.rates[targetCurrencyKey] || 1;
 }
-
 initCurrency().then(prepareData).then(initScript);
 
