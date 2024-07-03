@@ -66,7 +66,7 @@ function isIframe() {
   return window != window.top;
 }
 
-async function handleIframe(timeout = 0) {
+async function handleIframe(timeout = 5000) {
   return new Promise(async (resolve, reject) => {
     let elapsedTime = 0;
     while (!(await isDataSet()) && elapsedTime < timeout) {
