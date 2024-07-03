@@ -76,7 +76,7 @@ const MARKET_BALANCE = "#marketWalletBalanceAmount";
 /* -- HARDWARE PRODUCTS SELECTORS -- */
 const HARDWARE_PRICE = ".bbcode_price_final";
 
-const ES_EACH_BOX= ".es_each_box"
+const ES_EACH_PRICE= ".es_each_price"
 
 const SLIDING_EXPLORE_GAME_ORIGINAL_PRICE = "._1_ZF5HUlbC9h0a-lqycqb2"
 
@@ -126,7 +126,7 @@ const COMMON_SELECTORS = [
   NEW_CART_DISCOUNT,
   NEW_CART_CHECKOUT_TOTAL,
   PENDING_MARKET_BALANCE,
-  ES_EACH_BOX,
+  ES_EACH_PRICE,
   SLIDING_EXPLORE_GAME_ORIGINAL_PRICE
 ];
 
