@@ -95,6 +95,7 @@ const cisCurrencies = {
   UZS: "soʻm",
   UAH: "₴",
   RUB: "pуб.",
+  UAH: "₴",
 };
 
 const euCurrencies = {
@@ -125,7 +126,7 @@ const euCurrencies = {
 
 const naCurrencies = {
   USD: "$",
-  CAD: "CA$",
+  CAD: "CDN$",
   BMD: "BMD$",
   MXN: "Mex$",
 };
@@ -201,7 +202,7 @@ const allCurrencies = {
   BWP: "P",
   BYN: "Br",
   BZD: "BZ$",
-  CAD: "CA$",
+  CAD: "CDN$",
   CDF: "FC",
   CHF: "CHF",
   CLP: "CLP$",
