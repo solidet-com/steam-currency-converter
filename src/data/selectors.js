@@ -3,6 +3,10 @@ const GENERAL_PRICE_CONTAINER = ".StoreSalePriceWidgetContainer";
 const NEW_DISCOUNT_PRICE = "._1EKGZBnKFWOr3RqVdnLMRN";
 const NEW_FINAL_PRICE = ".Wh0L8EnwsPV_8VAu8TOYr";
 
+//07-24 new htmls
+const NEW_DISCOUNT_PRICE_2 = "._3fFFsvII7Y2KXNLDk_krOW";
+const NEW_FINAL_PRICE_2 = "._3j4dI1yA7cRfCvK8h406OB";
+
 const GAME_PAGE_PRICE = ".game_purchase_price";
 const PRICE_WO_REGIONAL_EXT =
   ".game_purchase_price > *:not(.es_regional_container)";
@@ -127,7 +131,9 @@ const COMMON_SELECTORS = [
   NEW_CART_CHECKOUT_TOTAL,
   PENDING_MARKET_BALANCE,
   ES_EACH_PRICE,
-  SLIDING_EXPLORE_GAME_ORIGINAL_PRICE
+  SLIDING_EXPLORE_GAME_ORIGINAL_PRICE,
+  NEW_DISCOUNT_PRICE_2,
+  NEW_FINAL_PRICE_2
 ];
 
 const TAX_IGNORED_SELECTORS = [
