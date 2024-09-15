@@ -1,9 +1,27 @@
-function initItem(item, update = false) {
+function resetItem(item) {
+  if (isItemConverted(item)) {
+    const memory = item.getAttribute("data-ext-price-mem");
+
+    const textNode = getTextNodes(item)[0];
+    textNode.textContent = memory;
+
+    item.removeAttribute("data-ext-converted");
+    item.removeAttribute("data-ext-price-mem");
+  }
+}
+
+function initItem(item, { forceUpdate = false } = {}) {
+  if (isItemConverted(item) && !forceUpdate) {
+    return;
+  }
+  if (forceUpdate) {
+    resetItem(item);
+  }
+
   if (baseCurrencyKey == targetCurrencyKey) {
     targetCurrencyRate = 1;
   }
 
-  if (item.getAttribute("data-ext-converted") && !update) return;
   const textNode = getTextNodes(item)[0];
 
   let originalBasePriceText = textNode.textContent.trim();
@@ -28,8 +46,8 @@ function initItem(item, update = false) {
   const escapedCurrencySymbol = escapeRegExp(currencySymbol);
   const escapedBaseCurrencyKey = escapeRegExp(baseCurrencyKey);
 
-  const symbolAsPrefixRegex = `(?:${escapedCurrencySymbol}\\s*(-?\\d+[,.]?\\d*)\\s*(?:${escapedBaseCurrencyKey})?`;
-  const symbolAsSuffixRegex = `(\\d+[,.]?\\d*)\\s*(?:${escapedBaseCurrencyKey})?\\s*${escapedCurrencySymbol})`;
+  const symbolAsPrefixRegex = `${escapedCurrencySymbol}\\s*(-?[\\d-]+[,.]?[\\d-]*)\\s*(?:${escapedBaseCurrencyKey})?`;
+  const symbolAsSuffixRegex = `([\\d-]+[,.]?[\\d-]*)\\s*(?:${escapedBaseCurrencyKey})?\\s*${escapedCurrencySymbol}`;
 
   const regexPattern = new RegExp(
     `${symbolAsPrefixRegex}|${symbolAsSuffixRegex}`,
@@ -38,7 +56,9 @@ function initItem(item, update = false) {
 
   let matches = originalBasePriceText.matchAll(regexPattern);
   for (const match of matches) {
-    let originalBasePrice = parseFloat(match[1] || match[2]);
+    let originalBasePrice = parseFloat(
+      match[1]?.replace(/-/g, "0") || match[2]?.replace(/-/g, "0")
+    );
     let basePriceWithCurrency = match[0];
 
     item.setAttribute("data-ext-converted", false);
@@ -69,13 +89,7 @@ function getItems(node, ...selectors) {
 }
 
 async function updateItems(storedConverter) {
-  if (storedConverter) {
-    await chrome.storage.local.set({ converterActive: false });
-  }
-  initItems(true);
-  if (storedConverter) {
-    await chrome.storage.local.set({ converterActive: true });
-  }
+  initItems({ forceUpdate: true });
 }
 
 function getTextNodes(
@@ -107,6 +121,8 @@ function togglePrice(item) {
   if (item.getAttribute("data-ext-converted") == `${converterActive}`) return;
 
   const originalPriceText = item.getAttribute("data-ext-price-mem");
+  if (!originalPriceText) return;
+
   const priceTextNode = getTextNodes(item)[0];
 
   item.setAttribute("data-ext-converted", converterActive);

@@ -66,6 +66,10 @@ function isIframe() {
   return window != window.top;
 }
 
+function isItemConverted(item) {
+  return item.getAttribute("data-ext-converted") == "true";
+}
+
 async function handleIframe(timeout = 5000) {
   return new Promise(async (resolve, reject) => {
     let elapsedTime = 0;
@@ -73,8 +77,10 @@ async function handleIframe(timeout = 5000) {
       await wait(500);
       elapsedTime += 500;
     }
-    if (elapsedTime >= timeout) reject("IFrame script ran before data was initialized. Aborting IFrame conversion.");
+    if (elapsedTime >= timeout)
+      reject(
+        "IFrame script ran before data was initialized. Aborting IFrame conversion."
+      );
     resolve();
   });
 }
-

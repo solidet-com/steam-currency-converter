@@ -23,10 +23,11 @@ async function initScript() {
   }
 }
 
-function initItems(onCurrencyChange = false) {
+function initItems({ forceUpdate = false } = {}) {
   let newItems = getItems(document, ...COMMON_SELECTORS);
+
   newItems?.forEach((item) => {
-    initItem(item, onCurrencyChange);
+    initItem(item, { forceUpdate });
     togglePrice(item);
   });
 }
@@ -85,4 +86,3 @@ async function prepareData() {
   targetCurrencyRate = currencyData.rates[targetCurrencyKey] || 1;
 }
 initCurrency().then(prepareData).then(initScript);
-
