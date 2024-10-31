@@ -13,16 +13,17 @@ const INTERVALS = [
     timeKey: TIME_KEY.ALL,
     value: DAY_IN_MS,
     callback: updateRatesALL,
-    afterCallbacks: [updateRatesTRY, updateRatesARS],
+    afterCallbacks: [updateRatesTRY],
   },
   {
     timeKey: TIME_KEY.TRY,
     value: HOUR_IN_MS / 2,
     callback: updateRatesTRY,
   },
-  {
-    timeKey: TIME_KEY.ARS,
-    value: HOUR_IN_MS,
-    callback: updateRatesARS,
-  },
+  // TODO: Find new source for ARS, other one blocked with cloudflare
+  // {
+  //   timeKey: TIME_KEY.ARS,
+  //   value: HOUR_IN_MS,
+  //   callback: updateRatesARS,
+  // },
 ];
