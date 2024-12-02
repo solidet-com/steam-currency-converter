@@ -28,8 +28,8 @@ function initItem(item, update = false) {
   const escapedCurrencySymbol = escapeRegExp(currencySymbol);
   const escapedBaseCurrencyKey = escapeRegExp(baseCurrencyKey);
 
-  const symbolAsPrefixRegex = `(?:${escapedCurrencySymbol}\\s*(-?\\d+[,.]?\\d*)\\s*(?:${escapedBaseCurrencyKey})?`;
-  const symbolAsSuffixRegex = `(\\d+[,.]?\\d*)\\s*(?:${escapedBaseCurrencyKey})?\\s*${escapedCurrencySymbol})`;
+  const symbolAsPrefixRegex = `${escapedCurrencySymbol}\\s*(-?[\\d-]+[,.]?[\\d-]*)\\s*(?:${escapedBaseCurrencyKey})?`;
+  const symbolAsSuffixRegex = `([\\d-]+[,.]?[\\d-]*)\\s*(?:${escapedBaseCurrencyKey})?\\s*${escapedCurrencySymbol}`;
 
   const regexPattern = new RegExp(
     `${symbolAsPrefixRegex}|${symbolAsSuffixRegex}`,
@@ -38,7 +38,9 @@ function initItem(item, update = false) {
 
   let matches = originalBasePriceText.matchAll(regexPattern);
   for (const match of matches) {
-    let originalBasePrice = parseFloat(match[1] || match[2]);
+    let originalBasePrice = parseFloat(
+      match[1]?.replace(/-/g, "0") || match[2]?.replace(/-/g, "0")
+    );
     let basePriceWithCurrency = match[0];
 
     item.setAttribute("data-ext-converted", false);
