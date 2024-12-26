@@ -94,7 +94,7 @@ const cisCurrencies = {
   TMT: "T",
   UZS: "soʻm",
   UAH: "₴",
-  RUB: "pуб.",
+  RUB: "руб.",
   UAH: "₴",
 };
 
@@ -294,7 +294,7 @@ const allCurrencies = {
   QAR: "QR",
   RON: "lei",
   RSD: "Дин.",
-  RUB: "pуб.",
+  RUB: "руб.",
   RWF: "RF",
   SAR: "SR",
   SBD: "SI$",
