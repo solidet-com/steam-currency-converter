@@ -3,7 +3,9 @@
   "name": "Steam Currency Converter",
   "description": "Seamlessly Convert Steam Prices to Local Currency!",
   "version": "1.0.47",
-  "permissions": ["storage"],
+  "permissions": [
+    "storage"
+  ],
   "icons": {
     "16": "src/assets/icons/icon16.png",
     "32": "src/assets/icons/icon32.png",
@@ -15,7 +17,9 @@
     "default_icon": "src/assets/icons/icon128.png"
   },
   "background": {
-    "scripts": ["./src/background.js"]
+    "scripts": [
+      "./src/background.js"
+    ]
   },
   "browser_specific_settings": {
     "gecko": {
@@ -24,7 +28,10 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://store.steampowered.com/*", "*://steamcommunity.com/*"],
+      "matches": [
+        "*://store.steampowered.com/*",
+        "*://steamcommunity.com/*"
+      ],
       "exclude_matches": [
         "*://store.steampowered.com/login/*",
         "*://store.steampowered.com/join/*",
@@ -49,16 +56,25 @@
         "./src/scripts/init.script.js",
         "./src/scripts/changelog.script.js"
       ],
-      "css": ["./src/pages/styles/store.style.css"],
+      "css": [
+        "./src/pages/styles/store.style.css"
+      ],
       "run_at": "document_end",
       "all_frames": true
     }
   ],
   "web_accessible_resources": [
     {
-      "resources": ["src/assets/*"],
-      "matches": ["*://store.steampowered.com/*", "*://steamcommunity.com/*"]
+      "resources": [
+        "src/assets/*"
+      ],
+      "matches": [
+        "*://store.steampowered.com/*",
+        "*://steamcommunity.com/*"
+      ]
     }
   ],
-  "host_permissions": ["https://store.steampowered.com/*"]
+  "host_permissions": [
+    "https://store.steampowered.com/*"
+  ]
 }
