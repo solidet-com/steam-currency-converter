@@ -60,7 +60,8 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "src/assets/*"
+        "src/assets/*",
+        "src/utils/resourceful.js"
       ],
       "matches": [
         "*://store.steampowered.com/*",

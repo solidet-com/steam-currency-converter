@@ -1,3 +1,39 @@
+function handlePageEvent(event) {
+  if (event.source !== window) return;
+  const { type, data } = event.data;
+
+  if (type?.startsWith("steamcc-from-page")) {
+    const [_prefix, eventName] = type.split("steamcc-from-page:");
+    console.log(eventName);
+
+    switch (eventName) {
+      case PAGE_EVENTS.GET_PAGE_VAR:
+        console.log("get-page-var");
+        console.log(data);
+        return data;
+      case PAGE_EVENTS.SCRIPT_LOADED:
+        logger("Resourceful script loaded");
+        isResourcefulScriptLoaded = true;
+        return data;
+    }
+  }
+}
+
+async function waitUntilInjection() {
+  while (!isResourcefulScriptLoaded) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+}
+
+function getDispatchPayload(event, payload) {
+  return {
+    detail: {
+      type: `steamcc-to-page:${event}`,
+      data: payload,
+    },
+  };
+}
+
 function getCurrencyFormat(currencyKey) {
   const defaultFormat = {
     places: 2,
@@ -59,6 +95,11 @@ async function handleBaseCurrencyKey() {
     await chrome.storage.local.set({ baseStoreCurrency: baseCurrencyKey });
   }
 }
+const get = (obj, path) => {
+  const parts = path.split(".");
+  return parts.reduce((acc, part) => acc[part], obj);
+};
+
 const wait = (delay = 0) =>
   new Promise((resolve) => setTimeout(resolve, delay));
 
@@ -73,7 +114,10 @@ async function handleIframe(timeout = 5000) {
       await wait(500);
       elapsedTime += 500;
     }
-    if (elapsedTime >= timeout) reject("IFrame script ran before data was initialized. Aborting IFrame conversion.");
+    if (elapsedTime >= timeout)
+      reject(
+        "IFrame script ran before data was initialized. Aborting IFrame conversion."
+      );
     resolve();
   });
 }

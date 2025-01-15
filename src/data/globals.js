@@ -7,6 +7,7 @@ let targetCurrencyKey;
 let tax;
 let baseCurrencyKey;
 let country;
+let isResourcefulScriptLoaded;
 
 const INTERVALS = [
   {
