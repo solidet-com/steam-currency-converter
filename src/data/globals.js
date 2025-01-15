@@ -9,6 +9,8 @@ let baseCurrencyKey;
 let country;
 let isResourcefulScriptLoaded;
 
+const RESOURCE_MAP = {};
+
 const INTERVALS = [
   {
     timeKey: TIME_KEY.ALL,
@@ -28,3 +30,4 @@ const INTERVALS = [
   //   callback: updateRatesARS,
   // },
 ];
+

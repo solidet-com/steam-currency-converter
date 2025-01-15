@@ -22,7 +22,10 @@ window.addEventListener(EVENT_PREFIX_TO_PAGE, (event) => {
         window.postMessage(
           {
             type: `${EVENT_PREFIX_FROM_PAGE}:${EVENTS.GET_PAGE_VAR}`,
-            data: JSON.stringify(get(window, data.key)),
+            data: {
+              resourceId: data.resourceId,
+              payload: JSON.stringify(get(window, data.key)),
+            },
           },
           "*"
         );

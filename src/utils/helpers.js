@@ -4,23 +4,52 @@ function handlePageEvent(event) {
 
   if (type?.startsWith("steamcc-from-page")) {
     const [_prefix, eventName] = type.split("steamcc-from-page:");
-    console.log(eventName);
 
     switch (eventName) {
       case PAGE_EVENTS.GET_PAGE_VAR:
-        console.log("get-page-var");
-        console.log(data);
-        return data;
+        RESOURCE_MAP[data.resourceId].completed = true;
+        RESOURCE_MAP[data.resourceId].data = data.payload;
+        return true;
       case PAGE_EVENTS.SCRIPT_LOADED:
-        logger("Resourceful script loaded");
         isResourcefulScriptLoaded = true;
-        return data;
+        logger("Resourceful script loaded");
+        return true;
     }
   }
 }
 
 async function waitUntilInjection() {
   while (!isResourcefulScriptLoaded) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  }
+}
+
+async function getPageVariable(key) {
+  const resourceId = `${PAGE_EVENTS.GET_PAGE_VAR}:${key}`;
+
+  RESOURCE_MAP[resourceId] = {
+    completed: false,
+  };
+
+  dispatchPageEvent(PAGE_EVENTS.GET_PAGE_VAR, {
+    resourceId,
+    key,
+  });
+
+  await waitUntilResourceIsFetched(resourceId);
+
+  if (!RESOURCE_MAP[resourceId].completed || !RESOURCE_MAP[resourceId].data)
+    return null;
+
+  return JSON.parse(RESOURCE_MAP[resourceId].data);
+}
+
+async function waitUntilResourceIsFetched(resourceId, timeout = 5000) {
+  const startTime = Date.now();
+  while (!RESOURCE_MAP[resourceId].completed) {
+    if (Date.now() - startTime > timeout) {
+      return false;
+    }
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
 }

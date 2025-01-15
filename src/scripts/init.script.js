@@ -48,9 +48,12 @@ function initItems(onCurrencyChange = false) {
 async function initCurrency() {
   await waitUntilInjection();
 
-  dispatchPageEvent(PAGE_EVENTS.GET_PAGE_VAR, {
-    key: "SSR.loaderData",
-  });
+  const [loaderData, UserConfig] = await Promise.all([
+    getPageVariable("SSR.loaderData"),
+    getPageVariable("UserConfig"),
+  ]);
+
+  console.log(loaderData, UserConfig);
 
   const targetCurrency = await getStoreValue("targetCurrency");
   baseCurrencyKey = await getStoreValue("baseStoreCurrency");
