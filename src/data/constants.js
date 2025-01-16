@@ -7,6 +7,11 @@ const TIME_KEY = {
   ARS: "ARS",
 };
 
+const PAGE_EVENTS = {
+  GET_PAGE_VAR: "get-page-var",
+  SCRIPT_LOADED: "script-loaded",
+};
+
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 const HOUR_IN_MS = 1000 * 60 * 60;
 
