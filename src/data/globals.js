@@ -7,7 +7,13 @@ let targetCurrencyKey;
 let tax;
 let baseCurrencyKey;
 let country;
+let isResourcefulScriptLoaded;
 
+const RESOURCE_MAP = {};
+
+let loaderData
+let UserConfig
+let storeBrowseContext
 const INTERVALS = [
   {
     timeKey: TIME_KEY.ALL,
