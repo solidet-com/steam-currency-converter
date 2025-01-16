@@ -1,9 +1,3 @@
-function dispatchPageEvent(event, payload) {
-  window.dispatchEvent(
-    new CustomEvent("steamcc-to-page", getDispatchPayload(event, payload))
-  );
-}
-
 async function dispatchBackgroundEvent({ event, payload }) {
   const eventPromise = chrome.runtime.sendMessage({
     event,
@@ -72,4 +66,3 @@ async function getBaseCurrencyBySteamGame() {
 
   return currency;
 }
-
