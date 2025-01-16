@@ -18,7 +18,7 @@ function handlePageEvent(event) {
   }
 }
 
-async function waitUntilInjection() {
+async function waitResourcefulToLoad() {
   while (!isResourcefulScriptLoaded) {
     await new Promise((resolve) => setTimeout(resolve, 100));
   }

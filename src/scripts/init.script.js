@@ -12,6 +12,15 @@ async function injectResourcefulScript() {
   logger("Resourceful script injected");
 }
 
+async function populateResourcefulData(){
+  [loaderData, UserConfig] = await Promise.all([
+    getPageVariable("SSR.loaderData"),
+    getPageVariable("UserConfig"),
+  ]);
+  if(loaderData) storeBrowseContext = loaderData[0]?.storeBrowseContext;
+
+}
+
 async function initScript() {
   initItems();
   startObservers();
@@ -46,15 +55,6 @@ function initItems(onCurrencyChange = false) {
 }
 
 async function initCurrency() {
-  await waitUntilInjection();
-
-  const [loaderData, UserConfig] = await Promise.all([
-    getPageVariable("SSR.loaderData"),
-    getPageVariable("UserConfig"),
-  ]);
-
-  console.log(loaderData, UserConfig);
-
   const targetCurrency = await getStoreValue("targetCurrency");
   baseCurrencyKey = await getStoreValue("baseStoreCurrency");
   if (isIframe()) return await handleIframe();
@@ -107,5 +107,5 @@ async function prepareData() {
 
   targetCurrencyRate = currencyData.rates[targetCurrencyKey] || 1;
 }
-injectResourcefulScript().then(initCurrency).then(prepareData).then(initScript);
+injectResourcefulScript().then(waitResourcefulToLoad).then(populateResourcefulData).then(initCurrency).then(prepareData).then(initScript);
 

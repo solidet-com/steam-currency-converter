@@ -8,7 +8,7 @@ const EVENTS = {
 
 const get = (obj, path) => {
   const parts = path.split(".");
-  return parts.reduce((acc, part) => acc[part], obj);
+  return parts.reduce((acc, part) => acc ? acc[part] : null, obj)
 };
 
 window.addEventListener(EVENT_PREFIX_TO_PAGE, (event) => {
