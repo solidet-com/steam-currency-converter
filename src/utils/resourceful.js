@@ -12,7 +12,7 @@ const get = (obj, path) => {
 };
 
 window.addEventListener(EVENT_PREFIX_TO_PAGE, (event) => {
-  const { type, data } = event.detail;
+  const { type, data } = JSON.parse(event.detail);
 
   if (type?.startsWith(EVENT_PREFIX_TO_PAGE)) {
     const [_prefix, eventName] = type.split(":");

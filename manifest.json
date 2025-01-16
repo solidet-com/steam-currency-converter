@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Steam Currency Converter",
   "description": "Seamlessly Convert Steam Prices to Local Currency!",
-  "version": "1.0.48",
+  "version": "1.0.50",
   "permissions": [
     "storage"
   ],
