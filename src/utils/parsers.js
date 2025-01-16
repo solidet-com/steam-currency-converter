@@ -38,11 +38,9 @@ function getUserCountry() {
 }
 
 function getCommunityCountry() {
-  let country;
-
-  const configElement = document.querySelector("#webui_config, #application_config");
-  if (configElement) {
-    country = JSON.parse(configElement.dataset.config).COUNTRY;
+  const config = document.querySelector("#webui_config, #application_config");
+  if (config) {
+    country = JSON.parse(config.dataset.config).COUNTRY;
   } else if (window.location.hostname === "steamcommunity.com") {
     // This variable is present on market-related pages
     country = getVariableFromDom("g_strCountryCode", "string");
@@ -53,21 +51,17 @@ function getCommunityCountry() {
     );
   }
 
-  country = country || UserConfig?.country_code || storeBrowseContext?.country;
-
   if (!country) {
-    console.warn("Unable to determine the country from the script or fallback data.");
+    console.warn("Script with user store country not found");
   }
-
   logger(`Matched country as "${country}" from community script`);
   return country;
 }
 
-
 async function getStoreCurrency() {
   let currency;
   // Select the price currency meta tag
-  let currencyElement = document.querySelector("#header_wallet_balance") || document.querySelector('.responsive_menu_user_wallet a b') || "";
+  let currencyElement = document.querySelector("#header_wallet_balance") || "";
   if (!currencyElement) {
     currency = await getBaseCurrencyBySteamGame();
   } else {
@@ -85,7 +79,6 @@ async function getStoreCurrency() {
 }
 
 function isUserLoggedIn() {
-  if(UserConfig) return UserConfig.logged_in;
   return document.querySelector("#account_dropdown") ? true : false;
 }
 

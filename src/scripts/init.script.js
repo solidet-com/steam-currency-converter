@@ -1,26 +1,3 @@
-async function injectResourcefulScript() {
-  window.addEventListener("message", handlePageEvent, false);
-
-  var node = document.getElementsByTagName("body")[0];
-  var script = document.createElement("script");
-  script.setAttribute("type", "text/javascript");
-  script.setAttribute(
-    "src",
-    chrome.runtime.getURL("/src/utils/resourceful.js")
-  );
-  node.appendChild(script);
-  logger("Resourceful script injected");
-}
-
-async function populateResourcefulData(){
-  [loaderData, UserConfig] = await Promise.all([
-    getPageVariable("SSR.loaderData"),
-    getPageVariable("UserConfig"),
-  ]);
-  if(loaderData) storeBrowseContext = loaderData[0]?.storeBrowseContext;
-
-}
-
 async function initScript() {
   initItems();
   startObservers();
@@ -107,5 +84,5 @@ async function prepareData() {
 
   targetCurrencyRate = currencyData.rates[targetCurrencyKey] || 1;
 }
-injectResourcefulScript().then(waitResourcefulToLoad).then(populateResourcefulData).then(initCurrency).then(prepareData).then(initScript);
+initCurrency().then(prepareData).then(initScript);
 
