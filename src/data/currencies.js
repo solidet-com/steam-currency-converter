@@ -1,179 +1,3 @@
-const latamCurrencies = {
-  ARS: "AR$",
-  PAB: "B/.",
-  GTQ: "Q",
-  HNL: "L",
-  NIO: "C$",
-  BZD: "BZ$",
-  BOB: "Bs.",
-  GYD: "G$",
-  PYG: "₲",
-  SRD: "Sr$",
-  AWG: "ƒ",
-  BRL: "R$",
-  BSD: "BSD$",
-  CLP: "CLP$",
-  COP: "COL$",
-  CRC: "₡",
-  CUP: "CUP$",
-  DOP: "RD$",
-  FKP: "FKP£",
-  HTG: "G",
-  KHR: "៛",
-  KYD: "KYD$",
-  MVR: "ރ.",
-  UYU: "$U",
-  PEN: "S/.",
-};
-
-const menaCurrencies = {
-  TRY: "₺",
-  BHD: ".د.ب",
-  EGP: "EGP£",
-  IQD: "ع.د",
-  JOD: "JD",
-  LBP: "LBP£",
-  OMR: "﷼",
-  YER: "﷼",
-  DZD: "د.ج",
-  MAD: "د.م.",
-  TND: "د.ت",
-  SDG: "S£",
-  SSP: "SSP£",
-  LYD: "ل.د",
-  ILS: "₪",
-  AED: "AED",
-  AZN: "₼",
-  IRR: "﷼",
-  KWD: "KD",
-  QAR: "QR",
-  SAR: "SR",
-};
-
-const africaCurrencies = {
-  AOA: "Kz",
-  CVE: "CVE$",
-  DJF: "Fdj",
-  ERN: "Nfk",
-  ETB: "Br",
-  GHS: "₵",
-  GMD: "D",
-  GNF: "FG",
-  JMD: "J$",
-  KES: "Ksh",
-  KMF: "CF",
-  LRD: "LRD$",
-  ZAR: "R",
-  LSL: "L",
-  MGA: "Ar",
-  MZN: "MT",
-  NAD: "N$",
-  NGN: "₦",
-};
-
-const sasiaCurrencies = {
-  BDT: "৳",
-  BTN: "Nu.",
-  INR: "₹",
-  NPR: "₨",
-  PKR: "₨",
-  LKR: "රු",
-  BND: "B$",
-  KRW: "₩",
-};
-
-const cisCurrencies = {
-  AMD: "֏",
-  AZN: "₼",
-  BYN: "Br",
-  GEL: "₾",
-  KZT: "₸",
-  KGS: "сом",
-  MDL: "lei",
-  TJS: "ЅМ",
-  TMT: "T",
-  UZS: "soʻm",
-  UAH: "₴",
-  RUB: "руб.",
-  UAH: "₴",
-};
-
-const euCurrencies = {
-  PLN: "zł",
-  DKK: "kr",
-  EUR: "€",
-  BGN: "лв",
-  RON: "lei",
-  ALL: "L",
-  ANG: "ƒ",
-  BAM: "KM",
-  CHF: "CHF",
-  CZK: "Kč",
-  FOK: "kr",
-  GBP: "£",
-  GGP: "GGP£",
-  GIP: "GIP£",
-  HRK: "kn",
-  HUF: "Ft",
-  IMP: "IMP£",
-  ISK: "kr",
-  JEP: "JEP£",
-  MKD: "ден",
-  NOK: "kr",
-  SEK: "kr",
-  RSD: "Дин.",
-};
-
-const naCurrencies = {
-  USD: "$",
-  CAD: "CDN$",
-  BMD: "BMD$",
-  MXN: "Mex$",
-};
-
-const asiaCurrencies = {
-  AFN: "؋",
-  CNY: "¥",
-  HKD: "HK$",
-  IDR: "Rp",
-  JPY: "¥",
-  LAK: "₭",
-  MMK: "Ks",
-  MNT: "₮",
-  MYR: "RM",
-  RMB: "刀币",
-  TWD: "NT$",
-  VND: "₫",
-  THB: "฿",
-  SGD: "S$",
-  PHP: "P",
-  MYR: "RM",
-};
-
-const oceniaCurrencies = {
-  AUD: "A$",
-  NZD: "NZ$",
-  FJD: "FJ$",
-  PGK: "K",
-  SBD: "SI$",
-  TOP: "T$",
-  VUV: "Vt",
-  WST: "WS$",
-  XPF: "₣",
-  KID: "KID$",
-};
-
-const regions = [
-  { name: "LATAM", currencies: latamCurrencies },
-  { name: "MENA", currencies: menaCurrencies },
-  { name: "SASIA", currencies: sasiaCurrencies },
-  { name: "CIS", currencies: cisCurrencies },
-  { name: "EU", currencies: euCurrencies },
-  { name: "NA", currencies: naCurrencies },
-  { name: "ASIA", currencies: asiaCurrencies },
-  { name: "OCENIA", currencies: oceniaCurrencies },
-  { name: "AFRICA", currencies: africaCurrencies },
-];
 
 const allCurrencies = {
   USD: "$",
@@ -294,7 +118,7 @@ const allCurrencies = {
   QAR: "QR",
   RON: "lei",
   RSD: "Дин.",
-  RUB: "руб.",
+  RUB: ["руб.", "руб"],
   RWF: "RF",
   SAR: "SR",
   SBD: "SI$",
@@ -340,3 +164,178 @@ const allCurrencies = {
   ZWL: "Z$",
   USD: "$",
 };
+
+
+const latamCurrencies = {
+  ARS: allCurrencies.ARS,
+  PAB: allCurrencies.PAB,
+  GTQ: allCurrencies.GTQ,
+  HNL: allCurrencies.HNL,
+  NIO: allCurrencies.NIO,
+  BZD: allCurrencies.BZD,
+  BOB: allCurrencies.BOB,
+  GYD: allCurrencies.GYD,
+  PYG: allCurrencies.PYG,
+  SRD: allCurrencies.SRD,
+  AWG: allCurrencies.AWG,
+  BRL: allCurrencies.BRL,
+  BSD: allCurrencies.BSD,
+  CLP: allCurrencies.CLP,
+  COP: allCurrencies.COP,
+  CRC: allCurrencies.CRC,
+  CUP: allCurrencies.CUP,
+  DOP: allCurrencies.DOP,
+  FKP: allCurrencies.FKP,
+  HTG: allCurrencies.HTG,
+  KHR: allCurrencies.KHR,
+  KYD: allCurrencies.KYD,
+  MVR: allCurrencies.MVR,
+  UYU: allCurrencies.UYU,
+  PEN: allCurrencies.PEN
+};
+
+const menaCurrencies = {
+  TRY: allCurrencies.TRY,
+  BHD: allCurrencies.BHD,
+  EGP: allCurrencies.EGP,
+  IQD: allCurrencies.IQD,
+  JOD: allCurrencies.JOD,
+  LBP: allCurrencies.LBP,
+  OMR: allCurrencies.OMR,
+  YER: allCurrencies.YER,
+  DZD: allCurrencies.DZD,
+  MAD: allCurrencies.MAD,
+  TND: allCurrencies.TND,
+  SDG: allCurrencies.SDG,
+  SSP: allCurrencies.SSP,
+  LYD: allCurrencies.LYD,
+  ILS: allCurrencies.ILS,
+  AED: allCurrencies.AED,
+  AZN: allCurrencies.AZN,
+  IRR: allCurrencies.IRR,
+  KWD: allCurrencies.KWD,
+  QAR: allCurrencies.QAR,
+  SAR: allCurrencies.SAR
+};
+
+const africaCurrencies = {
+  AOA: allCurrencies.AOA,
+  CVE: allCurrencies.CVE,
+  DJF: allCurrencies.DJF,
+  ERN: allCurrencies.ERN,
+  ETB: allCurrencies.ETB,
+  GHS: allCurrencies.GHS,
+  GMD: allCurrencies.GMD,
+  GNF: allCurrencies.GNF,
+  JMD: allCurrencies.JMD,
+  KES: allCurrencies.KES,
+  KMF: allCurrencies.KMF,
+  LRD: allCurrencies.LRD,
+  ZAR: allCurrencies.ZAR,
+  LSL: allCurrencies.LSL,
+  MGA: allCurrencies.MGA,
+  MZN: allCurrencies.MZN,
+  NAD: allCurrencies.NAD,
+  NGN: allCurrencies.NGN
+};
+
+const sasiaCurrencies = {
+  BDT: allCurrencies.BDT,
+  BTN: allCurrencies.BTN,
+  INR: allCurrencies.INR,
+  NPR: allCurrencies.NPR,
+  PKR: allCurrencies.PKR,
+  LKR: allCurrencies.LKR,
+  BND: allCurrencies.BND,
+  KRW: allCurrencies.KRW
+};
+
+const cisCurrencies = {
+  AMD: allCurrencies.AMD,
+  AZN: allCurrencies.AZN,
+  BYN: allCurrencies.BYN,
+  GEL: allCurrencies.GEL,
+  KZT: allCurrencies.KZT,
+  KGS: allCurrencies.KGS,
+  MDL: allCurrencies.MDL,
+  TJS: allCurrencies.TJS,
+  TMT: allCurrencies.TMT,
+  UZS: allCurrencies.UZS,
+  UAH: allCurrencies.UAH,
+  RUB: allCurrencies.RUB
+};
+
+const euCurrencies = {
+  PLN: allCurrencies.PLN,
+  DKK: allCurrencies.DKK,
+  EUR: allCurrencies.EUR,
+  BGN: allCurrencies.BGN,
+  RON: allCurrencies.RON,
+  ALL: allCurrencies.ALL,
+  ANG: allCurrencies.ANG,
+  BAM: allCurrencies.BAM,
+  CHF: allCurrencies.CHF,
+  CZK: allCurrencies.CZK,
+  FOK: allCurrencies.FOK,
+  GBP: allCurrencies.GBP,
+  GGP: allCurrencies.GGP,
+  GIP: allCurrencies.GIP,
+  HRK: allCurrencies.HRK,
+  HUF: allCurrencies.HUF,
+  IMP: allCurrencies.IMP,
+  ISK: allCurrencies.ISK,
+  JEP: allCurrencies.JEP,
+  MKD: allCurrencies.MKD,
+  NOK: allCurrencies.NOK,
+  SEK: allCurrencies.SEK,
+  RSD: allCurrencies.RSD
+};
+
+const naCurrencies = {
+  USD: allCurrencies.USD,
+  CAD: allCurrencies.CAD,
+  BMD: allCurrencies.BMD,
+  MXN: allCurrencies.MXN
+};
+
+const asiaCurrencies = {
+  AFN: allCurrencies.AFN,
+  CNY: allCurrencies.CNY,
+  HKD: allCurrencies.HKD,
+  IDR: allCurrencies.IDR,
+  JPY: allCurrencies.JPY,
+  LAK: allCurrencies.LAK,
+  MMK: allCurrencies.MMK,
+  MNT: allCurrencies.MNT,
+  MYR: allCurrencies.MYR,
+  TWD: allCurrencies.TWD,
+  VND: allCurrencies.VND,
+  THB: allCurrencies.THB,
+  SGD: allCurrencies.SGD,
+  PHP: allCurrencies.PHP
+};
+
+const oceniaCurrencies = {
+  AUD: allCurrencies.AUD,
+  NZD: allCurrencies.NZD,
+  FJD: allCurrencies.FJD,
+  PGK: allCurrencies.PGK,
+  SBD: allCurrencies.SBD,
+  TOP: allCurrencies.TOP,
+  VUV: allCurrencies.VUV,
+  WST: allCurrencies.WST,
+  XPF: allCurrencies.XPF,
+  KID: allCurrencies.KID
+};
+
+const regions = [
+  { name: "LATAM", currencies: latamCurrencies },
+  { name: "MENA", currencies: menaCurrencies },
+  { name: "SASIA", currencies: sasiaCurrencies },
+  { name: "CIS", currencies: cisCurrencies },
+  { name: "EU", currencies: euCurrencies },
+  { name: "NA", currencies: naCurrencies },
+  { name: "ASIA", currencies: asiaCurrencies },
+  { name: "OCENIA", currencies: oceniaCurrencies },
+  { name: "AFRICA", currencies: africaCurrencies },
+];
