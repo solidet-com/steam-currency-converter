@@ -24,12 +24,18 @@ function initItem(item, update = false) {
   }
 
   const currencySymbol = allCurrencies[baseCurrencyKey];
+  let symbolPattern;
 
-  const escapedCurrencySymbol = escapeRegExp(currencySymbol);
+  if (Array.isArray(currencySymbol)) {
+    symbolPattern = currencySymbol.map(symbol => escapeRegExp(symbol)).join('|');
+  } else {
+    symbolPattern = escapeRegExp(currencySymbol);
+  }
+
   const escapedBaseCurrencyKey = escapeRegExp(baseCurrencyKey);
 
-  const symbolAsPrefixRegex = `${escapedCurrencySymbol}\\s*(-?[\\d-]+[,.]?[\\d-]*)\\s*(?:${escapedBaseCurrencyKey})?`;
-  const symbolAsSuffixRegex = `([\\d-]+[,.]?[\\d-]*)\\s*(?:${escapedBaseCurrencyKey})?\\s*${escapedCurrencySymbol}`;
+  const symbolAsPrefixRegex = `(?:${symbolPattern})\\s*(-?[\\d-]+[,.]?[\\d-]*)\\s*(?:${escapedBaseCurrencyKey})?`;
+  const symbolAsSuffixRegex = `([\\d-]+[,.]?[\\d-]*)\\s*(?:${escapedBaseCurrencyKey})?\\s*(?:${symbolPattern})`;
 
   const regexPattern = new RegExp(
     `${symbolAsPrefixRegex}|${symbolAsSuffixRegex}`,
