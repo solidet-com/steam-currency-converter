@@ -2,7 +2,7 @@ function convertToLocalCurrency(basePrice, applyTax = true) {
   if (targetCurrencyRate) {
     const currencyFormat = getCurrencyFormat(targetCurrencyKey);
     let targetPrice = basePrice * targetCurrencyRate;
-    if (tax > 0 && applyTax) targetPrice += targetPrice * (tax / 100);
+    if (applyTax) targetPrice += targetPrice * (tax / 100);
 
     const symbol =
       currencyFormat?.symbolFormat || allCurrencies[targetCurrencyKey];
