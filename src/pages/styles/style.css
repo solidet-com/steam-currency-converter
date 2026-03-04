@@ -138,7 +138,7 @@ input:checked + .slider:before {
 }
 
 html {
-  width: 340px;
+  width: 310px;
   overflow-x: hidden;
 }
 
@@ -151,7 +151,7 @@ body {
   background-color: #20232b;
   color: white;
   font-family: Poppins, sans-serif;
-  width: 340px;
+  width: 310px;
   margin-bottom: 10px;
   max-height: 500px;
   animation: pageIn 0.2s ease-out;

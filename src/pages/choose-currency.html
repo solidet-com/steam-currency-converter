@@ -6,22 +6,18 @@
     <script src="../data/currencies.js"></script>
   </head>
   <style>
-    body {
-      max-width: none;
-      width: auto;
-    }
-    .option-body {
-      max-width: none;
+    html, body {
+      width: 280px;
     }
     .save-button {
       background-color: #17191f;
       border: none;
       color: white;
-      padding: 0.5rem 1.5rem;
+      padding: 0.4rem 1.2rem;
       text-align: center;
       text-decoration: none;
       display: inline-block;
-      font-size: 16px;
+      font-size: 12px;
       border-radius: 20px;
       cursor: pointer;
       transition: 0.3s;
@@ -32,25 +28,25 @@
     }
 
     select {
-      width: 180px;
+      max-width: 140px;
     }
   </style>
 
   <body>
-    <p class="version-text">v2.0.0</p>
+    <p class="version-text">v2.0.1</p>
     <img
       src="../assets/steam-currency-converter.png"
       alt="Steam Currency Converter Extension Icon"
-      width="128px"
+      width="92px"
       style="display: block; margin: 0.5rem auto" />
-    <h2 style="text-align: center">Welcome to, Steam Currency Converter</h2>
+    <h2 style="text-align: center; font-size: 15px">Steam Currency Converter</h2>
 
     <div class="option-body">
       <div class="flex items-center">
         <svg
           fill="#f36f63"
-          height="32px"
-          width="32px"
+          height="22px"
+          width="22px"
           version="1.1"
           id="Capa_1"
           xmlns="http://www.w3.org/2000/svg"
@@ -66,11 +62,11 @@
 	c-7.816-1.161-13.676-7.289-14.881-14.692l-10.601-65.597c-2.468-15.273,7.912-29.655,23.185-32.123
 	c15.273-2.468,29.655,7.912,32.123,23.185C183.284,110.192,183.268,113.161,182.875,115.9z" />
         </svg>
-        <p style="font-size: 16px; margin-left: 12px">
-          Looks like auto-detection couldn't find your currency
+        <p style="font-size: 11px; margin-left: 8px">
+          Auto-detection couldn't find your currency
         </p>
       </div>
-      <label style="margin-top: 24px; font-size: 16px"
+      <label style="margin-top: 16px; font-size: 12px"
         >Please choose target currency</label
       >
       <div class="converter-container">
@@ -78,7 +74,7 @@
       </div>
       <button class="custom-currencies-btn" id="open-custom-currencies">Custom Currencies</button>
 
-      <button id="save-currency" class="save-button" style="margin-top: 1rem">
+      <button id="save-currency" class="save-button" style="margin-top: 0.8rem">
         Save
       </button>
     </div>
@@ -87,7 +83,7 @@
       id="alert"
       style="
         display: flex;
-        font-size: 16px;
+        font-size: 11px;
         justify-content: center;
         margin-top: 1rem;
         color: #858592;
