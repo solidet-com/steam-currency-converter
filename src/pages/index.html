@@ -7,7 +7,7 @@
   </head>
 
   <body>
-    <p class="version-text">v1.0.52</p>
+    <p class="version-text">v2.0.1</p>
     <img
       src="../assets/steam-currency-converter.png"
       alt="Steam Currency Converter Extension Icon"
@@ -19,15 +19,28 @@
     <div class="option-body">
       <label>Choose Currencies</label>
       <div class="converter-container">
-        <select id="convert-from"></select>
+        <div class="sd" id="convert-from-sd">
+          <button type="button" class="sd-trigger">USD</button>
+          <div class="sd-panel">
+            <input type="text" class="sd-search" placeholder="Search..." />
+            <div class="sd-options"></div>
+          </div>
+        </div>
 
         <label class="switch">
           <input id="price-toggle" type="checkbox" checked />
           <span class="slider round"></span>
         </label>
 
-        <select id="convert-to"></select>
+        <div class="sd" id="convert-to-sd">
+          <button type="button" class="sd-trigger">USD</button>
+          <div class="sd-panel">
+            <input type="text" class="sd-search" placeholder="Search..." />
+            <div class="sd-options"></div>
+          </div>
+        </div>
       </div>
+      <button class="custom-currencies-btn" id="open-custom-currencies">Custom Currencies</button>
     </div>
 
     <div class="tax-container">
@@ -67,14 +80,14 @@
     <footer class="footer">
       <span style="font-weight: 300">from</span>
       <a
-        href="https://linktr.ee/solidet"
+        href="#"
         class="solidet-linktree"
-        target="_blank"
-        rel="noopener noreferrer"
-        title="solidet on linktree">
+        title="solidet on linktree"
+        id="solidet-link">
         <p class="solidet-text">solidet</p>
       </a>
     </footer>
+    <script src="../utils/custom-currencies.js"></script>
     <script defer src="./scripts/page.script.js"></script>
   </body>
 </html>

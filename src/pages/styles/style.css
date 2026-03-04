@@ -20,13 +20,10 @@ select:disabled {
   opacity: 1;
 }
 
-/* Tooltip Styles */
-
-/* Tooltip container */
 .tooltip {
   position: relative;
   display: inline-block;
-  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  border-bottom: 1px dotted black;
 }
 
 .tooltip .tooltiptext {
@@ -37,8 +34,6 @@ select:disabled {
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
-
-  /* Position the tooltip */
   position: absolute;
   z-index: 1;
   bottom: 100%;
@@ -46,14 +41,9 @@ select:disabled {
   margin-left: -60px;
 }
 
-/* Show the tooltip text when you mouse over the tooltip container */
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
-
-/* -- End Of Tooltip Styles -- */
-
-/* Toggle Styles */
 
 .switch {
   position: relative;
@@ -96,24 +86,27 @@ select:disabled {
 }
 
 .converter-container {
+  display: flex;
+  align-items: center;
   background-color: #0b0c0f;
   border-radius: 20px;
+  overflow: visible;
 }
 
-.converter-container:has(input:checked) #convert-to {
+.converter-container:has(input:checked) #convert-to-sd .sd-trigger {
   background-color: white;
   color: black;
 }
 
-.converter-container:has(input:not(:checked)) #convert-from {
+.converter-container:has(input:not(:checked)) #convert-from-sd .sd-trigger {
   background-color: white;
   color: black;
 }
 
-/* Slider Background */
-/* input:checked + .slider {
-    background-color: #191c24;
-} */
+.sd:has(.sd-panel.open) .sd-trigger {
+  background-color: #f36f63 !important;
+  color: #fff !important;
+}
 
 input:checked + .slider:before {
   -webkit-transform: translateX(26px);
@@ -124,8 +117,6 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
-
-/* -- End Of Toggle Styles -- */
 
 * {
   margin: 0;
@@ -146,6 +137,11 @@ input:checked + .slider:before {
   justify-content: center;
 }
 
+html {
+  width: 310px;
+  overflow-x: hidden;
+}
+
 body {
   position: relative;
   display: flex;
@@ -155,9 +151,21 @@ body {
   background-color: #20232b;
   color: white;
   font-family: Poppins, sans-serif;
-  min-width: 280px;
+  width: 310px;
   margin-bottom: 10px;
   max-height: 500px;
+  animation: pageIn 0.2s ease-out;
+}
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+body.page-exit {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: all 0.15s ease-in;
 }
 
 .solidet-text {
@@ -169,7 +177,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 24px;
+  margin-top: 12px;
+  padding-bottom: 0.75rem;
 }
 
 .solidet-linktree {
@@ -185,23 +194,17 @@ body {
   font-size: 0.8rem;
   margin-top: 8px;
   color: #858592;
-  float: right;
 }
 
 .option-body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 240px;
-  max-width: 130px;
   margin-top: 24px;
-  padding: 0 12sdpx;
   row-gap: 12px;
 }
 
 .option-body > label {
-  /* width: 100%; */
-  /* text-align: left; */
   font-size: 12px;
 }
 
@@ -209,48 +212,165 @@ select {
   border: none;
   outline: none;
   background-color: #0b0c0f;
-  color: white;
+  color: #e2e4ea;
   padding: 8px 12px;
   border-radius: 20px;
   transition: all 0.2s ease-in-out;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11.5px;
+  font-family: Poppins, sans-serif;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23858592' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 24px;
 }
 
-#convert-from,
-#convert-to {
-  border-radius: 20px;
+select:hover {
+  background-color: #13151b;
+}
+
+select:focus {
+  background-color: #13151b;
+  box-shadow: 0 0 0 1px #f36f63;
 }
 
 select:disabled {
   cursor: not-allowed;
+  opacity: 0.5;
 }
 
-.converter-container:has(input:checked) option:disabled {
-  background-color: #124fa4;
-  color: white !important;
-}
-
-.converter-container:has(input:checked) ::-webkit-scrollbar-thumb {
-  background-color: #0b0c0f;
-}
-
-.converter-container:has(input:checked) ::-webkit-scrollbar-track {
-  background-color: white;
-}
-
-option:disabled {
-  background-color: #1a2134;
-  font-weight: 600 !important;
-  color: orange;
-}
-
-.converter-container {
-  display: flex;
-  /* column-gap: 16px; */
-  align-items: center;
-}
-
-body:has(#convert-from:hover) #alert {
+body:has(#convert-from-sd:hover) #alert {
   opacity: 1 !important;
+}
+
+.sd {
+  position: relative;
+}
+
+.sd-trigger {
+  border: none;
+  outline: none;
+  background-color: #0b0c0f;
+  color: #e2e4ea;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-family: Poppins, sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  white-space: nowrap;
+  min-width: 90px;
+  text-align: center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23858592' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 24px;
+}
+
+.sd-trigger:hover {
+  background-color: #13151b;
+}
+
+.sd-panel {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  background: #13151b;
+  border: 1px solid #2b2e3b;
+  border-radius: 10px;
+  z-index: 100;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+.sd-panel.open {
+  display: block;
+  animation: sdIn 0.15s ease-out;
+}
+
+@keyframes sdIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.sd-search {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #2b2e3b;
+  background: #0d0f14;
+  color: #e2e4ea;
+  padding: 7px 10px;
+  font-size: 11px;
+  font-family: Poppins, sans-serif;
+  outline: none;
+}
+
+.sd-search::placeholder {
+  color: #555;
+}
+
+.sd-options {
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px 0;
+}
+
+.sd-options::-webkit-scrollbar {
+  width: 3px;
+}
+
+.sd-options::-webkit-scrollbar-thumb {
+  background: #3e4455;
+  border-radius: 3px;
+}
+
+.sd-group {
+  padding: 6px 10px 3px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #f36f63;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.sd-option {
+  padding: 5px 10px;
+  font-size: 11.5px;
+  color: #c8cad0;
+  cursor: pointer;
+  transition: background 0.1s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sd-option:hover {
+  background: #1e2029;
+  color: #fff;
+}
+
+.sd-option.selected {
+  color: #f36f63;
+  font-weight: 500;
+}
+
+.sd-empty {
+  padding: 8px 10px;
+  font-size: 10px;
+  color: #555;
+  text-align: center;
 }
 
 label[for="tax-input"] {
@@ -294,6 +414,51 @@ label[for="tax-input"] {
   padding: 0 12px;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
+}
+
+.custom-currencies-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 11px;
+  font-weight: 500;
+  color: #c8cad0;
+  text-decoration: none;
+  margin-top: 10px;
+  background: linear-gradient(135deg, #1e2029 0%, #17191f 100%);
+  padding: 7px 14px 7px 12px;
+  border-radius: 18px;
+  border: 1px solid #2b2e3b;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  letter-spacing: 0.2px;
+}
+
+.custom-currencies-btn::before {
+  content: "$";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  background: #f36f63;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.custom-currencies-btn:hover {
+  background: linear-gradient(135deg, #282c38 0%, #1e2029 100%);
+  border-color: #f36f63;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 12px rgba(243, 111, 99, 0.12);
+}
+
+.custom-currencies-btn:active {
+  transform: scale(0.97);
 }
 
 .github-button {

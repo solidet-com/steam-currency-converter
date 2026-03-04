@@ -12,44 +12,196 @@ taxData.then((result) => {
   document.getElementById("tax-input").value = result.taxValue ?? "";
 });
 
-const currencyData = chrome.storage.local.get(["currency"]);
+function initSearchableDropdown(sd, onChange) {
+  const trigger = sd.querySelector(".sd-trigger");
+  const panel = sd.querySelector(".sd-panel");
+  const search = sd.querySelector(".sd-search");
+  const optionsContainer = sd.querySelector(".sd-options");
+  let selectedValue = null;
+  let allEntries = [];
 
-let baseSelect = document.getElementById("convert-from");
-let select = document.getElementById("convert-to");
+  function open() {
+    document.querySelectorAll(".sd-panel.open").forEach((p) => {
+      if (p !== panel) p.classList.remove("open");
+    });
+    panel.classList.add("open");
+    search.value = "";
+    filterOptions("");
+    search.focus();
+  }
 
-currencyData.then((result) => {
-  regions?.forEach((region) => {
-    let regionLabel = new Option(region.name, "", true);
-    regionLabel.disabled = true;
-    select.add(regionLabel, undefined);
-    baseSelect.add(regionLabel.cloneNode(true), undefined);
+  function close() {
+    panel.classList.remove("open");
+  }
 
-    Object.keys(result.currency.rates)
-      .filter((e) => region.currencies[e])
-      .forEach((key) => {
-        let newOption = new Option(key, key);
-        select.add(newOption, undefined);
-        baseSelect.add(newOption.cloneNode(true), undefined);
-      });
+  function filterOptions(query) {
+    const q = query.toLowerCase();
+    let lastGroupEl = null;
+    let groupHasVisible = false;
+
+    optionsContainer.querySelectorAll(".sd-group, .sd-option, .sd-empty").forEach((el) => {
+      if (el.classList.contains("sd-empty")) {
+        el.remove();
+        return;
+      }
+      if (el.classList.contains("sd-group")) {
+        if (lastGroupEl && !groupHasVisible) lastGroupEl.style.display = "none";
+        lastGroupEl = el;
+        groupHasVisible = false;
+        el.style.display = "";
+        return;
+      }
+      const text = (el.dataset.value + " " + el.textContent).toLowerCase();
+      const visible = !q || text.includes(q);
+      el.style.display = visible ? "" : "none";
+      if (visible) groupHasVisible = true;
+    });
+
+    if (lastGroupEl && !groupHasVisible) lastGroupEl.style.display = "none";
+
+    const anyVisible = optionsContainer.querySelector(".sd-option:not([style*='display: none'])");
+    if (!anyVisible) {
+      const empty = document.createElement("div");
+      empty.className = "sd-empty";
+      empty.textContent = "No results";
+      optionsContainer.appendChild(empty);
+    }
+  }
+
+  function selectValue(value, label) {
+    selectedValue = value;
+    trigger.textContent = label || value;
+    optionsContainer.querySelectorAll(".sd-option").forEach((o) => {
+      o.classList.toggle("selected", o.dataset.value === value);
+    });
+    close();
+    if (onChange) onChange(value);
+  }
+
+  trigger.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (panel.classList.contains("open")) {
+      close();
+    } else {
+      open();
+    }
   });
 
-  chrome.storage.local
-    .get(["targetCurrency", "baseStoreCurrency"])
-    .then((result) => {
-      select.value = result.targetCurrency;
-      baseSelect.value = result.baseStoreCurrency;
-    })
-    .catch((error) => {
-      console.error("Error retrieving data from chrome storage:", error);
-    });
+  panel.addEventListener("click", (e) => e.stopPropagation());
+
+  search.addEventListener("input", () => filterOptions(search.value));
+
+  search.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") close();
+  });
+
+  return {
+    populate(entries) {
+      allEntries = entries;
+      optionsContainer.innerHTML = "";
+      entries.forEach((entry) => {
+        if (entry.group) {
+          const g = document.createElement("div");
+          g.className = "sd-group";
+          g.textContent = entry.group;
+          optionsContainer.appendChild(g);
+        } else {
+          const o = document.createElement("div");
+          o.className = "sd-option";
+          if (entry.value === selectedValue) o.classList.add("selected");
+          o.dataset.value = entry.value;
+          o.textContent = entry.label;
+          o.addEventListener("click", () => selectValue(entry.value, entry.label));
+          optionsContainer.appendChild(o);
+        }
+      });
+    },
+    setValue(value) {
+      selectedValue = value;
+      const match = allEntries.find((e) => e.value === value);
+      trigger.textContent = match?.label || value;
+      optionsContainer.querySelectorAll(".sd-option").forEach((o) => {
+        o.classList.toggle("selected", o.dataset.value === value);
+      });
+    },
+    getValue() {
+      return selectedValue;
+    },
+  };
+}
+
+document.addEventListener("click", () => {
+  document.querySelectorAll(".sd-panel.open").forEach((p) => p.classList.remove("open"));
 });
 
-function changeBaseCurrency(e) {
-  chrome.storage.local.set({ baseStoreCurrency: e.target.value });
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    document.querySelectorAll(".sd-panel.open").forEach((p) => p.classList.remove("open"));
+  }
+});
+
+const baseSd = initSearchableDropdown(
+  document.getElementById("convert-from-sd"),
+  (value) => chrome.storage.local.set({ baseStoreCurrency: value })
+);
+
+const targetSd = initSearchableDropdown(
+  document.getElementById("convert-to-sd"),
+  (value) => chrome.storage.local.set({ targetCurrency: value })
+);
+
+async function populateCurrencyOptions() {
+  const [currencyResult, preferenceResult] = await Promise.all([
+    chrome.storage.local.get(["currency"]),
+    chrome.storage.local.get(["targetCurrency", "baseStoreCurrency"]),
+  ]);
+
+  const rates = currencyResult.currency?.rates || {};
+  const customCurrencies = await loadCustomCurrencies();
+  const customCodes = new Set(Object.keys(customCurrencies));
+
+  const baseEntries = [];
+  const targetEntries = [];
+
+  regions?.forEach((region) => {
+    const allCodes = Object.keys(region.currencies);
+    const baseCodes = allCodes.filter((code) => rates[code]);
+    const targetCodes = allCodes.filter(
+      (code) => rates[code] || customCodes.has(code)
+    );
+
+    if (baseCodes.length) {
+      baseEntries.push({ group: region.name });
+      baseCodes.forEach((code) => {
+        baseEntries.push({ value: code, label: code });
+      });
+    }
+
+    if (targetCodes.length) {
+      targetEntries.push({ group: region.name });
+      targetCodes.forEach((code) => {
+        const custom = customCurrencies[code];
+        const label = custom ? `${custom.symbol} ${code}` : code;
+        targetEntries.push({ value: code, label });
+      });
+    }
+  });
+
+  baseSd.populate(baseEntries);
+  targetSd.populate(targetEntries);
+
+  if (preferenceResult.baseStoreCurrency) {
+    baseSd.setValue(preferenceResult.baseStoreCurrency);
+  }
+  if (preferenceResult.targetCurrency) {
+    targetSd.setValue(preferenceResult.targetCurrency);
+  }
 }
-function changeCurrency(e) {
-  chrome.storage.local.set({ targetCurrency: e.target.value });
-}
+
+populateCurrencyOptions().catch((error) => {
+  console.error("Error populating currency options:", error);
+});
+
 function taxHandler(e) {
   chrome.storage.local.set({ taxValue: e.target.value });
 }
@@ -58,19 +210,18 @@ document
   .getElementById("price-toggle")
   .addEventListener("change", togglePrices);
 
-document
-  .getElementById("convert-from")
-  .addEventListener("change", changeBaseCurrency);
-
-document
-  .getElementById("convert-to")
-  .addEventListener("change", changeCurrency);
-
 document.getElementById("tax-input").addEventListener("change", taxHandler);
 
 document.querySelector(".github-button").addEventListener("click", () => {
-  window.open(
-    "https://github.com/solidet-com/steam-currency-converter",
-    "_blank"
-  );
+  chrome.tabs.create({ url: "https://github.com/solidet-com/steam-currency-converter", active: false });
+});
+
+document.getElementById("open-custom-currencies").addEventListener("click", () => {
+  document.body.classList.add("page-exit");
+  setTimeout(() => { window.location.href = "./custom-currencies.html"; }, 150);
+});
+
+document.getElementById("solidet-link").addEventListener("click", (e) => {
+  e.preventDefault();
+  chrome.tabs.create({ url: "https://linktr.ee/solidet", active: false });
 });

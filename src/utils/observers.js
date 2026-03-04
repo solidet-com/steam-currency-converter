@@ -47,26 +47,39 @@ async function handleStorageMutation(changes, namespace) {
       converterActive = newValue;
       togglePrices();
     } else if (key.match("targetCurrency")) {
+      await loadCustomCurrencies();
       let storedData = await chrome.storage.local.get(["currency"]);
       targetCurrencyKey = newValue;
       targetCurrencyRate = storedData?.currency.rates[newValue] || 1;
       const storedConverter = converterActive;
       updateItems(storedConverter);
     }
-    //TODO: Get new currency Rates and refresh prices on items accordingly
     else if (key.match("baseStoreCurrency")) {
       if (!newValue) return;
       baseCurrencyKey = newValue;
-      const currencyData = await updateRatesALL({
-        baseCurrencyKey,
-      });
-      targetCurrencyRate = currencyData.rates[targetCurrencyKey] || 1;
+      try {
+        const currencyData = await updateRatesALL({
+          baseCurrencyKey,
+        });
+        targetCurrencyRate = currencyData?.rates?.[targetCurrencyKey] || 1;
+      } catch (error) {
+        logger(`Storage mutation rate update failed: ${error?.message}`);
+      }
       const storedConverter = converterActive;
       updateItems(storedConverter);
     } else if (key.match("taxValue")) {
       tax = newValue;
       const storedConverter = converterActive;
       updateItems(storedConverter);
+    } else if (key.match("customCurrencies")) {
+      await loadCustomCurrencies();
+      await syncCustomCurrencyRates();
+    } else if (key === "currency") {
+      const freshRate = newValue?.rates?.[targetCurrencyKey];
+      if (freshRate && freshRate !== targetCurrencyRate) {
+        targetCurrencyRate = freshRate;
+        updateItems(converterActive);
+      }
     }
   }
 }

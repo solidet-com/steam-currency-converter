@@ -21,54 +21,94 @@ async function dispatchBackgroundEvent({ event, payload }) {
 }
 
 async function updateRatesALL(payload) {
-  const currencyData = await dispatchBackgroundEvent({
-    event: "get-currency:all",
-    payload,
-  });
-  return await updateStorageRates(currencyData.rates, TIME_KEY.ALL);
+  try {
+    const currencyData = await dispatchBackgroundEvent({
+      event: "get-currency:all",
+      payload,
+    });
+
+    if (!currencyData || currencyData.error || !currencyData.rates) {
+      logger("Failed to fetch currency rates from all sources, using cached data");
+      const cached = await getStoreValue("currency");
+      return cached || null;
+    }
+
+    return await updateStorageRates(currencyData.rates, TIME_KEY.ALL);
+  } catch (error) {
+    logger(`updateRatesALL error: ${error?.message}`);
+    const cached = await getStoreValue("currency");
+    return cached || null;
+  }
 }
 
 async function updateRatesTRY() {
-  const currencyData = await dispatchBackgroundEvent({
-    event: "get-currency:try",
-  });
+  try {
+    const currencyData = await dispatchBackgroundEvent({
+      event: "get-currency:try",
+    });
 
-  let currency = await getStoreValue("currency");
+    if (!currencyData || currencyData.error || !currencyData[baseCurrencyKey]) {
+      logger("TRY rate update failed, skipping (covered by ALL endpoint)");
+      return null;
+    }
 
-  if (currencyData[baseCurrencyKey]) {
-    currency.rates["TRY"] = parseFloat(
-      currencyData[baseCurrencyKey]["Selling"]
-    );
+    let currency = await getStoreValue("currency");
+
+    if (currencyData[baseCurrencyKey]) {
+      currency.rates["TRY"] = parseFloat(
+        currencyData[baseCurrencyKey]["Selling"]
+      );
+    }
+
+    return await updateStorageRates(currency.rates, TIME_KEY.TRY);
+  } catch (error) {
+    logger(`TRY rate update error: ${error?.message}, skipping`);
+    return null;
   }
-
-  return await updateStorageRates(currency.rates, TIME_KEY.TRY);
 }
 
 async function updateRatesARS() {
-  const currencyData = await dispatchBackgroundEvent({
-    event: "get-currency:ars",
-  });
+  try {
+    const currencyData = await dispatchBackgroundEvent({
+      event: "get-currency:ars",
+    });
 
-  let currency = await getStoreValue("currency");
-  if (baseCurrencyKey === "USD") {
-    currency.rates["ARS"] = parseFloat(currencyData["venta"]);
+    if (!currencyData || currencyData.error) {
+      logger("ARS rate update failed, skipping (covered by ALL endpoint)");
+      return null;
+    }
+
+    let currency = await getStoreValue("currency");
+    if (baseCurrencyKey === "USD") {
+      currency.rates["ARS"] = parseFloat(currencyData["venta"]);
+    }
+
+    return await updateStorageRates(currency.rates, TIME_KEY.ARS);
+  } catch (error) {
+    logger(`ARS rate update error: ${error?.message}, skipping`);
+    return null;
   }
-
-  return await updateStorageRates(currency.rates, TIME_KEY.ARS);
 }
 
 async function getBaseCurrencyBySteamGame() {
-  const data = await dispatchBackgroundEvent({
-    event: "fetch:steam-game",
-    payload: { country },
-  });
+  try {
+    const data = await dispatchBackgroundEvent({
+      event: "fetch:steam-game",
+      payload: { country },
+    });
 
-  const currencyObj = Object.values(data).find(
-    (obj) => obj.data && obj.data.price_overview
-  );
-  const currency = currencyObj
-    ? currencyObj.data.price_overview.currency
-    : null;
+    if (!data || data.error) return null;
 
-  return currency;
+    const currencyObj = Object.values(data).find(
+      (obj) => obj.data && obj.data.price_overview
+    );
+    const currency = currencyObj
+      ? currencyObj.data.price_overview.currency
+      : null;
+
+    return currency;
+  } catch (error) {
+    logger(`getBaseCurrencyBySteamGame error: ${error?.message}`);
+    return null;
+  }
 }

@@ -3,10 +3,36 @@ const currencyURLs = {
   ars: "https://mercados.ambito.com/dolar/oficial/variacion",
 };
 
-const getCommonCurrencyEndpoint = (baseCurrencyKey = "USD") => {
-  const baseURL = "https://open.er-api.com/v6/latest/";
-  return `${baseURL}${baseCurrencyKey}`;
-};
+const currencyAllEndpoints = [
+  {
+    name: "open.er-api",
+    getURL: (base = "USD") => `https://open.er-api.com/v6/latest/${base}`,
+    normalize: (data) => ({ rates: data?.rates }),
+  },
+  {
+    name: "frankfurter",
+    getURL: (base = "USD") =>
+      `https://api.frankfurter.dev/v1/latest?base=${base}`,
+    normalize: (data) => ({ rates: data?.rates }),
+  },
+  {
+    name: "fawazahmed0-currency-api",
+    getURL: (base = "USD") =>
+      `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${base.toLowerCase()}.json`,
+    normalize: (data, base = "USD") => {
+      const key = base.toLowerCase();
+      const rawRates = data?.[key];
+      if (!rawRates) return null;
+      const rates = {};
+      for (const [k, v] of Object.entries(rawRates)) {
+        if (typeof v === "number") {
+          rates[k.toUpperCase()] = v;
+        }
+      }
+      return { rates };
+    },
+  },
+];
 
 const getGamePriceEndpoint = (appId = "105600", country = "") => {
   const baseURL = "https://store.steampowered.com/api/appdetails/";
@@ -28,16 +54,57 @@ const handleGetCurrency = (request, sendResponse) => {
   const [_key, subkey] = request?.event?.split(":");
   const { payload } = request;
 
-  let endpoint;
-  switch (subkey) {
-    case "all":
-      endpoint = getCommonCurrencyEndpoint(payload?.baseCurrencyKey);
-      break;
-    default:
-      endpoint = currencyURLs?.[subkey];
+  if (subkey === "all") {
+    handleGetCurrencyAll(payload?.baseCurrencyKey, sendResponse);
+  } else {
+    const endpoint = currencyURLs?.[subkey];
+    if (!endpoint) {
+      sendResponse({ error: true, message: `Unknown currency subkey: ${subkey}` });
+      return;
+    }
+    handleRequest(endpoint, sendResponse, (error) => {
+      console.warn(`[SCC] Currency API failed for "${subkey}":`, error?.message);
+      sendResponse({ error: true, message: error?.message });
+    });
+  }
+};
+
+const handleGetCurrencyAll = async (baseCurrencyKey, sendResponse) => {
+  for (const source of currencyAllEndpoints) {
+    try {
+      const url = source.getURL(baseCurrencyKey);
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        console.warn(
+          `[SCC] ${source.name} returned HTTP ${response.status}, trying next source...`
+        );
+        continue;
+      }
+
+      const data = await response.json();
+      const normalized = source.normalize(data, baseCurrencyKey);
+
+      if (!normalized?.rates || Object.keys(normalized.rates).length === 0) {
+        console.warn(
+          `[SCC] ${source.name} returned empty rates, trying next source...`
+        );
+        continue;
+      }
+
+      console.log(`[SCC] Currency rates loaded from ${source.name}`);
+      sendResponse(normalized);
+      return;
+    } catch (error) {
+      console.warn(
+        `[SCC] ${source.name} failed: ${error?.message}, trying next source...`
+      );
+      continue;
+    }
   }
 
-  handleRequest(endpoint, sendResponse);
+  console.error("[SCC] All currency API sources failed!");
+  sendResponse({ error: true, message: "All currency API sources failed" });
 };
 
 const handleRequest = (endpoint, onSuccess, onError) => {
@@ -50,7 +117,12 @@ const handleRequest = (endpoint, onSuccess, onError) => {
     })
     .then(onSuccess)
     .catch((error) => {
-      onError && onError(error); // Send an error response if needed
+      if (onError) {
+        onError(error);
+      } else {
+        console.error(`[SCC] Request failed:`, error?.message);
+        onSuccess({ error: true, message: error?.message });
+      }
     });
 };
 
@@ -64,7 +136,10 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       break;
     case "fetch":
       const endpoint = getGamePriceEndpoint(payload?.appId, payload?.country);
-      handleRequest(endpoint, sendResponse);
+      handleRequest(endpoint, sendResponse, (error) => {
+        console.warn(`[SCC] Game price fetch failed:`, error?.message);
+        sendResponse({ error: true, message: error?.message });
+      });
       break;
     default:
       if (methods[key]) {
@@ -85,7 +160,11 @@ chrome.runtime.onInstalled.addListener(async function (details) {
   } else if (details.reason == "update") {
     var versionPartsOld = details.previousVersion.split(".");
     var versionPartsNew = chrome.runtime.getManifest().version.split(".");
-    if (versionPartsOld[0] != versionPartsNew[0]) {
+    if (
+      versionPartsOld[0] !== versionPartsNew[0] ||
+      versionPartsOld[1] !== versionPartsNew[1] ||
+      versionPartsOld[2] !== versionPartsNew[2]
+    ) {
       await chrome.storage.local.set({ showChangelog: true });
     }
   }
@@ -98,4 +177,3 @@ chrome.commands.onCommand.addListener(async (command) => {
     chrome.storage.local.set({ converterActive: !converterActive });
   }
 });
-
