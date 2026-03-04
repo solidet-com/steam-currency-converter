@@ -1,23 +1,30 @@
 function convertToLocalCurrency(basePrice, applyTax = true) {
-  if (targetCurrencyRate) {
+  if (Number.isFinite(targetCurrencyRate) && targetCurrencyRate > 0) {
     const currencyFormat = getCurrencyFormat(targetCurrencyKey);
     let targetPrice = basePrice * targetCurrencyRate;
     if (tax > 0 && applyTax) targetPrice += targetPrice * (tax / 100);
 
     const symbol =
-      currencyFormat?.symbolFormat || allCurrencies[targetCurrencyKey];
-      
+      currencyFormat?.symbolFormat || allCurrencies[targetCurrencyKey] || targetCurrencyKey + " ";
+    const places = currencyFormat?.places ?? 2;
+
     let modifiedNumber = numberWithCommas(
-      targetPrice.toFixed(currencyFormat.places),{
+      targetPrice.toFixed(places),
+      {
         thousandSeparator: currencyFormat.thousand,
-        decimalSeparator: currencyFormat.decimal
+        decimalSeparator: currencyFormat.decimal,
       }
     );
+    let result;
     if (currencyFormat?.right) {
-      return modifiedNumber + symbol;
+      result = modifiedNumber + symbol;
+    } else {
+      result = symbol + modifiedNumber;
     }
-
-    return symbol + modifiedNumber;
+    if (currencyFormat?.suffix) {
+      result += currencyFormat.suffix;
+    }
+    return result;
   } else {
     console.error("Exchange rates not available.");
     return null;

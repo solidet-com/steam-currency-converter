@@ -1,34 +1,43 @@
-const currencyData = chrome.storage.local.get(["currency"]);
 let select = document.getElementById("convert-to");
 
-currencyData.then((result) => {
-  regions?.forEach((region) => {
-    let regionLabel = new Option(region.name, "", true);
-    regionLabel.disabled = true;
+async function populateCurrencyOptions() {
+  const [currencyResult, preferenceResult] = await Promise.all([
+    chrome.storage.local.get(["currency"]),
+    chrome.storage.local.get(["targetCurrency", "baseStoreCurrency"]),
+  ]);
 
+  const rates = currencyResult.currency?.rates || {};
+  const customCurrencies = await loadCustomCurrencies();
+  const customCodes = new Set(Object.keys(customCurrencies));
+
+  regions?.forEach((region) => {
+    const regionCodes = Object.keys(region.currencies).filter(
+      (code) => rates[code] || customCodes.has(code)
+    );
+    if (!regionCodes.length) {
+      return;
+    }
+
+    const regionLabel = new Option(region.name, "", true);
+    regionLabel.disabled = true;
     select.add(regionLabel, undefined);
 
-    Object.keys(result.currency.rates)
-      .filter((e) => region.currencies[e])
-      .forEach((key) => {
-        let newOption = new Option(key, key);
-        select.add(newOption, undefined);
-      });
+    regionCodes.forEach((code) => {
+      const custom = customCurrencies[code];
+      const label = custom ? `${custom.symbol} ${code}` : code;
+      select.add(new Option(label, code), undefined);
+    });
   });
 
-  chrome.storage.local
-    .get(["targetCurrency", "baseStoreCurrency"])
-    .then((result) => {
-      select.value = result.targetCurrency;
-    })
-    .catch((error) => {
-      console.error("Error retrieving data from chrome storage:", error);
-    });
+  if (preferenceResult.targetCurrency) {
+    select.value = preferenceResult.targetCurrency;
+  }
+}
+
+populateCurrencyOptions().catch((error) => {
+  console.error("Error populating currency options:", error);
 });
 
-function changeBaseCurrency(e) {
-  chrome.storage.local.set({ baseStoreCurrency: e.target.value });
-}
 function changeCurrency(e) {
   chrome.storage.local.set({ targetCurrency: e.target.value });
 }
@@ -39,4 +48,13 @@ document
 
 document.getElementById("save-currency").addEventListener("click", () => {
   window.close();
+});
+
+document.getElementById("open-custom-currencies").addEventListener("click", () => {
+  window.location.href = "./custom-currencies.html";
+});
+
+document.getElementById("solidet-link").addEventListener("click", (e) => {
+  e.preventDefault();
+  chrome.tabs.create({ url: "https://linktr.ee/solidet", active: false });
 });

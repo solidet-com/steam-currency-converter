@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Steam Currency Converter",
   "description": "Seamlessly Convert Steam Prices to Local Currency!",
-  "version": "1.0.53",
+  "version": "1.0.61",
   "permissions": [
     "storage"
   ],
@@ -46,6 +46,7 @@
         "./src/utils/price.js",
         "./src/utils/dom.js",
         "./src/utils/parsers.js",
+        "./src/utils/custom-currencies.js",
         "./src/scripts/store.script.js",
         "./src/scripts/init.script.js",
         "./src/scripts/changelog.script.js"

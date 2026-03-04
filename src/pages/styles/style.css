@@ -20,13 +20,10 @@ select:disabled {
   opacity: 1;
 }
 
-/* Tooltip Styles */
-
-/* Tooltip container */
 .tooltip {
   position: relative;
   display: inline-block;
-  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  border-bottom: 1px dotted black;
 }
 
 .tooltip .tooltiptext {
@@ -37,8 +34,6 @@ select:disabled {
   text-align: center;
   border-radius: 6px;
   padding: 5px 0;
-
-  /* Position the tooltip */
   position: absolute;
   z-index: 1;
   bottom: 100%;
@@ -46,14 +41,9 @@ select:disabled {
   margin-left: -60px;
 }
 
-/* Show the tooltip text when you mouse over the tooltip container */
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
-
-/* -- End Of Tooltip Styles -- */
-
-/* Toggle Styles */
 
 .switch {
   position: relative;
@@ -96,6 +86,8 @@ select:disabled {
 }
 
 .converter-container {
+  display: flex;
+  align-items: center;
   background-color: #0b0c0f;
   border-radius: 20px;
 }
@@ -110,11 +102,6 @@ select:disabled {
   color: black;
 }
 
-/* Slider Background */
-/* input:checked + .slider {
-    background-color: #191c24;
-} */
-
 input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
@@ -124,8 +111,6 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
-
-/* -- End Of Toggle Styles -- */
 
 * {
   margin: 0;
@@ -169,7 +154,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 24px;
+  margin-top: 12px;
+  padding-bottom: 0.75rem;
 }
 
 .solidet-linktree {
@@ -185,23 +171,18 @@ body {
   font-size: 0.8rem;
   margin-top: 8px;
   color: #858592;
-  float: right;
 }
 
 .option-body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 240px;
   max-width: 130px;
   margin-top: 24px;
-  padding: 0 12sdpx;
   row-gap: 12px;
 }
 
 .option-body > label {
-  /* width: 100%; */
-  /* text-align: left; */
   font-size: 12px;
 }
 
@@ -209,10 +190,32 @@ select {
   border: none;
   outline: none;
   background-color: #0b0c0f;
-  color: white;
+  color: #e2e4ea;
   padding: 8px 12px;
   border-radius: 20px;
   transition: all 0.2s ease-in-out;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11.5px;
+  font-family: Poppins, sans-serif;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23858592' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 24px;
+}
+
+select:hover {
+  background-color: #13151b;
+}
+
+select:focus {
+  background-color: #13151b;
+  box-shadow: 0 0 0 1px #f36f63;
 }
 
 #convert-from,
@@ -222,6 +225,19 @@ select {
 
 select:disabled {
   cursor: not-allowed;
+  opacity: 0.5;
+}
+
+option {
+  background-color: #13151b;
+  color: #e2e4ea;
+  padding: 6px 10px;
+  font-size: 12px;
+}
+
+option:hover,
+option:checked {
+  background-color: #1e2029;
 }
 
 .converter-container:has(input:checked) option:disabled {
@@ -238,15 +254,12 @@ select:disabled {
 }
 
 option:disabled {
-  background-color: #1a2134;
+  background-color: #0b0c0f;
   font-weight: 600 !important;
-  color: orange;
-}
-
-.converter-container {
-  display: flex;
-  /* column-gap: 16px; */
-  align-items: center;
+  color: #f36f63;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 body:has(#convert-from:hover) #alert {
@@ -294,6 +307,51 @@ label[for="tax-input"] {
   padding: 0 12px;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
+}
+
+.custom-currencies-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 11px;
+  font-weight: 500;
+  color: #c8cad0;
+  text-decoration: none;
+  margin-top: 10px;
+  background: linear-gradient(135deg, #1e2029 0%, #17191f 100%);
+  padding: 7px 14px 7px 12px;
+  border-radius: 18px;
+  border: 1px solid #2b2e3b;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  letter-spacing: 0.2px;
+}
+
+.custom-currencies-btn::before {
+  content: "$";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  background: #f36f63;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.custom-currencies-btn:hover {
+  background: linear-gradient(135deg, #282c38 0%, #1e2029 100%);
+  border-color: #f36f63;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 12px rgba(243, 111, 99, 0.12);
+}
+
+.custom-currencies-btn:active {
+  transform: scale(0.97);
 }
 
 .github-button {

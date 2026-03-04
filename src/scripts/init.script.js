@@ -28,16 +28,24 @@ async function initScript() {
   const showChangelog = await getStoreValue("showChangelog");
   if (showChangelog && !isIframe()) {
     showChangelogModal(
-      "Steam Currency Converter v1.0.0!",
-      `<p>Thank you for using Steam Currency Converter. This extension will help you to see the price of the games in your local currency.</p>
+      "Steam Currency Converter v1.0.60",
+      `<p>What's new in this update:</p>
       <br/>
-      <p>Key features:</p>
+      <p><strong>Custom Currencies</strong></p>
       <ul>
-        <li>Exchange all the currencies that Steam uses to over 160 currencies.</li>
-        <li>Hot-Toggle Exchange Rates (Extension Menu or Shift + Alt + Q) (<em>Thanks to Doğucan Gelbal</em>)</li>
-        <li>Set extra rate percentage</li>
-        <li>Auto locale detection</li>
-        <li>Up-to-date Currency Rates</li>
+        <li>Create your own currencies — BigMac, Doner, Coffee, or anything you want</li>
+        <li>Preset quick-add buttons for popular fun currencies</li>
+        <li>Set custom exchange rates based on any supported base currency</li>
+        <li>Prices display with emoji on the left and code on the right</li>
+        <li>Edit or remove custom currencies anytime from the extension popup</li>
+        <li>Live updates — changes reflect on Steam pages immediately</li>
+      </ul>
+      <br/>
+      <p><strong>UI Improvements</strong></p>
+      <ul>
+        <li>Modernized dropdown selects with dark theme</li>
+        <li>Smoother animations and transitions throughout</li>
+        <li>Better currency selection labels for custom currencies</li>
       </ul>
       <br/>
       <em>Enjoy the extension and feel free to give feedback or report bugs.</em>
@@ -113,4 +121,4 @@ async function prepareData() {
 
   targetCurrencyRate = currencyData?.rates?.[targetCurrencyKey] || 1;
 }
-injectResourcefulScript().then(waitResourcefulToLoad).then(populateResourcefulData).then(initCurrency).then(prepareData).then(initScript);
+injectResourcefulScript().then(waitResourcefulToLoad).then(populateResourcefulData).then(loadCustomCurrencies).then(initCurrency).then(prepareData).then(initScript);

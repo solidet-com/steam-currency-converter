@@ -1,0 +1,451 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Custom Currencies</title>
+    <link rel="stylesheet" href="./styles/style.css" />
+    <script src="../data/currencies.js"></script>
+    <script src="../utils/custom-currencies.js"></script>
+    <style>
+      body {
+        width: 340px;
+        height: 580px;
+        max-height: 580px !important;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .page {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 0.8rem 1rem 0.5rem;
+        overflow: hidden;
+      }
+
+      .top-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 0.55rem;
+        border-bottom: 1px solid #2b2e3b;
+        flex-shrink: 0;
+      }
+
+      .top-bar-left {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .back-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #2b2e3b;
+        border: none;
+        color: #fff;
+        width: 28px;
+        height: 28px;
+        font-size: 15px;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: background 0.15s;
+      }
+
+      .back-btn:hover {
+        background: #f36f63;
+      }
+
+      .top-bar h2 {
+        font-size: 14px;
+        margin: 0;
+        font-weight: 600;
+      }
+
+      .github-icon {
+        position: absolute;
+        top: 0.7rem;
+        right: 0.8rem;
+        opacity: 0.4;
+        transition: opacity 0.15s;
+      }
+
+      .github-icon:hover {
+        opacity: 1;
+      }
+
+      .muted {
+        font-size: 11px;
+        color: #858592;
+      }
+
+      .lbl {
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #6b7280;
+        margin: 0.55rem 0 0.25rem 0;
+        font-weight: 600;
+        flex-shrink: 0;
+      }
+
+      .presets {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.25rem;
+        flex-shrink: 0;
+      }
+
+      @keyframes presetIn {
+        from { opacity: 0; transform: scale(0.92); }
+        to   { opacity: 1; transform: scale(1); }
+      }
+
+      .preset {
+        background: #17191f;
+        border: 1px solid #2b2e3b;
+        color: #ccc;
+        border-radius: 20px;
+        padding: 0.25rem 0.55rem;
+        font-size: 11px;
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
+        animation: presetIn 0.2s ease-out both;
+      }
+
+      .preset:hover {
+        background: #282c38;
+        border-color: #3e4455;
+        color: #fff;
+        transform: translateY(-1px);
+      }
+
+      .preset:active {
+        transform: scale(0.95);
+      }
+
+      .preset.active {
+        border-color: #f36f63;
+        background: #2b1a1a;
+        color: #fff;
+      }
+
+      .items-wrap {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin-top: 0.15rem;
+      }
+
+      .items-wrap::-webkit-scrollbar {
+        width: 3px;
+      }
+
+      .items-wrap::-webkit-scrollbar-thumb {
+        background: #3e4455;
+        border-radius: 3px;
+      }
+
+      .items {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+
+      @keyframes itemIn {
+        from { opacity: 0; transform: translateY(6px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes itemOut {
+        from { opacity: 1; transform: translateX(0); }
+        to   { opacity: 0; transform: translateX(12px); height: 0; padding: 0; margin: 0; border-width: 0; overflow: hidden; }
+      }
+
+      .item {
+        display: flex;
+        align-items: center;
+        background: linear-gradient(135deg, #17191f 0%, #1c1f28 100%);
+        border: 1px solid #2b2e3b;
+        padding: 0.4rem 0.5rem;
+        border-radius: 9px;
+        cursor: pointer;
+        gap: 0.45rem;
+        transition: border-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
+        animation: itemIn 0.25s ease-out both;
+      }
+
+      .item:hover {
+        border-color: #4e5568;
+        background: linear-gradient(135deg, #1e2029 0%, #252836 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+      }
+
+      .item:active {
+        transform: scale(0.985);
+      }
+
+      .item.editing {
+        border-color: #f36f63;
+        background: linear-gradient(135deg, #221518 0%, #2b1a1e 100%);
+      }
+
+      .item-emoji {
+        font-size: 18px;
+        line-height: 1;
+        flex-shrink: 0;
+        width: 24px;
+        text-align: center;
+      }
+
+      .item-body {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+      }
+
+      .item-name {
+        font-size: 11.5px;
+        font-weight: 500;
+        color: #e2e4ea;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .item-meta {
+        font-size: 9.5px;
+        color: #6b7280;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .item-code {
+        background: #2b2e3b;
+        color: #a0a4b0;
+        font-size: 9px;
+        font-weight: 600;
+        padding: 0.15rem 0.35rem;
+        border-radius: 4px;
+        flex-shrink: 0;
+        letter-spacing: 0.3px;
+        transition: background 0.15s;
+      }
+
+      .item:hover .item-code {
+        background: #363a4a;
+      }
+
+      .item-del {
+        background: #1e2029;
+        border: 1px solid #2b2e3b;
+        color: #666;
+        cursor: pointer;
+        font-size: 16px;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        flex-shrink: 0;
+        transition: all 0.15s;
+        padding: 0;
+        line-height: 1;
+      }
+
+      .item-del:hover {
+        color: #fff;
+        background: #f36f63;
+        border-color: #f36f63;
+        transform: scale(1.1);
+      }
+
+      @keyframes formIn {
+        from { opacity: 0; transform: translateY(4px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      .form-area {
+        flex-shrink: 0;
+        background: #15171e;
+        border: 1px solid #2b2e3b;
+        border-radius: 8px;
+        padding: 0.5rem;
+        margin-top: 0.35rem;
+        animation: formIn 0.3s ease-out;
+      }
+
+      .form-area input,
+      .form-area select {
+        background: #0d0f14;
+        border: 1px solid #2b2e3b;
+        color: #fff;
+        border-radius: 5px;
+        padding: 0.38rem 0.45rem;
+        font-size: 11px;
+        width: 100%;
+        box-sizing: border-box;
+        transition: border-color 0.15s;
+      }
+
+      .form-area input::placeholder {
+        color: #555;
+      }
+
+      #cc-symbol {
+        text-align: center;
+        font-size: 14px;
+        border: 1px dashed #3e4455;
+        background: #111318;
+      }
+
+      #cc-symbol:focus {
+        border-style: solid;
+      }
+
+      #cc-symbol::placeholder {
+        font-size: 14px;
+      }
+
+      .form-area input:focus,
+      .form-area select:focus {
+        border-color: #f36f63;
+        outline: none;
+      }
+
+      .form-area select {
+        cursor: pointer;
+        max-width: none;
+      }
+
+      .fr {
+        display: flex;
+        gap: 0.25rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .form-btns {
+        display: flex;
+        gap: 0.25rem;
+        margin-top: 0.1rem;
+      }
+
+      .btn-save {
+        flex: 1;
+        background: #f36f63;
+        border: none;
+        color: #fff;
+        border-radius: 5px;
+        padding: 0.4rem;
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+
+      .btn-save:hover {
+        background: #e05a4f;
+      }
+
+      .btn-clear {
+        background: #2b2e3b;
+        border: none;
+        color: #ccc;
+        border-radius: 5px;
+        padding: 0.4rem 0.6rem;
+        font-size: 11px;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+
+      .btn-clear:hover {
+        background: #3b3e4b;
+      }
+
+      .msg {
+        font-size: 10px;
+        margin-top: 0.2rem;
+        min-height: 13px;
+      }
+
+      .msg.err { color: #ff8f8f; }
+      .msg.ok  { color: #9deb9d; }
+
+      .footer {
+        margin-top: 0.4rem;
+        flex-shrink: 0;
+        padding-top: 0.4rem;
+        padding-bottom: 0.75rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <a
+      class="github-icon"
+      href="#"
+      id="github-link">
+      <img src="../assets/github-mark.svg" alt="GitHub" width="18px" />
+    </a>
+    <div class="page">
+      <div class="top-bar">
+        <div class="top-bar-left">
+          <button class="back-btn" id="back-btn">&larr;</button>
+          <h2>Custom Currencies</h2>
+        </div>
+      </div>
+
+      <p class="lbl">Presets</p>
+      <div class="presets" id="presets"></div>
+
+      <p class="lbl">Your currencies <span class="muted">(tap to edit)</span></p>
+      <div class="items-wrap">
+        <div class="items" id="items">
+          <p class="muted" style="text-align:center">None yet</p>
+        </div>
+      </div>
+
+      <p class="lbl">Add / Edit</p>
+      <div class="form-area">
+        <div class="fr">
+          <input type="text" id="cc-name" placeholder="Taco" maxlength="28" title="Name" style="width:40%" />
+          <input type="text" id="cc-code" placeholder="TCO" maxlength="8" title="Code" style="width:22%" />
+          <input type="text" id="cc-symbol" placeholder="🌮 symbol" maxlength="8" title="Paste an emoji as symbol" style="width:38%" />
+        </div>
+        <div class="fr">
+          <input type="number" id="cc-rate" placeholder="3.50" step="0.000001" min="0.000001" title="1 unit = this many of base" style="width:50%" />
+          <select id="cc-base" title="Base currency" style="width:50%"></select>
+        </div>
+        <div class="form-btns">
+          <button class="btn-save" id="save-btn" type="button">Save</button>
+          <button class="btn-clear" id="clear-btn" type="button">Clear</button>
+        </div>
+        <div class="msg" id="msg"></div>
+      </div>
+
+      <footer class="footer">
+        <span style="font-weight: 300">from</span>
+        <a
+          href="#"
+          class="solidet-linktree"
+          title="solidet on linktree"
+          id="solidet-link">
+          <p class="solidet-text">solidet</p>
+        </a>
+      </footer>
+    </div>
+
+    <script defer src="./scripts/custom_currencies.script.js"></script>
+  </body>
+</html>

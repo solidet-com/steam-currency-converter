@@ -37,20 +37,16 @@
   </style>
 
   <body>
-    <p class="version-text">v1.0.53</p>
+    <p class="version-text">v1.0.61</p>
     <img
       src="../assets/steam-currency-converter.png"
       alt="Steam Currency Converter Extension Icon"
       width="128px"
       style="display: block; margin: 0.5rem auto" />
-    <!-- <h1></h1> -->
     <h2 style="text-align: center">Welcome to, Steam Currency Converter</h2>
 
     <div class="option-body">
       <div class="flex items-center">
-        <?xml version="1.0" encoding="iso-8859-1"?>
-        <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-        <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
         <svg
           fill="#f36f63"
           height="32px"
@@ -80,6 +76,7 @@
       <div class="converter-container">
         <select id="convert-to"></select>
       </div>
+      <button class="custom-currencies-btn" id="open-custom-currencies">Custom Currencies</button>
 
       <button id="save-currency" class="save-button" style="margin-top: 1rem">
         Save
@@ -101,14 +98,14 @@
     <footer class="footer">
       <span style="font-weight: 300">from</span>
       <a
-        href="https://linktr.ee/solidet"
+        href="#"
         class="solidet-linktree"
-        target="_blank"
-        rel="noopener noreferrer"
-        title="solidet on linktree">
+        title="solidet on linktree"
+        id="solidet-link">
         <p class="solidet-text">solidet</p>
       </a>
     </footer>
+    <script src="../utils/custom-currencies.js"></script>
     <script defer src="./scripts/choose_currency_page.scripts.js"></script>
   </body>
 </html>

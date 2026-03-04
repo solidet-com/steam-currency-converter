@@ -15,8 +15,10 @@ async function updateStorageRates(rates, updateKey) {
 
   await chrome.storage.local.set(lastCurrencyPayload);
   await chrome.storage.local.set(lastTimePayload);
+  await syncCustomCurrencyRates();
 
-  return lastCurrencyPayload?.currency;
+  const updatedCurrency = await chrome.storage.local.get(["currency"]);
+  return updatedCurrency.currency;
 }
 
 function getUpdateDateKey(updateKey) {

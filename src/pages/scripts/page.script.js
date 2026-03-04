@@ -12,36 +12,57 @@ taxData.then((result) => {
   document.getElementById("tax-input").value = result.taxValue ?? "";
 });
 
-const currencyData = chrome.storage.local.get(["currency"]);
-
 let baseSelect = document.getElementById("convert-from");
 let select = document.getElementById("convert-to");
 
-currencyData.then((result) => {
-  regions?.forEach((region) => {
-    let regionLabel = new Option(region.name, "", true);
-    regionLabel.disabled = true;
-    select.add(regionLabel, undefined);
-    baseSelect.add(regionLabel.cloneNode(true), undefined);
+async function populateCurrencyOptions() {
+  const [currencyResult, preferenceResult] = await Promise.all([
+    chrome.storage.local.get(["currency"]),
+    chrome.storage.local.get(["targetCurrency", "baseStoreCurrency"]),
+  ]);
 
-    Object.keys(result.currency.rates)
-      .filter((e) => region.currencies[e])
-      .forEach((key) => {
-        let newOption = new Option(key, key);
-        select.add(newOption, undefined);
-        baseSelect.add(newOption.cloneNode(true), undefined);
+  const rates = currencyResult.currency?.rates || {};
+  const customCurrencies = await loadCustomCurrencies();
+  const customCodes = new Set(Object.keys(customCurrencies));
+
+  regions?.forEach((region) => {
+    const allCodes = Object.keys(region.currencies);
+    const baseCodes = allCodes.filter((code) => rates[code]);
+    const targetCodes = allCodes.filter(
+      (code) => rates[code] || customCodes.has(code)
+    );
+
+    if (baseCodes.length) {
+      const baseLabel = new Option(region.name, "", true);
+      baseLabel.disabled = true;
+      baseSelect.add(baseLabel, undefined);
+      baseCodes.forEach((code) => {
+        baseSelect.add(new Option(code, code), undefined);
       });
+    }
+
+    if (targetCodes.length) {
+      const targetLabel = new Option(region.name, "", true);
+      targetLabel.disabled = true;
+      select.add(targetLabel, undefined);
+      targetCodes.forEach((code) => {
+        const custom = customCurrencies[code];
+        const label = custom ? `${custom.symbol} ${code}` : code;
+        select.add(new Option(label, code), undefined);
+      });
+    }
   });
 
-  chrome.storage.local
-    .get(["targetCurrency", "baseStoreCurrency"])
-    .then((result) => {
-      select.value = result.targetCurrency;
-      baseSelect.value = result.baseStoreCurrency;
-    })
-    .catch((error) => {
-      console.error("Error retrieving data from chrome storage:", error);
-    });
+  if (preferenceResult.targetCurrency) {
+    select.value = preferenceResult.targetCurrency;
+  }
+  if (preferenceResult.baseStoreCurrency) {
+    baseSelect.value = preferenceResult.baseStoreCurrency;
+  }
+}
+
+populateCurrencyOptions().catch((error) => {
+  console.error("Error populating currency options:", error);
 });
 
 function changeBaseCurrency(e) {
@@ -69,8 +90,14 @@ document
 document.getElementById("tax-input").addEventListener("change", taxHandler);
 
 document.querySelector(".github-button").addEventListener("click", () => {
-  window.open(
-    "https://github.com/solidet-com/steam-currency-converter",
-    "_blank"
-  );
+  chrome.tabs.create({ url: "https://github.com/solidet-com/steam-currency-converter", active: false });
+});
+
+document.getElementById("open-custom-currencies").addEventListener("click", () => {
+  window.location.href = "./custom-currencies.html";
+});
+
+document.getElementById("solidet-link").addEventListener("click", (e) => {
+  e.preventDefault();
+  chrome.tabs.create({ url: "https://linktr.ee/solidet", active: false });
 });

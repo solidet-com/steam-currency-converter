@@ -160,7 +160,11 @@ chrome.runtime.onInstalled.addListener(async function (details) {
   } else if (details.reason == "update") {
     var versionPartsOld = details.previousVersion.split(".");
     var versionPartsNew = chrome.runtime.getManifest().version.split(".");
-    if (versionPartsOld[0] != versionPartsNew[0]) {
+    if (
+      versionPartsOld[0] !== versionPartsNew[0] ||
+      versionPartsOld[1] !== versionPartsNew[1] ||
+      versionPartsOld[2] !== versionPartsNew[2]
+    ) {
       await chrome.storage.local.set({ showChangelog: true });
     }
   }
