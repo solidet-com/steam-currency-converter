@@ -134,8 +134,12 @@ async function handleBaseCurrencyKey() {
 
     setLoginStatus(loginStatus);
     baseCurrencyKey = await getStoreCurrency();
-    const currencyData = await updateRatesALL({ baseCurrencyKey });
-    targetCurrencyRate = currencyData.rates[targetCurrencyKey] || 1;
+    try {
+      const currencyData = await updateRatesALL({ baseCurrencyKey });
+      targetCurrencyRate = currencyData?.rates?.[targetCurrencyKey] || 1;
+    } catch (error) {
+      logger(`handleBaseCurrencyKey: rate update failed: ${error?.message}`);
+    }
     await chrome.storage.local.set({ baseStoreCurrency: baseCurrencyKey });
   }
 }

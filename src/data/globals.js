@@ -19,14 +19,13 @@ const INTERVALS = [
     timeKey: TIME_KEY.ALL,
     value: DAY_IN_MS,
     callback: updateRatesALL,
-    afterCallbacks: [],
+    afterCallbacks: [updateRatesTRY],
   },
-  /* TODO: Find new source for TRY, this one throws cors.
   {
     timeKey: TIME_KEY.TRY,
     value: HOUR_IN_MS / 2,
     callback: updateRatesTRY,
-  },*/
+  },
   // TODO: Find new source for ARS, other one blocked with cloudflare
   // {
   //   timeKey: TIME_KEY.ARS,

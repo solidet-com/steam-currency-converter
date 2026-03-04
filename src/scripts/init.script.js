@@ -84,27 +84,33 @@ async function prepareData() {
   baseCurrencyKey = await getStoreValue("baseStoreCurrency");
 
   for (const interval of INTERVALS) {
-    const timeStorageKey = getUpdateDateKey(interval.timeKey);
-    let updatedDate = await chrome.storage.local.get([timeStorageKey]);
+    try {
+      const timeStorageKey = getUpdateDateKey(interval.timeKey);
+      let updatedDate = await chrome.storage.local.get([timeStorageKey]);
 
-    const lastRefresh = updatedDate[timeStorageKey];
-    const isInitial = lastRefresh == null;
-    const diff = new Date().getTime() - lastRefresh;
+      const lastRefresh = updatedDate[timeStorageKey];
+      const isInitial = lastRefresh == null;
+      const diff = new Date().getTime() - lastRefresh;
 
-    const callbackPayload = {
-      baseCurrencyKey,
-    };
+      const callbackPayload = {
+        baseCurrencyKey,
+      };
 
-    if (isInitial || diff > interval.value) {
-      currencyData = await interval.callback(callbackPayload);
-      if (interval?.afterCallbacks) {
-        interval.afterCallbacks.forEach(async (afterCallback) => {
-          currencyData = await afterCallback(callbackPayload);
-        });
+      if (isInitial || diff > interval.value) {
+        const result = await interval.callback(callbackPayload);
+        if (result) currencyData = result;
+        if (interval?.afterCallbacks) {
+          for (const afterCallback of interval.afterCallbacks) {
+            const afterResult = await afterCallback(callbackPayload);
+            if (afterResult) currencyData = afterResult;
+          }
+        }
       }
+    } catch (error) {
+      logger(`Interval ${interval.timeKey} failed: ${error?.message}`);
     }
   }
 
-  targetCurrencyRate = currencyData.rates[targetCurrencyKey] || 1;
+  targetCurrencyRate = currencyData?.rates?.[targetCurrencyKey] || 1;
 }
 injectResourcefulScript().then(waitResourcefulToLoad).then(populateResourcefulData).then(initCurrency).then(prepareData).then(initScript);

@@ -57,10 +57,14 @@ async function handleStorageMutation(changes, namespace) {
     else if (key.match("baseStoreCurrency")) {
       if (!newValue) return;
       baseCurrencyKey = newValue;
-      const currencyData = await updateRatesALL({
-        baseCurrencyKey,
-      });
-      targetCurrencyRate = currencyData.rates[targetCurrencyKey] || 1;
+      try {
+        const currencyData = await updateRatesALL({
+          baseCurrencyKey,
+        });
+        targetCurrencyRate = currencyData?.rates?.[targetCurrencyKey] || 1;
+      } catch (error) {
+        logger(`Storage mutation rate update failed: ${error?.message}`);
+      }
       const storedConverter = converterActive;
       updateItems(storedConverter);
     } else if (key.match("taxValue")) {
