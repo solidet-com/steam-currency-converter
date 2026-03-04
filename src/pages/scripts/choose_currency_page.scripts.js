@@ -51,7 +51,8 @@ document.getElementById("save-currency").addEventListener("click", () => {
 });
 
 document.getElementById("open-custom-currencies").addEventListener("click", () => {
-  window.location.href = "./custom-currencies.html";
+  document.body.classList.add("page-exit");
+  setTimeout(() => { window.location.href = "./custom-currencies.html"; }, 150);
 });
 
 document.getElementById("solidet-link").addEventListener("click", (e) => {

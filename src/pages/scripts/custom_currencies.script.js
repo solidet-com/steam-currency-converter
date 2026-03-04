@@ -268,7 +268,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   document.getElementById("back-btn").addEventListener("click", () => {
-    window.location.href = "./index.html";
+    document.body.classList.add("page-exit");
+    setTimeout(() => { window.location.href = "./index.html"; }, 150);
   });
 
   document.getElementById("github-link").addEventListener("click", (e) => {

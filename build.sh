@@ -18,14 +18,9 @@ increment_version() {
     local patch="${parts[2]}"
     
     if [ "$type" == "--major" ]; then
-        if [ "$minor" == "9" ]; then
-            major=$((major + 1))
-            minor=0
-            patch=0
-        else
-            minor=$((minor + 4))
-            patch=0
-        fi
+        major=$((major + 1))
+        minor=0
+        patch=0
     else
         if [ "$patch" == "99" ]; then
             minor=$((minor + 1))
