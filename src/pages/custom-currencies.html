@@ -5,10 +5,13 @@
     <title>Custom Currencies</title>
     <link rel="stylesheet" href="./styles/style.css" />
     <script src="../data/currencies.js"></script>
+    <script src="../data/locales.js"></script>
     <script src="../utils/custom-currencies.js"></script>
     <style>
       html {
         width: 340px;
+        height: 580px;
+        overflow: hidden;
       }
       body {
         width: 340px;
@@ -391,6 +394,132 @@
         padding-top: 0.4rem;
         padding-bottom: 0.75rem;
       }
+
+      .cc-base-sd {
+        position: relative;
+      }
+
+      .cc-base-trigger {
+        width: 100%;
+        background: #0d0f14;
+        border: 1px solid #2b2e3b;
+        color: #fff;
+        border-radius: 5px;
+        padding: 0.38rem 0.45rem;
+        font-size: 11px;
+        font-family: Poppins, sans-serif;
+        cursor: pointer;
+        text-align: left;
+        transition: border-color 0.15s;
+        box-sizing: border-box;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23858592' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 6px center;
+        padding-right: 20px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .cc-base-trigger:hover {
+        border-color: #3e4455;
+      }
+
+      .cc-base-trigger:focus {
+        border-color: #f36f63;
+        outline: none;
+      }
+
+      .cc-base-sd.open .cc-base-trigger {
+        border-color: #f36f63;
+      }
+
+      .cc-base-panel {
+        display: none;
+        position: absolute;
+        bottom: calc(100% + 4px);
+        left: 0;
+        width: 100%;
+        min-width: 140px;
+        background: #13151b;
+        border: 1px solid #2b2e3b;
+        border-radius: 8px;
+        z-index: 200;
+        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.4);
+        overflow: hidden;
+      }
+
+      .cc-base-sd.open .cc-base-panel {
+        display: block;
+        animation: ccBaseIn 0.15s ease-out;
+      }
+
+      @keyframes ccBaseIn {
+        from { opacity: 0; transform: translateY(4px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      .cc-base-search {
+        width: 100%;
+        border: none !important;
+        border-bottom: 1px solid #2b2e3b !important;
+        border-radius: 0 !important;
+        background: #0d0f14;
+        color: #e2e4ea;
+        padding: 6px 8px;
+        font-size: 11px;
+        font-family: Poppins, sans-serif;
+        outline: none;
+        box-sizing: border-box;
+      }
+
+      .cc-base-search::placeholder {
+        color: #555;
+      }
+
+      .cc-base-options {
+        max-height: 160px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 3px 0;
+      }
+
+      .cc-base-options::-webkit-scrollbar {
+        width: 3px;
+      }
+
+      .cc-base-options::-webkit-scrollbar-thumb {
+        background: #3e4455;
+        border-radius: 3px;
+      }
+
+      .cc-base-opt {
+        padding: 4px 8px;
+        font-size: 11px;
+        color: #c8cad0;
+        cursor: pointer;
+        transition: background 0.1s;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .cc-base-opt:hover {
+        background: #1e2029;
+        color: #fff;
+      }
+
+      .cc-base-opt.selected {
+        color: #f36f63;
+        font-weight: 500;
+      }
+
+      .cc-base-empty {
+        padding: 6px 8px;
+        font-size: 10px;
+        color: #555;
+        text-align: center;
+      }
     </style>
   </head>
 
@@ -428,7 +557,13 @@
         </div>
         <div class="fr">
           <input type="number" id="cc-rate" placeholder="3.50" step="0.000001" min="0.000001" title="1 unit = this many of base" style="width:50%" />
-          <select id="cc-base" title="Base currency" style="width:50%"></select>
+          <div class="cc-base-sd" id="cc-base-sd" style="width:50%">
+            <button type="button" class="cc-base-trigger" id="cc-base-trigger">USD</button>
+            <div class="cc-base-panel" id="cc-base-panel">
+              <input type="text" class="cc-base-search" id="cc-base-search" placeholder="Search..." />
+              <div class="cc-base-options" id="cc-base-options"></div>
+            </div>
+          </div>
         </div>
         <div class="form-btns">
           <button class="btn-save" id="save-btn" type="button">Save</button>

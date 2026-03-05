@@ -2,7 +2,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const presetsContainer = document.getElementById("presets");
   const itemsContainer = document.getElementById("items");
   const msg = document.getElementById("msg");
-  const baseSelect = document.getElementById("cc-base");
+  const baseSdEl = document.getElementById("cc-base-sd");
+  const baseTrigger = document.getElementById("cc-base-trigger");
+  const basePanel = document.getElementById("cc-base-panel");
+  const baseSearchInput = document.getElementById("cc-base-search");
+  const baseOptionsEl = document.getElementById("cc-base-options");
   const codeInput = document.getElementById("cc-code");
   const nameInput = document.getElementById("cc-name");
   const symbolInput = document.getElementById("cc-symbol");
@@ -10,16 +14,114 @@ document.addEventListener("DOMContentLoaded", async () => {
   const saveBtn = document.getElementById("save-btn");
   const clearBtn = document.getElementById("clear-btn");
 
-  const result = await chrome.storage.local.get(["currency"]);
+  let baseSelectedValue = "USD";
+
+  function openBaseDropdown() {
+    baseSdEl.classList.add("open");
+    baseSearchInput.value = "";
+    filterBaseOptions("");
+    baseSearchInput.focus();
+  }
+
+  function closeBaseDropdown() {
+    baseSdEl.classList.remove("open");
+  }
+
+  function filterBaseOptions(query) {
+    const q = query.toLowerCase();
+    let anyVisible = false;
+    baseOptionsEl.querySelectorAll(".cc-base-opt").forEach((el) => {
+      const text = (el.dataset.value + " " + (el.dataset.hint || "")).toLowerCase();
+      const match = text.includes(q);
+      el.style.display = match ? "" : "none";
+      if (match) anyVisible = true;
+    });
+    const existing = baseOptionsEl.querySelector(".cc-base-empty");
+    if (existing) existing.remove();
+    if (!anyVisible) {
+      const empty = document.createElement("div");
+      empty.className = "cc-base-empty";
+      empty.textContent = "No results";
+      baseOptionsEl.appendChild(empty);
+    }
+  }
+
+  function selectBaseValue(value) {
+    const prev = baseSelectedValue;
+    baseSelectedValue = value;
+    baseTrigger.textContent = value;
+    baseOptionsEl.querySelectorAll(".cc-base-opt").forEach((o) => {
+      o.classList.toggle("selected", o.dataset.value === value);
+    });
+    closeBaseDropdown();
+    if (prev !== value && editingCode) {
+      rateInput.value = "";
+      showMsg("Base changed - enter new rate", "");
+    }
+  }
+
+  function setBaseValue(value) {
+    baseSelectedValue = value;
+    baseTrigger.textContent = value;
+    baseOptionsEl.querySelectorAll(".cc-base-opt").forEach((o) => {
+      o.classList.toggle("selected", o.dataset.value === value);
+    });
+  }
+
+  baseTrigger.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (baseSdEl.classList.contains("open")) {
+      closeBaseDropdown();
+    } else {
+      openBaseDropdown();
+    }
+  });
+
+  basePanel.addEventListener("click", (e) => e.stopPropagation());
+
+  baseSearchInput.addEventListener("input", () => {
+    filterBaseOptions(baseSearchInput.value);
+  });
+
+  baseSearchInput.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeBaseDropdown();
+  });
+
+  document.addEventListener("click", () => closeBaseDropdown());
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeBaseDropdown();
+  });
+
+  const result = await chrome.storage.local.get(["currency", "targetCurrency"]);
   const rates = result.currency?.rates || {};
+  const savedTargetCurrency = result.targetCurrency || "USD";
   let customCurrencies = await loadCustomCurrencies();
   let editingCode = null;
 
   function populateBaseSelect() {
-    const bases = new Set([...Object.keys(rates), "USD"]);
-    baseSelect.innerHTML = "";
-    [...bases].sort().forEach((c) => baseSelect.add(new Option(c, c)));
-    if (bases.has("USD")) baseSelect.value = "USD";
+    const customCodes = new Set(Object.keys(customCurrencies));
+    const bases = new Set(
+      [...Object.keys(rates), "USD"].filter((c) => !customCodes.has(c))
+    );
+    const hintMap = {};
+    if (typeof CURRENCY_INFORMATIONS !== "undefined") {
+      CURRENCY_INFORMATIONS.forEach((c) => { if (c.abbr && c.hint) hintMap[c.abbr] = c.hint; });
+    }
+    baseOptionsEl.innerHTML = "";
+    [...bases].sort().forEach((c) => {
+      const opt = document.createElement("div");
+      opt.className = "cc-base-opt";
+      opt.dataset.value = c;
+      if (hintMap[c]) opt.dataset.hint = hintMap[c];
+      opt.textContent = c;
+      opt.addEventListener("click", () => selectBaseValue(c));
+      baseOptionsEl.appendChild(opt);
+    });
+    if (bases.has(savedTargetCurrency)) {
+      setBaseValue(savedTargetCurrency);
+    } else if (bases.has("USD")) {
+      setBaseValue("USD");
+    }
   }
 
   function showMsg(text, type) {
@@ -28,12 +130,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (type === "ok") setTimeout(() => { msg.textContent = ""; }, 2000);
   }
 
+  function findBaseOptionByValue(value) {
+    return Array.from(baseOptionsEl.querySelectorAll(".cc-base-opt")).find(
+      (el) => el.dataset.value === value
+    ) || null;
+  }
+
   function clearForm() {
     codeInput.value = "";
     nameInput.value = "";
     symbolInput.value = "";
     rateInput.value = "";
-    baseSelect.value = "USD";
+    const hasTarget = findBaseOptionByValue(savedTargetCurrency);
+    setBaseValue(hasTarget ? savedTargetCurrency : "USD");
     editingCode = null;
     saveBtn.textContent = "Save";
     showMsg("");
@@ -50,8 +159,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     nameInput.value = c.name;
     symbolInput.value = c.symbol || "";
     rateInput.value = c.rate;
-    if ([...baseSelect.options].some((o) => o.value === c.baseCurrency)) {
-      baseSelect.value = c.baseCurrency;
+    if (findBaseOptionByValue(c.baseCurrency)) {
+      setBaseValue(c.baseCurrency);
     }
     editingCode = code;
     saveBtn.textContent = "Update";
@@ -134,7 +243,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function removeItemEl(code) {
-    const el = itemsContainer.querySelector(`[data-code="${code}"]`);
+    const el = Array.from(itemsContainer.querySelectorAll("[data-code]")).find(
+      (item) => item.dataset.code === code
+    );
     if (!el) return;
     el.style.animation = "itemOut 0.2s ease-in forwards";
     el.addEventListener("animationend", () => {
@@ -147,7 +258,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function updatePresetBtn(code, active) {
-    const btn = presetsContainer.querySelector(`[data-preset="${code}"]`);
+    const btn = Array.from(presetsContainer.querySelectorAll("[data-preset]")).find(
+      (el) => el.dataset.preset === code
+    );
     if (btn) btn.classList.toggle("active", active);
   }
 
@@ -236,12 +349,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       const wasEditing = editingCode;
       await upsertCustomCurrency({
         code, symbol, name, rate,
-        baseCurrency: baseSelect.value,
+        baseCurrency: baseSelectedValue,
         places: 2,
       });
       customCurrencies = await loadCustomCurrencies();
 
-      const existing = itemsContainer.querySelector(`[data-code="${code}"]`);
+      const existing = Array.from(itemsContainer.querySelectorAll("[data-code]")).find(
+        (item) => item.dataset.code === code
+      );
       if (existing) {
         const fresh = createItemEl(code, customCurrencies[code]);
         fresh.style.animation = "itemIn 0.2s ease-out both";
@@ -259,13 +374,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   clearBtn.addEventListener("click", clearForm);
-
-  baseSelect.addEventListener("change", () => {
-    if (editingCode) {
-      rateInput.value = "";
-      showMsg("Base changed - enter new rate", "");
-    }
-  });
 
   document.getElementById("back-btn").addEventListener("click", () => {
     document.body.classList.add("page-exit");
