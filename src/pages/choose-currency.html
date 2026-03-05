@@ -4,10 +4,13 @@
     <title>Steam Currency Converter</title>
     <link rel="stylesheet" href="./styles/style.css" />
     <script src="../data/currencies.js"></script>
+    <script src="../data/locales.js"></script>
   </head>
   <style>
     html, body {
-      width: 280px;
+      width: 310px;
+      height: 500px;
+      overflow: hidden;
     }
     .save-button {
       background-color: #17191f;
@@ -26,14 +29,10 @@
     .save-button:hover {
       background-color: #2b2e3b;
     }
-
-    select {
-      max-width: 140px;
-    }
   </style>
 
   <body>
-    <p class="version-text">v2.0.1</p>
+    <p class="version-text">v2.0.3</p>
     <img
       src="../assets/steam-currency-converter.png"
       alt="Steam Currency Converter Extension Icon"
@@ -70,7 +69,13 @@
         >Please choose target currency</label
       >
       <div class="converter-container">
-        <select id="convert-to"></select>
+        <div class="sd" id="choose-target-sd">
+          <button type="button" class="sd-trigger">USD</button>
+          <div class="sd-panel">
+            <input type="text" class="sd-search" placeholder="Search..." />
+            <div class="sd-options"></div>
+          </div>
+        </div>
       </div>
       <button class="custom-currencies-btn" id="open-custom-currencies">Custom Currencies</button>
 
@@ -102,6 +107,7 @@
       </a>
     </footer>
     <script src="../utils/custom-currencies.js"></script>
+    <script src="./scripts/searchable_dropdown.js"></script>
     <script defer src="./scripts/choose_currency_page.scripts.js"></script>
   </body>
 </html>

@@ -139,7 +139,8 @@ input:checked + .slider:before {
 
 html {
   width: 310px;
-  overflow-x: hidden;
+  height: 500px;
+  overflow: hidden;
 }
 
 body {
@@ -152,8 +153,9 @@ body {
   color: white;
   font-family: Poppins, sans-serif;
   width: 310px;
-  margin-bottom: 10px;
-  max-height: 500px;
+  height: 500px;
+  margin: 0;
+  overflow: hidden;
   animation: pageIn 0.2s ease-out;
 }
 
@@ -292,14 +294,25 @@ body:has(#convert-from-sd:hover) #alert {
   overflow: hidden;
 }
 
+#convert-to-sd .sd-panel {
+  left: auto;
+  right: -30px;
+  transform: none;
+}
+
+#convert-from-sd .sd-panel {
+  left: -30px;
+  transform: none;
+}
+
 .sd-panel.open {
   display: block;
   animation: sdIn 0.15s ease-out;
 }
 
 @keyframes sdIn {
-  from { opacity: 0; transform: translateX(-50%) translateY(-4px); }
-  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .sd-search {
