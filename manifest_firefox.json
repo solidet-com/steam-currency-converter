@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Steam Currency Converter",
   "description": "Seamlessly Convert Steam Prices to Local Currency!",
-  "version": "2.0.3",
+  "version": "2.0.14",
   "permissions": [
     "storage"
   ],
@@ -23,7 +23,12 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "addon@steam-currency-converter.com"
+      "id": "addon@steam-currency-converter.com",
+      "data_collection_permissions": {
+        "required": [
+          "none"
+        ]
+      }
     }
   },
   "content_scripts": [
