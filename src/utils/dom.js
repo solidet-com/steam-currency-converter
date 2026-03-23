@@ -34,8 +34,8 @@ function initItem(item, update = false) {
 
   const escapedBaseCurrencyKey = escapeRegExp(baseCurrencyKey);
 
-  const symbolAsPrefixRegex = `(?:${symbolPattern})\\s*(-?[\\d-]+[,.]?[\\d-]*)\\s*(?:${escapedBaseCurrencyKey})?`;
-  const symbolAsSuffixRegex = `([\\d-]+[,.]?[\\d-]*)\\s*(?:${escapedBaseCurrencyKey})?\\s*(?:${symbolPattern})`;
+  const symbolAsPrefixRegex = `(?:${symbolPattern})\\s*(-?[\\d-]+[,.]?[\\d-]*)(?:\\s*${escapedBaseCurrencyKey})?`;
+  const symbolAsSuffixRegex = `([\\d-]+[,.]?[\\d-]*)(?:\\s*${escapedBaseCurrencyKey})?\\s*(?:${symbolPattern})`;
 
   const regexPattern = new RegExp(
     `${symbolAsPrefixRegex}|${symbolAsSuffixRegex}`,

@@ -16,6 +16,9 @@ const YOUR_PRICE =
   ".discount_final_price:has(.your_price_label) > div:not(:nth-of-type(1))";
 const CART_ITEM_PRICE = ".cart_item_price .price";
 const SEARCH_ITEM_PRICE = ".match_subtitle";
+
+const SEARCH_SUGGESTION_FINAL_PRICE = "._2L23Sk2CNSFCplu_7mMmQx";
+const SEARCH_SUGGESTION_ORIGINAL_PRICE = "._1xgg-R84IHS6h5_x6ZycXi";
 const TOTAL_CART_PRICE = "#cart_estimated_total";
 const DLC_LIST_PRICE =
   ".game_area_dlc_price:not(.game_area_dlc_price:has(.discount_prices))";
@@ -28,7 +31,7 @@ const NEW_CART_DISCOUNT = ".StoreOriginalPrice";
 const NEW_CART_CHECKOUT_TOTAL = "._2WLaY5TxjBGVyuWe_6KS3N";
 const WISHLIST_PRICE = ".DOnsaVcV0Is-";
 const WISHLIST_ORIGINAL_PRICE = ".ywNldZ-YzEE-";
-const DISCOVERY_QUEUE_ORIGINAL_PRICE= ".t7Gt8aeopD7JPlhcNTqGV"
+const DISCOVERY_QUEUE_ORIGINAL_PRICE = ".t7Gt8aeopD7JPlhcNTqGV";
 
 /*-- 13/07/24 CART SELECTORS --*/
 const NEW_CART_PRICE_2 = ".pk-LoKoNmmPK4GBiC9DR8";
@@ -73,6 +76,9 @@ const MARKET_FOR_SALE_PRICE =
 const MARKET_GRAPH_PRICE = "#orders_histogram .jqplot-xaxis-tick";
 const MEDIAN_SALE_PRICE = "#pricehistory .jqplot-yaxis-tick";
 const MARKET_BUY_ORDER = ".market_commodity_orders_header_promote";
+const MARKET_ACTIVITY_PRICE = ".market_activity_cell.market_activity_price";
+const MARKET_COMMODITY_TABLE_PRICE =
+  ".market_commodity_orders_table td:first-child";
 
 const INVENTORY_ITEM_PRICE = ".item_market_actions";
 const ITEM_TEST =
@@ -81,15 +87,21 @@ const ITEM_TEST =
 /* -- BALANCE SELECTORS -- */
 
 const WALLET_BALANCE = "#header_wallet_balance";
+const WALLET_BALANCE_V2 = "._79DIT7RUQ5g-";
 const PENDING_MARKET_BALANCE = "#header_wallet_balance>span";
 const MARKET_BALANCE = "#marketWalletBalanceAmount";
 
 /* -- HARDWARE PRODUCTS SELECTORS -- */
 const HARDWARE_PRICE = ".bbcode_price_final";
 
-const ES_EACH_PRICE= ".es_each_price"
+const ES_EACH_PRICE = ".es_each_price";
 
-const SLIDING_EXPLORE_GAME_ORIGINAL_PRICE = "._1_ZF5HUlbC9h0a-lqycqb2"
+const SLIDING_EXPLORE_GAME_ORIGINAL_PRICE = "._1_ZF5HUlbC9h0a-lqycqb2";
+
+const SEARCH_SUGGESTION_SELECTORS = [
+  SEARCH_SUGGESTION_FINAL_PRICE,
+  SEARCH_SUGGESTION_ORIGINAL_PRICE,
+];
 
 const COMMON_SELECTORS = [
   //GENERAL_PRICE_CONTAINER,
@@ -110,6 +122,7 @@ const COMMON_SELECTORS = [
   BUNDLE_PCK_DISCOUNT_PRICE,
   BUNDLE_SAVINGS_PRICE,
   WALLET_BALANCE,
+  WALLET_BALANCE_V2,
   MARKET_PRICE,
   MARKET_BALANCE,
   MARKET_NEW_LISTINGS_PRICE,
@@ -129,6 +142,8 @@ const COMMON_SELECTORS = [
   IN_GAME_ITEM_PRICE,
   MARKET_GRAPH_PRICE,
   MARKET_BUY_ORDER,
+  MARKET_ACTIVITY_PRICE,
+  MARKET_COMMODITY_TABLE_PRICE,
   MEDIAN_SALE_PRICE,
   ITEM_TEST,
   EA_DEFAULT_SUB_PRICE,
@@ -144,19 +159,21 @@ const COMMON_SELECTORS = [
   NEW_CART_PRICE_2,
   WISHLIST_ORIGINAL_PRICE,
   WISHLIST_PRICE,
-  DISCOVERY_QUEUE_ORIGINAL_PRICE
+  DISCOVERY_QUEUE_ORIGINAL_PRICE,
 ];
 
 const TAX_IGNORED_SELECTORS = [
   MARKET_BALANCE,
   WALLET_BALANCE,
+  WALLET_BALANCE_V2,
   MARKET_NEW_LISTINGS_PRICE,
   MARKET_FOR_SALE_PRICE,
   MARKET_BUY_REQUESTS_PRICE,
   MARKET_PRICE,
   MARKET_GRAPH_PRICE,
   MARKET_BUY_ORDER,
+  MARKET_ACTIVITY_PRICE,
+  MARKET_COMMODITY_TABLE_PRICE,
   MEDIAN_SALE_PRICE,
   INVENTORY_ITEM_PRICE,
 ];
-
