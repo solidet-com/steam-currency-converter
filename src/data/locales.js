@@ -736,6 +736,22 @@ const BASE_CURRENCIES = [
       right: true,
     },
   },
+  {
+    id: 49,
+    abbr: "RON",
+    symbol: "lei",
+    hint: "Romanian Leu",
+    multiplier: 100,
+    unit: 1,
+    format: {
+      places: 2,
+      hidePlacesWhenZero: false,
+      symbolFormat: " RON",
+      thousand: ",",
+      decimal: ".",
+      right: true,
+    },
+  },
 ];
 
 const CURRENCY_INFORMATIONS = [...BASE_CURRENCIES];
