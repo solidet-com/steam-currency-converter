@@ -56,6 +56,21 @@ If you encounter this issue, you can do either of the following:
 
 We appreciate your assistance in troubleshooting and improving the currency conversion tool!
 
+## Price Selectors
+
+Steam's newer pages are built with React and use generated class names such as `kauOU9QnW8Fs0QpxzTBph` or `QYFii1vIT5Q-`. These change with every Steam update, so **never add them to `src/data/selectors.js`**.
+
+Most prices don't need a selector at all. Any text that is only a price in the store currency (`$7.19`, `19,99€`, `1 299 руб.`) is converted automatically by the detector in `src/utils/dom.js`. Text that only contains a price, such as "Under $10 USD" or "Add $5.00 USD", is intentionally left alone.
+
+Add a selector only when a price can't be detected that way, and anchor it on something stable:
+
+- an id (`#header_wallet_balance`)
+- a readable Steam class (`.discount_final_price`, `.StoreSalePriceWidgetContainer`)
+- a data attribute (`[data-featuretarget='iteminfo']`)
+- a link target (`a[href*='/market/listings/']`)
+
+If a label and a price share one text node ("From $1.23"), add the surrounding area to `LABELLED_PRICE_SCOPES` instead of writing a selector for the text itself. Elements created by other extensions (Augmented Steam, SteamDB, ITAD) are skipped through `THIRD_PARTY_SELECTORS`, and the extension only ever rewrites text nodes, never elements or styles.
+
 ## Contact
 
 For questions, support, or any clarifications, feel free to reach out to us on [GitHub Discussions](https://github.com/Solidet-com/steam-currency-converter/discussions) or via email at trsnaqe@gmail.com.

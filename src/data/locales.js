@@ -556,7 +556,7 @@ const BASE_CURRENCIES = [
       hidePlacesWhenZero: true,
       symbolFormat: "₸ ",
       thousand: " ",
-      decimal: ".",
+      decimal: ",",
       right: false,
     },
   },

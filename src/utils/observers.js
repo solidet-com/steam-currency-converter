@@ -1,6 +1,5 @@
 const _suggestionTimers = new WeakMap();
 const _commonSelectorStr = COMMON_SELECTORS.join(",");
-const _suggestionSelectorStr = SEARCH_SUGGESTION_SELECTORS.join(",");
 const _isInventoryOrCart = /\/(inventory|cart)/.test(window.location.href);
 
 function processSearchSuggestionPanel(panel) {
@@ -9,93 +8,105 @@ function processSearchSuggestionPanel(panel) {
     panel,
     setTimeout(() => {
       _suggestionTimers.delete(panel);
-      Array.from(panel.querySelectorAll(_suggestionSelectorStr)).forEach(
-        (item) => {
-          initItem(item);
-          togglePrice(item);
-        }
-      );
+      collectPriceItems([panel]).forEach((item) => convertItem(item));
     }, 0)
   );
 }
 
-function handleContentMutation(mutationsList) {
-  for (let i = 0; i < mutationsList.length; i++) {
-    const { type, addedNodes, target } = mutationsList[i];
+function convertItem(item, update = false) {
+  initItem(item, update);
+  togglePrice(item);
+}
 
+// Text changes are converted right away. New prices always contain a digit
+// and the store currency, so other text changes (countdown timers, counters)
+// are skipped before any DOM lookups. Converted prices are always rechecked.
+function collectChangedTextItem(textNode, items) {
+  const text = textNode.nodeValue;
+  const parent = textNode.parentElement;
+  if (!parent || !text.trim()) return;
+  if (parent.hasAttribute("data-ext-converted")) {
+    // Every price this extension writes comes back here, skip those first.
+    if (isOwnPriceWrite(parent)) return;
+  } else if (!hasPriceHint(text)) return;
+  const match = resolvePriceItem(textNode);
+  if (
+    match &&
+    match.textContent.trim() &&
+    !isOwnPriceWrite(match) &&
+    canReconvert(match)
+  )
+    items.add(match);
+}
+
+// Stops re-converting an element whose text is reset over and over (e.g. by
+// a page script fighting the conversion), so it can't loop and freeze a tab.
+const _reconversions = new WeakMap();
+
+function canReconvert(item) {
+  const now = Date.now();
+  const entry = _reconversions.get(item);
+  if (!entry || now - entry.since > 1000) {
+    _reconversions.set(item, { since: now, count: 1 });
+    return true;
+  }
+  return ++entry.count <= 10;
+}
+
+
+function handleContentMutation(mutationsList) {
+  const changedItems = new Set();
+  const addedRoots = new Set();
+
+  for (const { type, addedNodes, target } of mutationsList) {
     if (type === "characterData") {
-      const el = target.parentElement;
-      if (!el) continue;
-      const match = el.matches(_commonSelectorStr)
-        ? el
-        : el.closest(_commonSelectorStr);
-      if (!match || !match.textContent.trim()) continue;
-      if (
-        match.getAttribute("data-ext-converted") === "true" &&
-        match.getAttribute("data-ext-price-mem")
-      )
-        continue;
-      initItem(match, true);
-      togglePrice(match);
+      collectChangedTextItem(target, changedItems);
+      continue;
+    }
+    if (type !== "childList") continue;
+
+    for (const node of addedNodes) {
+      if (node.nodeType === Node.TEXT_NODE)
+        collectChangedTextItem(node, changedItems);
+      else if (node.nodeType === Node.ELEMENT_NODE) addedRoots.add(node);
+    }
+  }
+
+  changedItems.forEach((item) => convertItem(item, true));
+
+  const scanRoots = [];
+  for (const node of addedRoots) {
+    // Skip nodes React already removed. A node whose parent was also added
+    // is scanned with its parent (deeper nesting is only scanned twice).
+    if (!node.isConnected || addedRoots.has(node.parentElement)) continue;
+
+    if (
+      node.parentNode?.getAttribute?.("id") === "search_suggestion_contents"
+    ) {
+      getItems(node, SEARCH_ITEM_PRICE).forEach((item) => convertItem(item));
       continue;
     }
 
-    if (type !== "childList") continue;
+    const panel =
+      node.closest?.("[id^='searchSuggestions_']") ??
+      (node.id?.startsWith("searchSuggestions_") ? node : null) ??
+      node.querySelector?.("[id^='searchSuggestions_']");
 
-    for (let j = 0; j < addedNodes.length; j++) {
-      const node = addedNodes[j];
-
-      if (node.nodeType === Node.TEXT_NODE) {
-        const parent = node.parentElement;
-        if (!parent || !node.textContent.trim()) continue;
-        if (parent.matches(_commonSelectorStr)) {
-          if (
-            parent.getAttribute("data-ext-converted") === "true" &&
-            parent.getAttribute("data-ext-price-mem")
-          )
-            continue;
-          initItem(parent, true);
-          togglePrice(parent);
-        }
-        continue;
-      }
-
-      if (node.nodeType !== Node.ELEMENT_NODE) continue;
-
-      if (
-        node.parentNode?.getAttribute("id") === "search_suggestion_contents"
-      ) {
-        getItems(node, SEARCH_ITEM_PRICE).forEach((item) => {
-          initItem(item);
-          togglePrice(item);
-        });
-        continue;
-      }
-
-      const panel =
-        node.closest?.("[id^='searchSuggestions_']") ??
-        (node.id?.startsWith("searchSuggestions_") ? node : null) ??
-        node.querySelector?.("[id^='searchSuggestions_']");
-
-      if (panel) {
-        processSearchSuggestionPanel(panel);
-        continue;
-      }
-
-      const items = Array.from(node.querySelectorAll(_commonSelectorStr));
-      if (node.matches(_commonSelectorStr)) items.push(node);
-      const filtered = items.filter((el) => el.textContent.trim());
-      if (!filtered.length) continue;
-
-      const timeout = _isInventoryOrCart ? 600 : 0;
-      filtered.forEach((item) =>
-        setTimeout(() => {
-          initItem(item);
-          togglePrice(item);
-        }, timeout)
-      );
+    if (panel) {
+      processSearchSuggestionPanel(panel);
+      continue;
     }
+
+    scanRoots.push(node);
   }
+
+  const newItems = collectPriceItems(scanRoots);
+  if (!newItems.size) return;
+
+  const timeout = _isInventoryOrCart ? 600 : 0;
+  setTimeout(() => {
+    newItems.forEach((item) => item.isConnected && convertItem(item));
+  }, timeout);
 }
 
 const contentObserver = new MutationObserver(handleContentMutation);

@@ -28,24 +28,23 @@ async function initScript() {
   const showChangelog = await getStoreValue("showChangelog");
   if (showChangelog && !isIframe()) {
     showChangelogModal(
-      "Steam Currency Converter v1.0.60",
+      `Steam Currency Converter v${getManifest().version}`,
       `<p>What's new in this update:</p>
       <br/>
-      <p><strong>Custom Currencies</strong></p>
+      <p><strong>Works with Steam's new pages</strong></p>
       <ul>
-        <li>Create your own currencies — BigMac, Doner, Coffee, or anything you want</li>
-        <li>Preset quick-add buttons for popular fun currencies</li>
-        <li>Set custom exchange rates based on any supported base currency</li>
-        <li>Prices display with emoji on the left and code on the right</li>
-        <li>Edit or remove custom currencies anytime from the extension popup</li>
-        <li>Live updates — changes reflect on Steam pages immediately</li>
+        <li>Prices convert again on Steam's redesigned pages: store front, charts, tags, categories, wishlist and cart</li>
+        <li>New Community Market and inventory pages, including "From" and "Starting at" prices</li>
+        <li>Wallet balance in Steam's new header</li>
+        <li>Subscription terms, e.g. GTA+ "at checkout, auto-renewed" prices</li>
+        <li>Keeps working when Steam changes its page layout</li>
       </ul>
       <br/>
-      <p><strong>UI Improvements</strong></p>
+      <p><strong>Fixes</strong></p>
       <ul>
-        <li>Modernized dropdown selects with dark theme</li>
-        <li>Smoother animations and transitions throughout</li>
-        <li>Better currency selection labels for custom currencies</li>
+        <li>Indonesian Rupiah (IDR) prices are converted correctly</li>
+        <li>Text next to prices keeps its spacing, e.g. "Free To Play" and "Starting at:"</li>
+        <li>Prices shown by other extensions (Augmented Steam, SteamDB, ITAD) are left untouched</li>
       </ul>
       <br/>
       <em>Enjoy the extension and feel free to give feedback or report bugs.</em>
@@ -55,8 +54,13 @@ async function initScript() {
 }
 
 function initItems(onCurrencyChange = false) {
-  let newItems = getItems(document, ...COMMON_SELECTORS);
-  newItems?.forEach((item) => {
+  const newItems = collectPriceItems([document.body]);
+  // Converted prices no longer show the store currency, find them by mark.
+  if (onCurrencyChange)
+    document
+      .querySelectorAll("[data-ext-converted]")
+      .forEach((item) => newItems.add(item));
+  newItems.forEach((item) => {
     initItem(item, onCurrencyChange);
     togglePrice(item);
   });

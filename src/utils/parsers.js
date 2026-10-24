@@ -67,7 +67,11 @@ function getCommunityCountry() {
 async function getStoreCurrency() {
   let currency;
   // Select the price currency meta tag
-  let currencyElement = document.querySelector("#header_wallet_balance") || document.querySelector('.responsive_menu_user_wallet a b') || "";
+  let currencyElement =
+    document.querySelector("#header_wallet_balance") ||
+    document.querySelector(".responsive_menu_user_wallet a b") ||
+    document.querySelector("header a[href*='/steamaccount/addfunds'] span") ||
+    "";
   if (!currencyElement) {
     currency = await getBaseCurrencyBySteamGame();
   } else {
