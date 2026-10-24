@@ -1,11 +1,12 @@
-const GENERAL_PRICE_CONTAINER = ".StoreSalePriceWidgetContainer";
-
-const NEW_DISCOUNT_PRICE = "._1EKGZBnKFWOr3RqVdnLMRN";
-const NEW_FINAL_PRICE = ".Wh0L8EnwsPV_8VAu8TOYr";
-
-//07-24 new htmls
-const NEW_DISCOUNT_PRICE_2 = "._3fFFsvII7Y2KXNLDk_krOW";
-const NEW_FINAL_PRICE_2 = "._3j4dI1yA7cRfCvK8h406OB";
+/*
+ * Explicit price selectors.
+ *
+ * Steam's React pages use generated CSS module classes (e.g. "kauOU9QnW8Fs0QpxzTBph",
+ * "QYFii1vIT5Q-") that change with every Steam deploy, so they must never be
+ * used here. Standalone prices ("$7.19", "19,99€") are found by the generic
+ * detector in dom.js, so only add a selector when the price needs a stable
+ * anchor: an id, a readable Steam class, a data attribute or a link target.
+ */
 
 const GAME_PAGE_PRICE = ".game_purchase_price";
 const PRICE_WO_REGIONAL_EXT =
@@ -17,8 +18,6 @@ const YOUR_PRICE =
 const CART_ITEM_PRICE = ".cart_item_price .price";
 const SEARCH_ITEM_PRICE = ".match_subtitle";
 
-const SEARCH_SUGGESTION_FINAL_PRICE = "._2L23Sk2CNSFCplu_7mMmQx";
-const SEARCH_SUGGESTION_ORIGINAL_PRICE = "._1xgg-R84IHS6h5_x6ZycXi";
 const TOTAL_CART_PRICE = "#cart_estimated_total";
 const DLC_LIST_PRICE =
   ".game_area_dlc_price:not(.game_area_dlc_price:has(.discount_prices))";
@@ -26,37 +25,27 @@ const MORE_LIKE_THIS_PRICE = "a.small_cap > h5 ";
 const SIMILIAR_GAME_PRICE = ".similar_grid_price.price > .regular_price.price";
 const HIGHLIGHT_GAME_PRICE = ".highlight_description .regular_price.price";
 const IN_GAME_ITEM_PRICE = ".item_def_price";
-const NEW_CART_PRICE = "._2WBvzE2CywKDLD0QTnbmUE";
 const NEW_CART_DISCOUNT = ".StoreOriginalPrice";
-const NEW_CART_CHECKOUT_TOTAL = "._2WLaY5TxjBGVyuWe_6KS3N";
-const WISHLIST_PRICE = ".-HQzBzl6lqI-";
-const WISHLIST_ORIGINAL_PRICE = "._9Rf9BwU0xAQ-";
-const DISCOVERY_QUEUE_ORIGINAL_PRICE = ".t7Gt8aeopD7JPlhcNTqGV";
-
-/*-- 13/07/24 CART SELECTORS --*/
-const NEW_CART_PRICE_2 = ".pk-LoKoNmmPK4GBiC9DR8";
 
 /* -- SUBSCRIPTION SELECTORS -- */
 const MONTHLY_SUB_PRICE =
   "#add_to_cart_2d5d14f95af035cbd8437948de61f94c_selected_text";
 const MONTHLY_SUB_OPTION_PRICE =
   ".game_area_purchase_game_dropdown_menu_item_text";
-const EA_PLAY_SERVICE_PRICE =
-  ".salesectionsubscription_PriceDisplay_3Ri16.PriceDisplay";
 const EA_PLAY_2 = ".PriceDisplay";
 const SUB_INFO_PRICE = ".updateSubscriptionOptionPrice";
 const EA_DEFAULT_SUB_PRICE = ".game_area_purchase_game_dropdown_selection span";
+// "$7.99 USD at checkout, auto-renewed every 1 month(s) at $7.99 USD."
+const SUBSCRIPTION_TERMS = ".game_purchase_subscription";
 
 /* -- TOP_SELLER SELECTORS -- */
 const TOP_SELLERS_PAGE_DISC_PRICE =
-  ".salepreviewwidgets_StoreSaleDiscountedPriceCtn_3GLeQ > *";
+  "[class*='salepreviewwidgets_StoreSaleDiscountedPriceCtn_'] > *";
 const TOP_SELLERS_PAGE_PRICE =
-  ".salepreviewwidgets_StoreSalePriceCtn_3R7Q6 > *";
+  "[class*='salepreviewwidgets_StoreSalePriceCtn_'] > *";
 const GAME_WITH_EVENT_PRICE =
-  ".eventrow_AppCapsulePrice_Jq75m:not(.eventrow_AppCapsulePrice_Jq75m:has(.salepreviewwidgets_StoreSaleDiscountBox_2fpFv)) > *";
-const DLC_DISCOUNT_PRICE =
-  ".salepreviewwidgets_StoreSaleDiscountedPriceCtn_3GLeQ > *";
-const DLC_PRICE = ".salepreviewwidgets_StoreSalePriceBox_Wh0L8";
+  "[class*='eventrow_AppCapsulePrice_']:not(:has([class*='salepreviewwidgets_StoreSaleDiscountBox_'])) > *";
+const DLC_PRICE = "[class*='salepreviewwidgets_StoreSalePriceBox_']";
 
 /* -- BUNDLE SELECTORS -- */
 const BUNDLE_PACKAGE_PRICE = ".bundle_final_package_price";
@@ -87,27 +76,15 @@ const ITEM_TEST =
 /* -- BALANCE SELECTORS -- */
 
 const WALLET_BALANCE = "#header_wallet_balance";
-const WALLET_BALANCE_V2 = "._79DIT7RUQ5g-";
 const PENDING_MARKET_BALANCE = "#header_wallet_balance>span";
 const MARKET_BALANCE = "#marketWalletBalanceAmount";
+const ACCOUNT_BALANCE = ".accountBalance .accountData.price > a";
 
 /* -- HARDWARE PRODUCTS SELECTORS -- */
 const HARDWARE_PRICE = ".bbcode_price_final";
 
-const ES_EACH_PRICE = ".es_each_price";
-
-const SLIDING_EXPLORE_GAME_ORIGINAL_PRICE = "._1_ZF5HUlbC9h0a-lqycqb2";
-
-const SEARCH_SUGGESTION_SELECTORS = [
-  SEARCH_SUGGESTION_FINAL_PRICE,
-  SEARCH_SUGGESTION_ORIGINAL_PRICE,
-];
-
 const COMMON_SELECTORS = [
-  //GENERAL_PRICE_CONTAINER,
   EA_PLAY_2,
-  NEW_DISCOUNT_PRICE,
-  NEW_FINAL_PRICE,
   DISCOUNT_PRICE,
   GAME_PAGE_PRICE,
   PRICE_WO_REGIONAL_EXT,
@@ -122,7 +99,6 @@ const COMMON_SELECTORS = [
   BUNDLE_PCK_DISCOUNT_PRICE,
   BUNDLE_SAVINGS_PRICE,
   WALLET_BALANCE,
-  WALLET_BALANCE_V2,
   MARKET_PRICE,
   MARKET_BALANCE,
   MARKET_NEW_LISTINGS_PRICE,
@@ -130,8 +106,8 @@ const COMMON_SELECTORS = [
   MARKET_FOR_SALE_PRICE,
   MONTHLY_SUB_PRICE,
   MONTHLY_SUB_OPTION_PRICE,
-  EA_PLAY_SERVICE_PRICE,
   SUB_INFO_PRICE,
+  SUBSCRIPTION_TERMS,
   YOUR_PRICE,
   INVENTORY_ITEM_PRICE,
   BUNDLE_PCK_SAVINGS_PRICE,
@@ -148,24 +124,15 @@ const COMMON_SELECTORS = [
   ITEM_TEST,
   EA_DEFAULT_SUB_PRICE,
   HARDWARE_PRICE,
-  NEW_CART_PRICE,
   NEW_CART_DISCOUNT,
-  NEW_CART_CHECKOUT_TOTAL,
   PENDING_MARKET_BALANCE,
-  ES_EACH_PRICE,
-  SLIDING_EXPLORE_GAME_ORIGINAL_PRICE,
-  NEW_DISCOUNT_PRICE_2,
-  NEW_FINAL_PRICE_2,
-  NEW_CART_PRICE_2,
-  WISHLIST_ORIGINAL_PRICE,
-  WISHLIST_PRICE,
-  DISCOVERY_QUEUE_ORIGINAL_PRICE,
+  ACCOUNT_BALANCE,
 ];
 
 const TAX_IGNORED_SELECTORS = [
   MARKET_BALANCE,
   WALLET_BALANCE,
-  WALLET_BALANCE_V2,
+  ACCOUNT_BALANCE,
   MARKET_NEW_LISTINGS_PRICE,
   MARKET_FOR_SALE_PRICE,
   MARKET_BUY_REQUESTS_PRICE,
@@ -176,4 +143,70 @@ const TAX_IGNORED_SELECTORS = [
   MARKET_COMMODITY_TABLE_PRICE,
   MEDIAN_SALE_PRICE,
   INVENTORY_ITEM_PRICE,
+];
+
+/* -- GENERIC DETECTION SCOPES -- */
+
+// Wallet balances are shown in these areas; no tax is added to them.
+const WALLET_CONTEXT_SELECTORS = [
+  "header",
+  "#global_header",
+  "#account_dropdown",
+  "a[href*='/steamaccount/addfunds']",
+  "a[href*='/account/store_transactions']",
+  ".accountBalance",
+  ".addfunds_accountBalance",
+];
+
+// Areas where Steam shows a label and a price in one text node, e.g. market
+// search "From $1.23" or the inventory item panel "Starting at: $0.04 USD".
+// Only here a short label before the price is accepted.
+const LABELLED_PRICE_SCOPES = [
+  "a[href*='/market/listings/']",
+  "[data-featuretarget='iteminfo']",
+];
+
+// Elements created by other extensions (Augmented Steam, ITAD, SteamDB).
+// Augmented Steam also adds es_* classes and ids to Steam's own elements
+// (e.g. .es_regional_prices on the purchase box, #es_selected_btn), so only
+// match containers these extensions create themselves.
+const THIRD_PARTY_SELECTORS = [
+  "[class*='svelte-']",
+  "[class^='steamdb_']",
+  "[class*=' steamdb_']",
+  "[class^='itad-']",
+  "[class*=' itad-']",
+  ".es_regional",
+  ".es_regional_container",
+  ".es_each_box",
+  ".es_each_price",
+  ".es_qsell_ctn",
+  "[id^='as-']",
+  "[id^='as_']",
+];
+
+// User written text (descriptions, reviews, comments) is never converted.
+const USER_CONTENT_SELECTORS = [
+  "#game_area_description",
+  ".game_area_description",
+  ".review_box .content",
+  ".recommendation_desc",
+  ".apphub_CardTextContent",
+  ".commentthread_comment_text",
+  ".forum_op",
+  ".workshopItemDescription",
+  ".profile_summary",
+  ".bb_blockquote",
+];
+
+const NON_PRICE_ELEMENT_SELECTORS = [
+  "script",
+  "style",
+  "noscript",
+  "template",
+  "textarea",
+  "input",
+  "select",
+  "option",
+  "[contenteditable]",
 ];
